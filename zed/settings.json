@@ -1,18 +1,42 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "soft_wrap": "prefer_line",
+  "proxy": "",
+  "edit_predictions": {
+    "allow_data_collection": "no",
+  },
+  "disable_ai": true,
+  "project_panel": {
+    "default_width": 200.0,
+    "dock": "left",
+  },
+  "pane_split_direction_vertical": "right",
+  "tabs": {
+    "file_icons": true,
+    "git_status": false,
+  },
+  "title_bar": {
+    "show_branch_status_icon": false,
+  },
+  "status_bar": {
+    "show_active_file": true,
+  },
+  "tab_size": 2,
+  "auto_update": false,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "icon_theme": "Catppuccin Mocha",
+  "agent_ui_font_size": 17.0,
+  "ui_font_weight": 400.0,
+  "ui_font_family": "Lexend",
+  "buffer_font_family": "DM Mono",
+  "buffer_font_fallbacks": ["JetBrainsMono Nerd Font"],
+  "soft_wrap": "editor_width",
   "cli_default_open_behavior": "existing_window",
-  "ui_font_size": 16,
+  "ui_font_size": 17.0,
   "buffer_font_size": 15,
   "theme": {
-    "mode": "dark",
+    "mode": "system",
     "light": "One Light",
     "dark": "Meloworld Dark",
   },
