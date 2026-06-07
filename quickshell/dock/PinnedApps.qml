@@ -42,45 +42,38 @@ Singleton {
                 steamId: ""
             },
             {
-                id: "zeditor",
+                id: "zed",
                 label: "Zed Code Editor",
                 icon: "zed",
                 execName: "zed",
                 steamId: ""
             },
             {
-                id: "thunar",
-                label: "Thunar",
-                icon: "thunar",
-                execName: "thunar",
+                id: "kitty",
+                label: "kitty",
+                icon: "kitty",
+                execName: "kitty",
                 steamId: ""
             },
             {
-                id: "bitwig-studio",
-                label: "Bitwig Studio",
-                icon: "bitwig-studio",
+                id: "md.obsidian.Obsidian",
+                label: "Obsidian",
+                icon: "md.obsidian.Obsidian",
                 execName: "",
                 steamId: ""
-            },
-            {
-                id: "blender",
-                label: "Blender",
-                icon: "blender",
-                execName: "",
-                steamId: ""
-            },
-            {
-                id: "steam_app_431730",
-                label: "Aseprite",
-                icon: "steam_icon_431730",
-                execName: "",
-                steamId: "431730"
             },
             {
                 id: "org.gnome.Nautilus",
                 label: "Files",
                 icon: "system-file-manager",
                 execName: "nautilus",
+                steamId: ""
+            },
+            {
+                id: "com.obsproject.Studio",
+                label: "OBS Studio",
+                icon: "com.obsproject.Studio",
+                execName: "obs",
                 steamId: ""
             }
         ];
