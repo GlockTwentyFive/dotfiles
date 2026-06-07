@@ -11,10 +11,10 @@ require("config.input")
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
-    output   = "",
-    mode     = "preferred",
-    position = "auto",
-    scale    = "1.2",
+  output   = "",
+  mode     = "preferred",
+  position = "auto",
+  scale    = "1.2",
 })
 
 
@@ -34,7 +34,10 @@ hl.monitor({
 -- end)
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("awww-daemon")
+  hl.exec_cmd("awww-daemon")
+  hl.exec_cmd("quickshell")
+  hl.exec_cmd("wl-paste --type text  --watch cliphist store")
+  hl.exec_cmd("wl-paste --type image --watch cliphist store")
 end)
 
 -------------------------------
@@ -42,11 +45,7 @@ end)
 -------------------------------
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
-
-hl.env("XCURSOR_SIZE", "22")
-hl.env("XCURSOR_THEME", "Bibata-Modern-Ice")
-hl.env("HYPRCURSOR_THEME", "Bibata-Modern-Ice-Hypr")
-hl.env("HYPRCURSOR_SIZE", "22")
+-- Environment Variables are in ~/.config/uwsm/env and ~/.config/uwsm/env-hyprland
 
 
 -----------------------
@@ -74,9 +73,10 @@ hl.env("HYPRCURSOR_SIZE", "22")
 ----------------
 
 hl.config({
-    misc = {
-        force_default_wallpaper  = 0,    -- Set to 0 or 1 to disable the anime mascot wallpapers
-        disable_hyprland_logo    = true, -- If true disables the random hyprland logo / anime girl background. :(
-        disable_splash_rendering = true, -- disables the Hyprland splash rendering.
-    },
+  misc = {
+    force_default_wallpaper  = 0,    -- Set to 0 or 1 to disable the anime mascot wallpapers
+    disable_hyprland_logo    = true, -- If true disables the random hyprland logo / anime girl background. :(
+    disable_splash_rendering = true, -- disables the Hyprland splash rendering.
+    focus_on_activate        = true, -- Whether Hyprland should focus an app that requests to be focused (an activate request)
+  },
 })
