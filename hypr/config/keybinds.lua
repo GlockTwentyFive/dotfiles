@@ -77,3 +77,8 @@ hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.swap({ direction = "u" }))
 
 -- Lockscreen
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("quickshell -c " .. os.getenv("HOME") .. "/.config/quickshell/lockscreen"))
+
+-- Screenshot
+hl.bind("SUPER + Print",
+  hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | tee ~/Pictures/Screenshots/$(date +"%s_grim.png") | wl-copy'))
+hl.bind("Print", hl.dsp.exec_cmd("grim - | tee ~/Pictures/Screenshots/$(date +'%s_grim.png') | wl-copy"))
