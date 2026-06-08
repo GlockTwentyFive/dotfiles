@@ -82,3 +82,33 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("quickshell -c " .. os.getenv("HOME")
 hl.bind("SUPER + Print",
   hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | tee ~/Pictures/Screenshots/$(date +"%s_grim.png") | wl-copy'))
 hl.bind("Print", hl.dsp.exec_cmd("grim - | tee ~/Pictures/Screenshots/$(date +'%s_grim.png') | wl-copy"))
+
+-- Toggle Gaps
+hl.bind(mainMod .. " + SHIFT + G", function()
+  local gapsInValueTable = hl.get_config("general.gaps_in")
+
+  if gapsInValueTable.top == 5 then
+    hl.config({
+      general = {
+        gaps_in = 0,
+        gaps_out = 0
+      }
+    })
+  else
+    hl.config({
+      general = {
+        gaps_in = 5,
+        gaps_out = 10
+      }
+    })
+  end
+end)
+
+-- Maximize Window
+hl.bind(mainMod .. "+ SHIFT + M", hl.dsp.window.fullscreen({
+  mode = "maximized",
+  action = "toggle"
+}))
+
+-- Change width of windows to 0.5
+hl.bind(mainMod .. " + SHIFT + J", hl.dsp.layout("colresize 0.5"))
