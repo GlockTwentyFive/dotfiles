@@ -6,7 +6,7 @@ local mainMod  = "SUPER"
 local terminal = "kitty"
 
 -- Apps
-hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("uwsm-app -- " .. terminal))
 
 -- Window Management
 local closeWindowBind = hl.bind(mainMod .. " + C", hl.dsp.window.close())
@@ -76,12 +76,13 @@ hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.swap({ direction = "d" }))
 hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.swap({ direction = "u" }))
 
 -- Lockscreen
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("quickshell -c " .. os.getenv("HOME") .. "/.config/quickshell/lockscreen"))
+hl.bind(mainMod .. " + L",
+  hl.dsp.exec_cmd("uwsm-app -- quickshell -c " .. os.getenv("HOME") .. "/.config/quickshell/lockscreen"))
 
 -- Screenshot
 hl.bind("SUPER + Print",
-  hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | tee ~/Pictures/Screenshots/$(date +"%s_grim.png") | wl-copy'))
-hl.bind("Print", hl.dsp.exec_cmd("grim - | tee ~/Pictures/Screenshots/$(date +'%s_grim.png') | wl-copy"))
+  hl.dsp.exec_cmd('uwsm-app -- grim -g "$(slurp -d)" - | tee ~/Pictures/Screenshots/$(date +"%s_grim.png") | wl-copy'))
+hl.bind("Print", hl.dsp.exec_cmd("uwsm-app -- grim - | tee ~/Pictures/Screenshots/$(date +'%s_grim.png') | wl-copy"))
 
 -- Toggle Gaps
 hl.bind(mainMod .. " + SHIFT + G", function()
@@ -104,11 +105,26 @@ hl.bind(mainMod .. " + SHIFT + G", function()
   end
 end)
 
--- Maximize Window
-hl.bind(mainMod .. "+ SHIFT + M", hl.dsp.window.fullscreen({
-  mode = "maximized",
-  action = "toggle"
-}))
+-- Cycle Layouts
+hl.bind(mainMod .. " + tab", function()
+  local layouts     = { "scrolling", "dwindle", "master", "monocle" }
+  local workspace   = hl.get_active_workspace()
+  local next_layout = "dwindle"
 
--- Change width of windows to 0.5
-hl.bind(mainMod .. " + SHIFT + J", hl.dsp.layout("colresize 0.5"))
+  if not workspace then
+    return
+  end
+
+  for i = 1, #layouts do
+    if layouts[i] == workspace.tiled_layout then
+      local next_layout_idx = (i % #layouts) + 1
+      next_layout = layouts[next_layout_idx]
+      break
+    end
+  end
+
+  hl.workspace_rule({ workspace = workspace.name, layout = next_layout })
+end)
+
+-- Color Picker
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("uwsm-app -- hyprpicker -a -n"))

@@ -14,7 +14,7 @@ hl.config({
     gaps_in          = 5,
     gaps_out         = 10,
 
-    border_size      = 4,
+    border_size      = 3,
 
     col              = {
       active_border   = "rgba(80cbc4ff)",
@@ -95,6 +95,7 @@ hl.config({
 hl.config({
   master = {
     new_status = "master",
+    mfact = 0.5
   },
 })
 

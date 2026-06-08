@@ -18,5 +18,5 @@ PrintScreen => Saves a shot of the whole screen
 - Screenshots are saved in ~/Pictures/Screenshots directory and will be copied to clipboard as well using wl-clipboard.
 
 SUPER + SHIFT + G => Toggle Gaps
-SUPER + SHIFT + M => Toggle maximized state of focused window
-SUPER + SHIFT + J => kinda split acreen
+SUPER + Tab => Change Layout
+SUPER + SHIFT + L => Color Picker
