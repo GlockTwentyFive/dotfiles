@@ -87,7 +87,7 @@ PopupBase {
             anchors.centerIn: parent
             text:             btn.icon
             font.pixelSize:   16
-            font.family:      "Lexend"
+            font.family:      "JetBrainsMono Nerd Font"
             color:            btn.active ? PanelColors.pillForeground : PanelColors.audio
             Behavior on color { ColorAnimation { duration: 150 } }
         }
@@ -132,7 +132,7 @@ PopupBase {
             text:               root._shortName(devRow.modelData.description)
             font.pixelSize:     13
             font.bold:          true
-            font.family:        "Lexend"
+            font.family:        "JetBrainsMono Nerd Font"
             color:              devRow.isActive ? PanelColors.pillForeground : PanelColors.textMain
             elide:              Text.ElideRight
         }
@@ -167,8 +167,8 @@ PopupBase {
             leftPadding:  4
             bottomPadding: 2
 
-            Text { text: "󰕾"; font.pixelSize: 16; font.family: "Lexend"; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
-            Text { text: "Output"; font.pixelSize: 14; font.bold: true; font.family: "Lexend"; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "󰕾"; font.pixelSize: 16; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "Output"; font.pixelSize: 14; font.bold: true; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
         }
 
         Repeater {
@@ -188,8 +188,8 @@ PopupBase {
             topPadding:   AudioState.sinks.length > 1 ? 4 : 0
             bottomPadding: 2
 
-            Text { text: "󰍬"; font.pixelSize: 16; font.family: "Lexend"; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
-            Text { text: "Input"; font.pixelSize: 14; font.bold: true; font.family: "Lexend"; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "󰍬"; font.pixelSize: 16; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "Input"; font.pixelSize: 14; font.bold: true; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
         }
 
         Repeater {
@@ -287,7 +287,7 @@ PopupBase {
             anchors.centerIn: parent
             text:            root._tipText
             font.pixelSize:  11
-            font.family:     "Lexend"
+            font.family:     "JetBrainsMono Nerd Font"
             color:           PanelColors.textMain
         }
     }

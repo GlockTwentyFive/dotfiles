@@ -8,18 +8,18 @@ import Quickshell.Services.Pam
 ShellRoot {
 
     // ── Colors (inlined from PanelColors/Colors — no imports available) ──
-    readonly property color clrBg: "#212121"
-    readonly property color clrBgAlt: "#424242"
-    readonly property color clrFg: "#ffffffdd"
-    readonly property color clrFgDim: "#616161"
-    readonly property color clrAccent: "#80cbc4"   // teal200
-    readonly property color clrBorder: "#424242"   // grey800
-    readonly property color clrUrgent: "#ef9a9a"   // red200
-    readonly property color clrClock: "#ffffffdd" // PanelColors.clock (dark)
-    readonly property color clrPillFg: "#212121"   // PanelColors.pillForeground (dark)
-    readonly property string fontMain: "Lexend"
-    readonly property int radiusLarge: 12
-    readonly property int radiusMed: 8
+    readonly property color clrBg:      "#212121"
+    readonly property color clrBgAlt:   "#424242"
+    readonly property color clrFg:      "#ffffffdd"
+    readonly property color clrFgDim:   "#616161"
+    readonly property color clrAccent:  "#80cbc4"   // teal200
+    readonly property color clrBorder:  "#424242"   // grey800
+    readonly property color clrUrgent:  "#ef9a9a"   // red200
+    readonly property color clrClock:   "#ffffffdd" // PanelColors.clock (dark)
+    readonly property color clrPillFg:  "#212121"   // PanelColors.pillForeground (dark)
+    readonly property string fontMain:  "JetBrainsMono Nerd Font"
+    readonly property int radiusLarge:  12
+    readonly property int radiusMed:    8
 
     // Resolved once at startup; Quickshell.env() reads the process environment.
     readonly property string currentUser: Quickshell.env("USER") || Quickshell.env("LOGNAME") || "user"
@@ -40,25 +40,25 @@ ShellRoot {
 
                 onCompleted: result => {
                     if (result === PamResult.Success) {
-                        fadeOutAnim.start();
+                        fadeOutAnim.start()
                     } else {
-                        passwordField.text = "";
-                        passwordField.forceActiveFocus();
-                        shakeAnim.start();
+                        passwordField.text = ""
+                        passwordField.forceActiveFocus()
+                        shakeAnim.start()
                     }
                 }
 
                 onError: error => {
-                    passwordField.text = "";
-                    passwordField.forceActiveFocus();
-                    shakeAnim.start();
+                    passwordField.text = ""
+                    passwordField.forceActiveFocus()
+                    shakeAnim.start()
                 }
 
                 onPamMessage: {
                     // BUG FIX: Explicitly read pam.responseRequired
                     // Otherwise it evaluates to undefined, and the password is never sent.
                     if (pam.responseRequired) {
-                        pam.respond(passwordField.text);
+                        pam.respond(passwordField.text)
                     }
                 }
             }
@@ -94,8 +94,8 @@ ShellRoot {
                         duration: 400
                         easing.type: Easing.InCubic
                         onFinished: {
-                            sessionLock.locked = false;
-                            Qt.quit();
+                            sessionLock.locked = false
+                            Qt.quit()
                         }
                     }
 
@@ -165,33 +165,29 @@ ShellRoot {
                                         property var timeDate: new Date()
 
                                         onPaint: {
-                                            var ctx = getContext("2d");
-                                            ctx.reset();
-                                            ctx.clearRect(0, 0, width, height);
-                                            var cx = width / 2;
-                                            var cy = height / 2;
-                                            var r = width / 2 - 1;
-                                            ctx.strokeStyle = clrPillFg;
-                                            ctx.lineWidth = 2;
-                                            ctx.beginPath();
-                                            ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                                            ctx.stroke();
-                                            var h = timeDate.getHours() % 12;
-                                            var m = timeDate.getMinutes();
-                                            var mAngle = m * (Math.PI * 2 / 60) - Math.PI / 2;
-                                            ctx.beginPath();
-                                            ctx.lineWidth = 1.5;
-                                            ctx.lineCap = "round";
-                                            ctx.moveTo(cx, cy);
-                                            ctx.lineTo(cx + Math.cos(mAngle) * (r - 2.5), cy + Math.sin(mAngle) * (r - 2.5));
-                                            ctx.stroke();
-                                            var hAngle = (h + m / 60) * (Math.PI * 2 / 12) - Math.PI / 2;
-                                            ctx.beginPath();
-                                            ctx.lineWidth = 1.75;
-                                            ctx.lineCap = "round";
-                                            ctx.moveTo(cx, cy);
-                                            ctx.lineTo(cx + Math.cos(hAngle) * (r - 4.0), cy + Math.sin(hAngle) * (r - 4.0));
-                                            ctx.stroke();
+                                            var ctx = getContext("2d")
+                                            ctx.reset()
+                                            ctx.clearRect(0, 0, width, height)
+                                            var cx = width / 2
+                                            var cy = height / 2
+                                            var r  = width / 2 - 1
+                                            ctx.strokeStyle = clrPillFg
+                                            ctx.lineWidth = 2
+                                            ctx.beginPath()
+                                            ctx.arc(cx, cy, r, 0, Math.PI * 2)
+                                            ctx.stroke()
+                                            var h = timeDate.getHours() % 12
+                                            var m = timeDate.getMinutes()
+                                            var mAngle = m * (Math.PI * 2 / 60) - Math.PI / 2
+                                            ctx.beginPath(); ctx.lineWidth = 1.5; ctx.lineCap = "round"
+                                            ctx.moveTo(cx, cy)
+                                            ctx.lineTo(cx + Math.cos(mAngle) * (r - 2.5), cy + Math.sin(mAngle) * (r - 2.5))
+                                            ctx.stroke()
+                                            var hAngle = (h + m / 60) * (Math.PI * 2 / 12) - Math.PI / 2
+                                            ctx.beginPath(); ctx.lineWidth = 1.75; ctx.lineCap = "round"
+                                            ctx.moveTo(cx, cy)
+                                            ctx.lineTo(cx + Math.cos(hAngle) * (r - 4.0), cy + Math.sin(hAngle) * (r - 4.0))
+                                            ctx.stroke()
                                         }
                                     }
 
@@ -220,8 +216,8 @@ ShellRoot {
                                     running: true
                                     repeat: true
                                     onTriggered: {
-                                        clockCanvas.timeDate = new Date();
-                                        clockCanvas.requestPaint();
+                                        clockCanvas.timeDate = new Date()
+                                        clockCanvas.requestPaint()
                                     }
                                 }
                             }
@@ -239,46 +235,14 @@ ShellRoot {
                         border.width: 4
                         border.color: passwordField.activeFocus && !shakeAnim.running ? clrAccent : clrBorder
 
-                        Behavior on border.color {
-                            ColorAnimation {
-                                duration: 150
-                            }
-                        }
+                        Behavior on border.color { ColorAnimation { duration: 150 } }
 
                         SequentialAnimation {
                             id: shakeAnim
-                            NumberAnimation {
-                                target: card
-                                property: "anchors.horizontalCenterOffset"
-                                from: 0
-                                to: 10
-                                duration: 50
-                                easing.type: Easing.OutQuad
-                            }
-                            NumberAnimation {
-                                target: card
-                                property: "anchors.horizontalCenterOffset"
-                                from: 10
-                                to: -10
-                                duration: 50
-                                easing.type: Easing.OutQuad
-                            }
-                            NumberAnimation {
-                                target: card
-                                property: "anchors.horizontalCenterOffset"
-                                from: -10
-                                to: 10
-                                duration: 50
-                                easing.type: Easing.OutQuad
-                            }
-                            NumberAnimation {
-                                target: card
-                                property: "anchors.horizontalCenterOffset"
-                                from: 10
-                                to: 0
-                                duration: 50
-                                easing.type: Easing.OutQuad
-                            }
+                            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 0;   to: 10;  duration: 50; easing.type: Easing.OutQuad }
+                            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 10;  to: -10; duration: 50; easing.type: Easing.OutQuad }
+                            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: -10; to: 10;  duration: 50; easing.type: Easing.OutQuad }
+                            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 10;  to: 0;   duration: 50; easing.type: Easing.OutQuad }
                         }
 
                         ColumnLayout {
@@ -325,11 +289,7 @@ ShellRoot {
                                 border.width: passwordField.activeFocus ? 3 : 0
                                 border.color: clrAccent
 
-                                Behavior on border.width {
-                                    NumberAnimation {
-                                        duration: 100
-                                    }
-                                }
+                                Behavior on border.width { NumberAnimation { duration: 100 } }
 
                                 RowLayout {
                                     anchors.fill: parent
@@ -342,11 +302,7 @@ ShellRoot {
                                         font.family: fontMain
                                         font.pixelSize: 16
                                         color: passwordField.activeFocus ? clrAccent : clrFgDim
-                                        Behavior on color {
-                                            ColorAnimation {
-                                                duration: 150
-                                            }
-                                        }
+                                        Behavior on color { ColorAnimation { duration: 150 } }
                                     }
 
                                     TextInput {
@@ -385,34 +341,14 @@ ShellRoot {
                                 transformOrigin: Item.Center
                                 antialiasing: true
 
-                                Behavior on color {
-                                    ColorAnimation {
-                                        duration: 150
-                                    }
-                                }
-                                Behavior on scale {
-                                    NumberAnimation {
-                                        duration: 150
-                                        easing.type: Easing.OutSine
-                                    }
-                                }
+                                Behavior on color { ColorAnimation { duration: 150 } }
+                                Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutSine } }
 
                                 RowLayout {
                                     anchors.centerIn: parent
                                     spacing: 12
-                                    Text {
-                                        text: "󰍂"
-                                        font.family: fontMain
-                                        font.pixelSize: 16
-                                        color: clrBg
-                                    }
-                                    Text {
-                                        text: "Unlock"
-                                        font.family: fontMain
-                                        font.bold: true
-                                        font.pixelSize: 14
-                                        color: clrBg
-                                    }
+                                    Text { text: "󰍂"; font.family: fontMain; font.pixelSize: 16; color: clrBg }
+                                    Text { text: "Unlock"; font.family: fontMain; font.bold: true; font.pixelSize: 14; color: clrBg }
                                 }
 
                                 MouseArea {
@@ -428,18 +364,17 @@ ShellRoot {
 
                     // ── Submit logic ──────────────────────────────────────
                     function submitPassword() {
-                        if (passwordField.text.length === 0)
-                            return;
-                        if (pam.active)
-                            return;
+                        if (passwordField.text.length === 0) return
+                        if (pam.active) return
+
                         if (!pam.start()) {
-                            shakeAnim.start();
+                            shakeAnim.start()
                         }
                     }
 
                     Component.onCompleted: {
-                        passwordField.forceActiveFocus();
-                        fadeInAnim.start();
+                        passwordField.forceActiveFocus()
+                        fadeInAnim.start()
                     }
                 }
             }

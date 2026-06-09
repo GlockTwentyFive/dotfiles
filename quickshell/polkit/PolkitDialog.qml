@@ -110,7 +110,7 @@ PanelWindow {
                         anchors.centerIn: parent
                         text: "󰯄"
                         font.pixelSize: 20
-                        font.family: "Lexend"
+                        font.family: "JetBrainsMono Nerd Font"
                         color: PanelColors.audio
                     }
                 }
@@ -127,7 +127,7 @@ PanelWindow {
                         color: PanelColors.textMain
                         font.pixelSize: 16
                         font.bold: true
-                        font.family: "Lexend"
+                        font.family: "JetBrainsMono Nerd Font"
                     }
 
                     // Secondary — which app, human readable
@@ -136,7 +136,7 @@ PanelWindow {
                         text: root.appName + " is requesting elevated privileges"
                         color: PanelColors.textDim
                         font.pixelSize: 12
-                        font.family: "Lexend"
+                        font.family: "JetBrainsMono Nerd Font"
                         elide: Text.ElideRight
                     }
                 }
@@ -163,7 +163,7 @@ PanelWindow {
                 color: (agent.flow?.supplementaryIsError ?? false)
                     ? PanelColors.error : PanelColors.textDim
                 font.pixelSize: 12
-                font.family: "Lexend"
+                font.family: "JetBrainsMono Nerd Font"
                 wrapMode: Text.WordWrap
                 bottomPadding: visible ? 10 : 0
             }
@@ -192,7 +192,7 @@ PanelWindow {
                     color: PanelColors.textMain
                     font.pixelSize: 13
                     font.bold: true
-                    font.family: "Lexend"
+                    font.family: "JetBrainsMono Nerd Font"
                     focus: true
 
                     Text {
@@ -243,14 +243,14 @@ PanelWindow {
                         spacing: 8
                         Text {
                             text: "esc"
-                            font.family: "Lexend"
+                            font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 11
                             color: PanelColors.textDim
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Text {
                             text: "Cancel"
-                            font.family: "Lexend"
+                            font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 13
                             color: PanelColors.textMain
                             anchors.verticalCenter: parent.verticalCenter
@@ -282,14 +282,14 @@ PanelWindow {
                         spacing: 8
                         Text {
                             text: ""
-                            font.family: "Lexend"
+                            font.family: "JetBrainsMono Nerd Font"
                             font.pixelSize: 13
                             color: PanelColors.popupBackground
                             anchors.verticalCenter: parent.verticalCenter
                         }
                         Text {
                             text: "Authenticate"
-                            font.family: "Lexend"
+                            font.family: "JetBrainsMono Nerd Font"
                             font.bold: true
                             font.pixelSize: 13
                             color: PanelColors.popupBackground

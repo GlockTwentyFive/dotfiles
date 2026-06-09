@@ -15,9 +15,9 @@ Item {
     Rectangle {
         id: leftContainer
         anchors.left: parent.left
-        anchors.leftMargin: 0
+        anchors.leftMargin: 12
         anchors.top: parent.top
-        anchors.topMargin: 0
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {
@@ -25,7 +25,7 @@ Item {
                 duration: PanelColors.transitionDuration
             }
         }
-        radius: 0
+        radius: 8
         width: leftBar.implicitWidth + 12
 
         LeftBar {
@@ -38,7 +38,7 @@ Item {
         id: centerContainer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 0
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {
@@ -46,7 +46,7 @@ Item {
                 duration: PanelColors.transitionDuration
             }
         }
-        radius: 0
+        radius: 8
         width: centerBar.implicitWidth + 12
 
         CenterBar {
@@ -58,9 +58,9 @@ Item {
     Rectangle {
         id: rightContainer
         anchors.right: parent.right
-        anchors.rightMargin: 0
+        anchors.rightMargin: 12
         anchors.top: parent.top
-        anchors.topMargin: 0
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {
@@ -68,7 +68,7 @@ Item {
                 duration: 250
             }
         }
-        radius: 0
+        radius: 8
         width: rightBar.implicitWidth + 12
 
         RightBar {

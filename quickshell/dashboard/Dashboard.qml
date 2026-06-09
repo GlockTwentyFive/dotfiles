@@ -37,9 +37,7 @@ PanelWindow {
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
     // visible is bound in state
 
-    HoverHandler {
-        id: rootHover
-    }
+    HoverHandler { id: rootHover }
     Timer {
         interval: 3000
         running: root.dashboardState === "open" && !rootHover.hovered
@@ -58,50 +56,27 @@ PanelWindow {
 
         radius: 10
         color: PanelColors.popupBackground
-        Behavior on color {
-            ColorAnimation {
-                duration: PanelColors.transitionDuration
-            }
-        }
+        Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
         border.color: accent
-        Behavior on border.color {
-            ColorAnimation {
-                duration: PanelColors.transitionDuration
-            }
-        }
+        Behavior on border.color { ColorAnimation { duration: PanelColors.transitionDuration } }
         border.width: 2
         clip: true
 
         opacity: 0.0
-        transform: Translate {
-            id: dashCardTranslate
-            x: -24
-        }
+        transform: Translate { id: dashCardTranslate; x: -24 }
 
         state: "closed"
 
         states: [
             State {
                 name: "open"
-                PropertyChanges {
-                    target: dashCard
-                    opacity: 1.0
-                }
-                PropertyChanges {
-                    target: dashCardTranslate
-                    x: 0
-                }
+                PropertyChanges { target: dashCard; opacity: 1.0 }
+                PropertyChanges { target: dashCardTranslate; x: 0 }
             },
             State {
                 name: "closed"
-                PropertyChanges {
-                    target: dashCard
-                    opacity: 0.0
-                }
-                PropertyChanges {
-                    target: dashCardTranslate
-                    x: -24
-                }
+                PropertyChanges { target: dashCard; opacity: 0.0 }
+                PropertyChanges { target: dashCardTranslate; x: -24 }
             }
         ]
 
@@ -109,35 +84,15 @@ PanelWindow {
             Transition {
                 to: "open"
                 ParallelAnimation {
-                    NumberAnimation {
-                        target: dashCardTranslate
-                        property: "x"
-                        duration: 260
-                        easing.type: Easing.OutExpo
-                    }
-                    NumberAnimation {
-                        target: dashCard
-                        property: "opacity"
-                        duration: 200
-                        easing.type: Easing.OutCubic
-                    }
+                    NumberAnimation { target: dashCardTranslate; property: "x"; duration: 260; easing.type: Easing.OutExpo }
+                    NumberAnimation { target: dashCard; property: "opacity"; duration: 200; easing.type: Easing.OutCubic }
                 }
             },
             Transition {
                 to: "closed"
                 ParallelAnimation {
-                    NumberAnimation {
-                        target: dashCardTranslate
-                        property: "x"
-                        duration: 200
-                        easing.type: Easing.InCubic
-                    }
-                    NumberAnimation {
-                        target: dashCard
-                        property: "opacity"
-                        duration: 160
-                        easing.type: Easing.InCubic
-                    }
+                    NumberAnimation { target: dashCardTranslate; property: "x"; duration: 200; easing.type: Easing.InCubic }
+                    NumberAnimation { target: dashCard; property: "opacity"; duration: 160; easing.type: Easing.InCubic }
                 }
             }
         ]
@@ -146,28 +101,18 @@ PanelWindow {
 
         // Left accent stripe
         Rectangle {
-            width: 4
-            height: parent.height - 24
-            radius: 2
-            anchors {
-                left: parent.left
-                leftMargin: 7
-                verticalCenter: parent.verticalCenter
-            }
-            color: dashCard.accent
-            opacity: 0.85
+            width: 4; height: parent.height - 24; radius: 2
+            anchors { left: parent.left; leftMargin: 7; verticalCenter: parent.verticalCenter }
+            color: dashCard.accent; opacity: 0.85
         }
 
         // Header: label + divider
         Column {
             id: cardHeader
             anchors {
-                top: parent.top
-                topMargin: root.cardPad
-                left: parent.left
-                leftMargin: 20
-                right: parent.right
-                rightMargin: 16
+                top: parent.top; topMargin: root.cardPad
+                left: parent.left; leftMargin: 20
+                right: parent.right; rightMargin: 16
             }
             spacing: 6
 
@@ -175,9 +120,7 @@ PanelWindow {
                 width: parent.width
                 Text {
                     text: dashCard.label
-                    font.pixelSize: 16
-                    font.bold: false
-                    font.family: "Lexend"
+                    font.pixelSize: 16; font.bold: true; font.family: "JetBrainsMono Nerd Font"
                     color: dashCard.accent
                     width: parent.width - headerExtraSlot.implicitWidth
                     elide: Text.ElideRight
@@ -190,21 +133,8 @@ PanelWindow {
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
-            Rectangle {
-                width: parent.width
-                height: 2
-                color: PanelColors.rowBackground
-                opacity: 0.6
-                Behavior on color {
-                    ColorAnimation {
-                        duration: 250
-                    }
-                }
-            }
-            Item {
-                width: 1
-                height: 10
-            }
+            Rectangle { width: parent.width; height: 2; color: PanelColors.rowBackground; opacity: 0.6; Behavior on color { ColorAnimation { duration: 250 } } }
+            Item { width: 1; height: 10 }
         }
 
         // Content slot
@@ -212,12 +142,9 @@ PanelWindow {
             id: inner
             anchors {
                 top: cardHeader.bottom
-                bottom: parent.bottom
-                bottomMargin: root.cardPad
-                left: parent.left
-                leftMargin: 20
-                right: parent.right
-                rightMargin: 16
+                bottom: parent.bottom; bottomMargin: root.cardPad
+                left: parent.left; leftMargin: 20
+                right: parent.right; rightMargin: 16
             }
         }
     }
@@ -234,20 +161,15 @@ PanelWindow {
 
         DashCard {
             id: profileCard
-            accent: PanelColors.profile
-            label: "meloworld"
+            accent: PanelColors.profile; label: "meloworld"
             Layout.fillWidth: true
             implicitHeight: profileCard.header.implicitHeight + profileInner.implicitHeight + (root.cardPad * 2)
-            ProfileSection {
-                id: profileInner
-                width: parent.width
-            }
+            ProfileSection { id: profileInner; width: parent.width }
         }
 
         DashCard {
             id: togglesCard
-            accent: PanelColors.audio
-            label: "quick settings"
+            accent: PanelColors.audio; label: "quick settings"
             Layout.fillWidth: true
             implicitHeight: togglesCard.header.implicitHeight + togglesInner.implicitHeight + (root.cardPad * 2)
             QuickTogglesSection {
@@ -259,8 +181,7 @@ PanelWindow {
 
         DashCard {
             id: statsCard
-            accent: PanelColors.system
-            label: "system"
+            accent: PanelColors.system; label: "system"
             Layout.fillWidth: true
             implicitHeight: statsCard.header.implicitHeight + statsInner.implicitHeight + (root.cardPad * 2)
             SystemStatsSection {
@@ -272,26 +193,22 @@ PanelWindow {
 
         DashCard {
             id: notifCard
-            accent: PanelColors.network
-            label: "notifications"
+            accent: PanelColors.network; label: "notifications"
             Layout.fillWidth: true
             Layout.preferredHeight: {
-                const base = notifCard.header.implicitHeight + (root.cardPad * 2);
-                const maxH = root.height - profileCard.implicitHeight - togglesCard.implicitHeight - statsCard.implicitHeight - (root.cardGap * 3);
-                return Math.min(base + notifInner.totalHeight + root.cardPad, maxH);
+                const base = notifCard.header.implicitHeight + (root.cardPad * 2)
+                const maxH = root.height - profileCard.implicitHeight - togglesCard.implicitHeight - statsCard.implicitHeight - (root.cardGap * 3)
+                return Math.min(base + notifInner.totalHeight + root.cardPad, maxH)
             }
 
             Behavior on Layout.preferredHeight {
-                NumberAnimation {
-                    duration: 220
-                    easing.type: Easing.OutExpo
-                }
+                NumberAnimation { duration: 220; easing.type: Easing.OutExpo }
             }
 
             headerExtra: Text {
                 text: "clear all"
                 font.pixelSize: 11
-                font.family: "Lexend"
+                font.family: "JetBrainsMono Nerd Font"
                 color: clearAllMouse.containsMouse ? PanelColors.error : PanelColors.textDim
                 visible: NotificationState.history.count > 0
                 MouseArea {
@@ -303,9 +220,7 @@ PanelWindow {
                 }
             }
 
-            NotificationSection {
-                id: notifInner
-            }
+            NotificationSection { id: notifInner }
         }
     }
 
@@ -314,51 +229,35 @@ PanelWindow {
 
     onDashboardStateChanged: {
         if (dashboardState === "open") {
-            closeAnim.stop();
-            openAnim.start();
+            closeAnim.stop()
+            openAnim.start()
         } else {
-            openAnim.stop();
-            closeAnim.start();
+            openAnim.stop()
+            closeAnim.start()
         }
     }
 
     SequentialAnimation {
         id: openAnim
-        ScriptAction {
-            script: profileCard.state = "open"
-        }
-        PauseAnimation {
-            duration: 60
-        }
-        ScriptAction {
-            script: togglesCard.state = "open"
-        }
-        PauseAnimation {
-            duration: 60
-        }
-        ScriptAction {
-            script: statsCard.state = "open"
-        }
-        PauseAnimation {
-            duration: 60
-        }
-        ScriptAction {
-            script: notifCard.state = "open"
-        }
+        ScriptAction { script: profileCard.state = "open" }
+        PauseAnimation { duration: 60 }
+        ScriptAction { script: togglesCard.state = "open" }
+        PauseAnimation { duration: 60 }
+        ScriptAction { script: statsCard.state = "open" }
+        PauseAnimation { duration: 60 }
+        ScriptAction { script: notifCard.state = "open" }
     }
 
     SequentialAnimation {
         id: closeAnim
         ScriptAction {
             script: {
-                profileCard.state = "closed";
-                togglesCard.state = "closed";
-                statsCard.state = "closed";
-                notifCard.state = "closed";
+                profileCard.state = "closed"
+                togglesCard.state = "closed"
+                statsCard.state = "closed"
+                notifCard.state = "closed"
             }
         }
-        PauseAnimation {
-            duration: 280
-        }
+        PauseAnimation { duration: 280 }
     }
 }

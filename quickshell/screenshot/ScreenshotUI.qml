@@ -8,36 +8,31 @@ PanelWindow {
     id: win
     visible: false // Stay hidden until called
     screen: Quickshell.screens[0]
-    anchors {
-        top: true
-        bottom: true
-        left: true
-        right: true
-    }
+    anchors { top: true; bottom: true; left: true; right: true }
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+    WlrLayershell.namespace: "qs-screenshot"
     exclusionMode: ExclusionMode.Ignore
+
 
     // ─── IPC Handler ───
     Io.IpcHandler {
         target: "screenshot"
         function capture(): void {
             // Append a timestamp to bypass Qt's image cache so the fresh image loads
-            masterImg.source = "file:///tmp/qs-master.png?t=" + Date.now();
-            win.visible = true;
-            mainItem.forceActiveFocus();
+            masterImg.source = "file:///tmp/qs-master.png?t=" + Date.now()
+            win.visible = true
+            mainItem.forceActiveFocus()
         }
     }
 
     // ─── Helper to Reset State ───
     function closeOverlay() {
-        win.visible = false;
-        mainItem.isDragging = false;
-        mainItem.startX = 0;
-        mainItem.curX = 0;
-        mainItem.startY = 0;
-        mainItem.curY = 0;
+        win.visible = false
+        mainItem.isDragging = false
+        mainItem.startX = 0; mainItem.curX = 0
+        mainItem.startY = 0; mainItem.curY = 0
     }
 
     Item {
@@ -116,7 +111,7 @@ PanelWindow {
                 anchors.centerIn: parent
                 text: parent.parent.selW + "  " + parent.parent.selH
                 color: PanelColors.textMain
-                font.family: "Lexend"
+                font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: 14
                 font.weight: Font.Medium
             }
@@ -129,36 +124,36 @@ PanelWindow {
 
             onPressed: mouse => {
                 if (mouse.button === Qt.RightButton) {
-                    win.closeOverlay();
-                    return;
+                    win.closeOverlay()
+                    return
                 }
-                parent.startX = mouse.x;
-                parent.startY = mouse.y;
-                parent.curX = mouse.x;
-                parent.curY = mouse.y;
-                parent.isDragging = true;
+                parent.startX = mouse.x
+                parent.startY = mouse.y
+                parent.curX = mouse.x
+                parent.curY = mouse.y
+                parent.isDragging = true
             }
 
             onPositionChanged: mouse => {
                 if (parent.isDragging) {
-                    parent.curX = mouse.x;
-                    parent.curY = mouse.y;
+                    parent.curX = mouse.x
+                    parent.curY = mouse.y
                 }
             }
 
             onReleased: mouse => {
-                if (mouse.button === Qt.RightButton)
-                    return;
-                parent.isDragging = false;
-                if (parent.selW > 5 && parent.selH > 5) {
-                    let globalX = win.screen.x + parent.selX;
-                    let globalY = win.screen.y + parent.selY;
+                if (mouse.button === Qt.RightButton) return
 
-                    cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`;
-                    win.visible = false;
-                    cropProc.running = true;
+                parent.isDragging = false
+                if (parent.selW > 5 && parent.selH > 5) {
+                    let globalX = win.screen.x + parent.selX
+                    let globalY = win.screen.y + parent.selY
+
+                    cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`
+                    win.visible = false
+                    cropProc.running = true
                 } else {
-                    win.closeOverlay();
+                    win.closeOverlay()
                 }
             }
         }
