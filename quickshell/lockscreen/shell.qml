@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Pam
+import "../theme"
 
 ShellRoot {
 
@@ -17,7 +18,7 @@ ShellRoot {
     readonly property color clrUrgent:  "#ef9a9a"   // red200
     readonly property color clrClock:   "#ffffffdd" // PanelColors.clock (dark)
     readonly property color clrPillFg:  "#212121"   // PanelColors.pillForeground (dark)
-    readonly property string fontMain:  "JetBrainsMono Nerd Font"
+    readonly property string fontMain:  Fonts.selectedFont
     readonly property int radiusLarge:  12
     readonly property int radiusMed:    8
 

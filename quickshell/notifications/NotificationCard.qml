@@ -222,7 +222,7 @@ Item {
                         text:           notification?.appName ?? ""
                         font.pixelSize: 13
                         font.bold:      true
-                        font.family:    "JetBrainsMono Nerd Font"
+                        font.family:    Fonts.selectedFont
                         color:          root.accentColor
                         elide:          Text.ElideRight
                         anchors.verticalCenter: parent.verticalCenter
@@ -294,7 +294,7 @@ Item {
                         text:             notification?.summary ?? ""
                         font.pixelSize:   18
                         font.bold:        true
-                        font.family:      "JetBrainsMono Nerd Font"
+                        font.family:      Fonts.selectedFont
                         color:            PanelColors.textAccent
                         width:            parent.width
                         wrapMode:         Text.WordWrap
@@ -331,7 +331,7 @@ Item {
                             id:               collapsedText
                             text:             notification?.body ?? ""
                             font.pixelSize:   14
-                            font.family:      "JetBrainsMono Nerd Font"
+                            font.family:      Fonts.selectedFont
                             color:            PanelColors.textMain
                             width:            parent.width
                             wrapMode:         Text.WordWrap
@@ -349,7 +349,7 @@ Item {
                             id:             expandedText
                             text:           notification?.body ?? ""
                             font.pixelSize: 14
-                            font.family:    "JetBrainsMono Nerd Font"
+                            font.family:    Fonts.selectedFont
                             color:          PanelColors.textMain
                             width:          parent.width
                             wrapMode:       Text.WordWrap
@@ -440,7 +440,7 @@ Item {
                                 text:             modelData.text
                                 font.pixelSize:   13
                                 font.bold:        true
-                                font.family:      "JetBrainsMono Nerd Font"
+                                font.family:      Fonts.selectedFont
                                 color:            PanelColors.popupBackground
                                 anchors.centerIn: parent
                             }
@@ -480,7 +480,7 @@ Item {
                 Text {
                     text:           root.expanded ? "" : ""
                     font.pixelSize: 17
-                    font.family:    "JetBrainsMono Nerd Font"
+                    font.family:    Fonts.selectedFont
                     color:          root.accentColor
                     opacity:        expandButtonMouse.containsMouse ? 1.0 : 0.65
                     anchors.verticalCenter: parent.verticalCenter
@@ -491,7 +491,7 @@ Item {
                     text:           root.expanded ? "Collapse" : "Show more"
                     font.pixelSize: 15
                     font.bold:      true
-                    font.family:    "JetBrainsMono Nerd Font"
+                    font.family:    Fonts.selectedFont
                     color:          root.accentColor
                     opacity:        expandButtonMouse.containsMouse ? 1.0 : 0.65
                     anchors.verticalCenter: parent.verticalCenter

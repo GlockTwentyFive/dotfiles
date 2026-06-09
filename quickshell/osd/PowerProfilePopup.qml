@@ -54,13 +54,13 @@ PopupBase {
                     spacing: 8
                     Text {
                         text: modelData.icon
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: Fonts.selectedFont
                         color: isActive ? PanelColors.pillForeground : PanelColors.textMain
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Text {
                         text: modelData.label
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                         color: isActive ? PanelColors.pillForeground : PanelColors.textMain
                         anchors.verticalCenter: parent.verticalCenter
                     }

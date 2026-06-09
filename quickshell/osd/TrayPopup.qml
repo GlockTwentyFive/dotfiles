@@ -30,7 +30,7 @@ PopupBase {
             width: parent.width
             visible: TrayState.activeItem !== null && TrayState.activeItem.title !== ""
             text: TrayState.activeItem ? TrayState.activeItem.title : ""
-            font.pixelSize: 12; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+            font.pixelSize: 12; font.bold: true; font.family: Fonts.selectedFont
             color: PanelColors.textDim
             bottomPadding: 4
         }
@@ -88,7 +88,7 @@ PopupBase {
 
                         Text {
                             text: entryDelegate.modelData.text || ""
-                            font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                             color: PanelColors.textMain
                             anchors.verticalCenter: parent.verticalCenter
 

@@ -34,7 +34,7 @@ Item {
             Text {
                 text: toggle.icon
                 font.pixelSize: 16
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: toggle.active ? PanelColors.pillForeground : toggle.accentColor
                 Layout.alignment: Qt.AlignVCenter
                 Behavior on color { ColorAnimation { duration: 150 } }
@@ -44,7 +44,7 @@ Item {
                 text: toggle.label
                 font.pixelSize: 12
                 font.bold: true
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: toggle.active ? PanelColors.pillForeground : PanelColors.textMain
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter

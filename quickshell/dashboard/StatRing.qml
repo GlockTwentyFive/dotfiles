@@ -74,7 +74,7 @@ Item {
             text: root.icon
             // FIXED: Smaller icons as requested
             font.pixelSize: 20
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             color: root.color
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
         }
@@ -84,7 +84,7 @@ Item {
             text: root.label
             font.pixelSize: 14
             font.bold: true
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             color: PanelColors.textAccent
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
         }

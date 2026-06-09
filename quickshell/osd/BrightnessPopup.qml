@@ -33,7 +33,7 @@ PopupBase {
                         if (BrightnessState.brightness >= 40) return "󰃟"
                         return "󰃞"
                     }
-                    font.pixelSize: 16; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 16; font.family: Fonts.selectedFont
                     color: PanelColors.brightness
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -44,7 +44,7 @@ PopupBase {
                 }
                 Text {
                     text: BrightnessState.brightness + "%"
-                    width: 32; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                    width: 32; font.pixelSize: 12; font.family: Fonts.selectedFont
                     color: PanelColors.textMain
                     horizontalAlignment: Text.AlignRight; anchors.verticalCenter: parent.verticalCenter
                 }
@@ -64,7 +64,7 @@ PopupBase {
                 spacing: 8
                 Text {
                     text: "󰌌"
-                    font.pixelSize: 16; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 16; font.family: Fonts.selectedFont
                     color: PanelColors.brightness
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -81,7 +81,7 @@ PopupBase {
                 // "1/2" is clearer than "50%" for a discrete LED with 2 steps
                 Text {
                     text: KbdBrightnessState.brightness + "/" + KbdBrightnessState.maxBrightness
-                    width: 32; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                    width: 32; font.pixelSize: 12; font.family: Fonts.selectedFont
                     color: PanelColors.textMain
                     horizontalAlignment: Text.AlignRight; anchors.verticalCenter: parent.verticalCenter
                 }

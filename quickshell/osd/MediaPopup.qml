@@ -269,7 +269,7 @@ PopupBase {
                 width: parent.width
                 text: "No active media session"
                 font.pixelSize: 13
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: PanelColors.textDim
                 horizontalAlignment: Text.AlignHCenter
                 topPadding: 8
@@ -347,7 +347,7 @@ PopupBase {
                         anchors.centerIn: parent
                         text: ""
                         font.pixelSize: 24
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Fonts.selectedFont
                         color: PanelColors.textDim
                         z: 1
                     }
@@ -384,7 +384,7 @@ PopupBase {
                                 text: slot.title || "Unknown Title"
                                 font.pixelSize: 15
                                 font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Fonts.selectedFont
                                 color: PanelColors.textAccent
                                 readonly property bool overflow: implicitWidth > parent.width
                                 onOverflowChanged: { slotMarquee.stop(); slotTitle.x = 0; if (overflow) slotMarquee.start() }
@@ -405,7 +405,7 @@ PopupBase {
                             width: parent.width
                             text: slot.artist || "Unknown Artist"
                             font.pixelSize: 12
-                            font.family: "JetBrainsMono Nerd Font"
+                            font.family: Fonts.selectedFont
                             color: PanelColors.textDim
                             elide: Text.ElideRight
                         }
@@ -422,13 +422,13 @@ PopupBase {
                                 spacing: 4
                                 Text {
                                     text: root.getPlayerIcon(slot.identity)
-                                    font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"
+                                    font.pixelSize: 10; font.family: Fonts.selectedFont
                                     color: PanelColors.textAccent
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
                                 Text {
                                     text: slot.identity
-                                    font.pixelSize: 9; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                                    font.pixelSize: 9; font.bold: true; font.family: Fonts.selectedFont
                                     color: PanelColors.textAccent
                                     anchors.verticalCenter: parent.verticalCenter
                                 }
@@ -492,7 +492,7 @@ PopupBase {
                         id: posLeft
                         text: root.isLiveStream ? "Live" : root.fmtTime(root.livePosition)
                         font.pixelSize: 11
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Fonts.selectedFont
                         color: PanelColors.textDim
                     }
                     Item { width: parent.width - posLeft.implicitWidth - posRight.implicitWidth; height: 1 }
@@ -500,7 +500,7 @@ PopupBase {
                         id: posRight
                         text: root.isLiveStream ? "∞" : root.fmtTime(root._stableLength)
                         font.pixelSize: 11
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Fonts.selectedFont
                         color: PanelColors.textDim
                     }
                 }
@@ -614,7 +614,7 @@ PopupBase {
             anchors.centerIn: parent
             text: navBtn.icon
             font.pixelSize: 16
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             color: navMouse.containsMouse ? navBtn.accentColor : PanelColors.textMain
             Behavior on color { ColorAnimation { duration: 120 } }
         }
@@ -755,7 +755,7 @@ PopupBase {
         Behavior on scale { NumberAnimation { duration: 100; easing.type: Easing.OutCubic } }
         Text {
             anchors.centerIn: parent; text: btn.icon
-            font.pixelSize: 18; font.family: "JetBrainsMono Nerd Font"
+            font.pixelSize: 18; font.family: Fonts.selectedFont
             color: {
                 if (!btn.enabled)    return PanelColors.textDim
                 if (btn.highlighted) return PanelColors.pillForeground

@@ -91,7 +91,7 @@ PanelWindow {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 font.pixelSize: 20
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: {
                     if (root.osdType === "brightness") return PanelColors.brightness
                     return (AudioState.muted || AudioState.volume === 0)
@@ -136,7 +136,7 @@ PanelWindow {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 text: "Muted"
-                font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                 color: PanelColors.textDim
             }
 
@@ -147,7 +147,7 @@ PanelWindow {
                 Layout.preferredWidth: 24
                 horizontalAlignment: Text.AlignRight
                 text: (root.osdType === "brightness" ? BrightnessState.brightness : AudioState.volume)
-                font.pixelSize: 12; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 12; font.bold: true; font.family: Fonts.selectedFont
                 color: PanelColors.textMain
             }
         }

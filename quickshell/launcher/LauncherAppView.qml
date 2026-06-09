@@ -156,13 +156,13 @@ Item {
                 Text {
                     width: parent.width; text: "Hidden Apps"
                     font.pixelSize: 13; font.bold: true
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Fonts.selectedFont
                     color: PanelColors.textDim; bottomPadding: 4
                 }
                 Rectangle { width: parent.width; height: 2; color: PanelColors.border }
                 Text {
                     width: parent.width; text: "No hidden apps"
-                    font.pixelSize: 13; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13; font.family: Fonts.selectedFont
                     color: PanelColors.textDim
                     visible: LauncherHiddenApps.hiddenApps.length === 0
                     topPadding: 4; bottomPadding: 4
@@ -185,7 +185,7 @@ Item {
                             Text {
                                 anchors { left: parent.left; leftMargin: 14; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
                                 text: modelData.name; font.pixelSize: 13; font.bold: true
-                                font.family: "JetBrainsMono Nerd Font"
+                                font.family: Fonts.selectedFont
                                 color: PanelColors.textMain; elide: Text.ElideRight
                             }
                             MouseArea {
@@ -251,7 +251,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Run: " + root.searchText
                     font.pixelSize: 14; font.bold: true
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Fonts.selectedFont
                     color: PanelColors.textMain; width: 120
                     horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight
                 }
@@ -327,7 +327,7 @@ Item {
                         text:  listDelegate.entry ? listDelegate.entry.name : ""
                         font.pixelSize: 17
                         font.bold: true
-                        font.family:    "JetBrainsMono Nerd Font"
+                        font.family:    Fonts.selectedFont
                         color: listDelegate.isSelected ? PanelColors.pillForeground : PanelColors.textMain
                         Behavior on color { ColorAnimation { duration: 120 } }
                         width: appListView.width - 14 - 22 - 12 - 12 - 8
@@ -460,7 +460,7 @@ Item {
                             text:           listDelegate.entry ? listDelegate.entry.name : ""
                             font.pixelSize: 12
                             font.bold: true
-                            font.family:    "JetBrainsMono Nerd Font"
+                            font.family:    Fonts.selectedFont
                             color:          PanelColors.textDim
                             bottomPadding:  4
                             elide:          Text.ElideRight
@@ -499,7 +499,7 @@ Item {
                                         }
                                         text:           modelData.label
                                         font.pixelSize: 13; font.bold: true
-                                        font.family:    "JetBrainsMono Nerd Font"
+                                        font.family:    Fonts.selectedFont
                                         color:          PanelColors.textMain
                                         elide:          Text.ElideRight
                                     }
@@ -558,7 +558,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Run: " + root.searchText
                         font.pixelSize: 16; font.bold: true
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Fonts.selectedFont
                         color: PanelColors.textMain
                         width: appListView.width - 14 - 22 - 12 - 12 - 8
                         elide: Text.ElideRight

@@ -120,7 +120,7 @@ PanelWindow {
                 width: parent.width
                 Text {
                     text: dashCard.label
-                    font.pixelSize: 16; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 16; font.bold: true; font.family: Fonts.selectedFont
                     color: dashCard.accent
                     width: parent.width - headerExtraSlot.implicitWidth
                     elide: Text.ElideRight
@@ -208,7 +208,7 @@ PanelWindow {
             headerExtra: Text {
                 text: "clear all"
                 font.pixelSize: 11
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: clearAllMouse.containsMouse ? PanelColors.error : PanelColors.textDim
                 visible: NotificationState.history.count > 0
                 MouseArea {

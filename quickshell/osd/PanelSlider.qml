@@ -109,7 +109,7 @@ Item {
         text: root.label
         width: 32
         font.pixelSize: 12
-        font.family: "JetBrainsMono Nerd Font"
+        font.family: Fonts.selectedFont
         color: PanelColors.textMain
         horizontalAlignment: Text.AlignRight
     }

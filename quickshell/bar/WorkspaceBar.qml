@@ -165,7 +165,7 @@ Row {
                 color:          pill.isFocused ? PanelColors.pillForeground : PanelColors.textDim
                 font.pixelSize: 16
                 font.bold:      true
-                font.family:    "JetBrainsMono Nerd Font"
+                font.family:    Fonts.selectedFont
                 Behavior on color { ColorAnimation { duration: 150 } }
             }
 

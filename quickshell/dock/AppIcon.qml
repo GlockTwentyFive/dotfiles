@@ -323,7 +323,7 @@ Item {
                     text:           root.appLabel
                     font.pixelSize: 12
                     font.bold:      true
-                    font.family:    "JetBrainsMono Nerd Font"
+                    font.family:    Fonts.selectedFont
                     color:          PanelColors.textDim
                     bottomPadding:  4
                 }
@@ -372,7 +372,7 @@ Item {
                                 text:           modelData.label
                                 font.pixelSize: 13
                                 font.bold:      true
-                                font.family:    "JetBrainsMono Nerd Font"
+                                font.family:    Fonts.selectedFont
                                 color:          PanelColors.textMain
                                 elide:          Text.ElideRight
                             }

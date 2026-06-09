@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io as Io
 import Quickshell.Wayland
+import "../theme"
 
 ShellRoot {
     id: root
@@ -102,7 +103,7 @@ ShellRoot {
                     anchors.centerIn: parent
                     text: parent.parent.selW + "  " + parent.parent.selH
                     color: "#ffffffdd"
-                    font.family: "JetBrainsMono Nerd Font"
+                    font.family: Fonts.selectedFont
                     font.pixelSize: 14
                     font.weight: Font.Medium
                 }

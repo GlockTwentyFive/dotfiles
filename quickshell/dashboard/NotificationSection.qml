@@ -8,7 +8,7 @@ Item {
     anchors.fill: parent
 
     // ── Shared constants ──────────────────────────────────────────────────────
-    readonly property string monoFont: "JetBrainsMono Nerd Font"
+    readonly property string monoFont: Fonts.selectedMonoFont
 
     readonly property real totalHeight:
     NotificationState.history.count === 0

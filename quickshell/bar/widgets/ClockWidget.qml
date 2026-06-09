@@ -113,7 +113,7 @@ Pill {
         text: Qt.formatTime(clock.date, "HH:mm")
         font.pixelSize: 16
         font.bold: true
-        font.family: "JetBrainsMono Nerd Font"
+        font.family: Fonts.selectedFont
         color: PanelColors.pillForeground
         Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
     }
@@ -136,7 +136,7 @@ Pill {
         Text {
             anchors.centerIn: parent
             text: ""
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             font.pixelSize: 16
             color: PanelColors.pillForeground
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
@@ -214,7 +214,7 @@ Pill {
         Text {
             anchors.centerIn: parent
             text: ""
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             font.pixelSize: 16
             color: Colors.red400
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
@@ -239,7 +239,7 @@ Pill {
         Text {
             anchors.centerIn: parent
             text: ""
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             font.pixelSize: 16
             color: Colors.red400
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }

@@ -111,7 +111,7 @@ PanelWindow {
                 anchors.centerIn: parent
                 text: parent.parent.selW + "  " + parent.parent.selH
                 color: PanelColors.textMain
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 font.pixelSize: 14
                 font.weight: Font.Medium
             }

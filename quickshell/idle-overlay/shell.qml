@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import "../theme"
 
 ShellRoot {
     Variants {
@@ -101,7 +102,7 @@ ShellRoot {
 
                 color: win.catColor
                 opacity: 0.0
-                font.family: "JetBrains Mono Nerd Font"
+                font.family: Fonts.selectedFont
                 font.pixelSize: win.catFontSize
                 lineHeight: win.catLineHeight
                 horizontalAlignment: Text.AlignLeft

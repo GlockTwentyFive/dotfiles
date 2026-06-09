@@ -27,7 +27,7 @@ PopupBase {
         id: spinnerIcon
         required property bool active
         font.pixelSize: 15
-        font.family:    "JetBrainsMono Nerd Font"
+        font.family:    Fonts.selectedFont
         SequentialAnimation on opacity {
             running:  spinnerIcon.active
             loops:    Animation.Infinite
@@ -76,7 +76,7 @@ PopupBase {
 
             Text {
                 id: labelText
-                font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                 color: btn.active ? PanelColors.pillForeground : PanelColors.textMain
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -161,7 +161,7 @@ PopupBase {
 
                         Text {
                             text: modelData.name
-                            font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                             color: isConnected ? PanelColors.pillForeground : PanelColors.textMain
                             elide: Text.ElideRight
                             width: parent.width - 23 - 8
@@ -172,7 +172,7 @@ PopupBase {
                         Text {
                             visible: isConnected && modelData.batteryAvailable
                             text:    visible ? Math.round(modelData.battery * 100) + "%" : ""
-                            font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 12; font.family: Fonts.selectedFont
                             color: PanelColors.pillForeground
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -232,13 +232,13 @@ PopupBase {
                 spacing: 8
                 Text {
                     text: "󰌆"
-                    font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 15; font.family: Fonts.selectedFont
                     color: PanelColors.textDim
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Text {
                     text: "Pair with PIN..."
-                    font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                     color: PanelColors.textDim
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -324,7 +324,7 @@ PopupBase {
 
                                     Text {
                                         text: modelData.name
-                                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                                        font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                                         color: modelData.pairing ? PanelColors.pillForeground : PanelColors.textMain
                                         elide: Text.ElideRight
                                         width: parent.width - 23 - 8
@@ -351,8 +351,8 @@ PopupBase {
                 color: PanelColors.rowBackground
                 Row {
                     anchors.centerIn: parent; spacing: 6
-                    Text { text: "󰁞"; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "scroll up"; font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "󰁞"; font.pixelSize: 12; font.family: Fonts.selectedFont; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "scroll up"; font.pixelSize: 11; font.family: Fonts.selectedFont; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
                 }
             }
             Rectangle {
@@ -362,8 +362,8 @@ PopupBase {
                 color: PanelColors.rowBackground
                 Row {
                     anchors.centerIn: parent; spacing: 6
-                    Text { text: "󰁆"; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
-                    Text { text: "scroll for more"; font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "󰁆"; font.pixelSize: 12; font.family: Fonts.selectedFont; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "scroll for more"; font.pixelSize: 11; font.family: Fonts.selectedFont; color: PanelColors.textDim; anchors.verticalCenter: parent.verticalCenter }
                 }
             }
         }

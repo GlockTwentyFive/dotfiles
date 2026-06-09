@@ -66,7 +66,7 @@ Rectangle {
                 text:             root.pillText
                 font.pixelSize:   13
                 font.bold:        true
-                font.family:      "JetBrainsMono Nerd Font"
+                font.family:      Fonts.selectedFont
                 color:            PanelColors.launcher
             }
         }
@@ -92,7 +92,7 @@ Rectangle {
                 text:             root.rightPillText
                 font.pixelSize:   13
                 font.bold:        true
-                font.family:      "JetBrainsMono Nerd Font"
+                font.family:      Fonts.selectedFont
                 color: root.rightPillDisabled
                            ? PanelColors.textDim
                            : root.rightPillDestructive
@@ -128,7 +128,7 @@ Rectangle {
             text:              root.placeholder
             font.pixelSize:    16
             font.bold:         true
-            font.family:       "JetBrainsMono Nerd Font"
+            font.family:       Fonts.selectedFont
             color:             PanelColors.textBoxDim
             verticalAlignment: Text.AlignVCenter
             visible:           input.text === ""
@@ -148,7 +148,7 @@ Rectangle {
             color:             PanelColors.textMain
             font.pixelSize:    16
             font.bold:         true
-            font.family:       "JetBrainsMono Nerd Font"
+            font.family:       Fonts.selectedFont
             selectByMouse:     true
             clip:              true
             verticalAlignment: TextInput.AlignVCenter

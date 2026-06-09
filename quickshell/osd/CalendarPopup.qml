@@ -97,7 +97,7 @@ PopupBase {
                 Text {
                     anchors.centerIn: parent
                     text: ""
-                    font.pixelSize: 13; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13; font.family: Fonts.selectedFont
                     color: prevArea.containsMouse ? PanelColors.textAccent : PanelColors.textDim
                     Behavior on color { ColorAnimation { duration: 150 } }
                 }
@@ -111,7 +111,7 @@ PopupBase {
             Text {
                 anchors.centerIn: parent
                 text: root._monthName(root._viewMonth) + " " + root._viewYear
-                font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 13; font.bold: true; font.family: Fonts.selectedFont
                 color: PanelColors.textAccent
             }
 
@@ -125,7 +125,7 @@ PopupBase {
                 Text {
                     anchors.centerIn: parent
                     text: ""
-                    font.pixelSize: 13; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13; font.family: Fonts.selectedFont
                     color: nextArea.containsMouse ? PanelColors.textAccent : PanelColors.textDim
                     Behavior on color { ColorAnimation { duration: 150 } }
                 }
@@ -145,7 +145,7 @@ PopupBase {
                     width: contentCol.width / 7
                     horizontalAlignment: Text.AlignHCenter
                     text: modelData
-                    font.pixelSize: 12; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 12; font.bold: true; font.family: Fonts.selectedFont
                     color: index >= 5 ? PanelColors.date : PanelColors.textDim
                 }
             }
@@ -229,7 +229,7 @@ PopupBase {
                                     Text {
                                         anchors.centerIn: parent
                                         text: isEmpty ? "" : dayNum
-                                        font.pixelSize: 13; font.bold: isToday || isSelected; font.family: "JetBrainsMono Nerd Font"
+                                        font.pixelSize: 13; font.bold: isToday || isSelected; font.family: Fonts.selectedFont
                                         color: isToday ? PanelColors.pillForeground : (isSelected ? PanelColors.textAccent : PanelColors.textMain)
                                         Behavior on color { ColorAnimation { duration: 150 } }
                                     }

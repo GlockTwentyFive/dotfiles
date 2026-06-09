@@ -40,7 +40,7 @@ Rectangle {
         let idx = label.indexOf(" ")
         return idx !== -1 ? label.substring(0, idx) : label
     }
-    
+
     property string labelInfo: {
         if (label === "") return ""
         let idx = label.indexOf(" ")
@@ -49,7 +49,7 @@ Rectangle {
 
     TextMetrics {
         id: widestMetric
-        font.pixelSize: 16; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+        font.pixelSize: 16; font.bold: true; font.family: Fonts.selectedFont
         text: root.widestLabel
     }
 
@@ -97,7 +97,7 @@ Rectangle {
             text: root.labelIcon
             font.pixelSize: 16
             font.bold: true
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             color: root.textColor
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
         }
@@ -108,7 +108,7 @@ Rectangle {
             text: root.labelInfo
             font.pixelSize: 16
             font.bold: true
-            font.family: "JetBrainsMono Nerd Font"
+            font.family: Fonts.selectedFont
             color: root.textColor
             opacity: (!root.hoverReveal || root.isRevealed) ? 1 : 0
             Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }

@@ -124,7 +124,7 @@ SectionBase {
                 anchors.centerIn: parent
                 text: ""
                 font.pixelSize: 36
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: PanelColors.textAccent
 
                 scale: profileMouseArea.containsMouse ? 1.05 : 1.0
@@ -173,7 +173,7 @@ SectionBase {
                         anchors.centerIn: parent
                         text: "󰏫"
                         color: PanelColors.textMain
-                        font.family: "JetBrainsMono Nerd Font"
+                        font.family: Fonts.selectedFont
                         font.pixelSize: 20
                     }
                 }
@@ -186,20 +186,20 @@ SectionBase {
             Text {
                 text: root.greeting
                 font.pixelSize: 13
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: PanelColors.textDim
             }
             Text {
                 text: root.username
                 font.pixelSize: 24
                 font.bold: true
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: PanelColors.textAccent
             }
             Text {
                 text: "@" + root.hostname
                 font.pixelSize: 13
-                font.family: "JetBrainsMono Nerd Font"
+                font.family: Fonts.selectedFont
                 color: PanelColors.profile
                 opacity: 0.9
             }
