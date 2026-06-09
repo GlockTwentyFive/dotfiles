@@ -26,7 +26,7 @@ Pill {
             return "󰤢";
         if (signal >= 20)
             return "󰤟";
-        return "󰤨";
+        return "󰤯";
     }
 
     label: {
@@ -42,7 +42,7 @@ Pill {
     }
 
     pillColor: (connected || NetworkState.ethernetConnected) ? PanelColors.network : PanelColors.network
-    textColor: (connected || NetworkState.ethernetConnected) ? PanelColors.pillForeground : PanelColors.textMain
+    textColor: (connected || NetworkState.ethernetConnected) ? PanelColors.pillForeground : PanelColors.pillForeground
 
     mouseArea.onClicked: function (mouse) {
         if (SessionState.wifiPopupVisible) {
