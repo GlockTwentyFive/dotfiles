@@ -6,14 +6,14 @@ import QtQuick
 
 Item {
     // ── Signals every view exposes upward ────────────────────────────────
-    signal dismissed()
+    signal dismissed
 
     // ── Layout constants ─────────────────────────────────────────────────
-    readonly property int  rowHeight:    44
-    readonly property int  rowRadius:    8
-    readonly property int  rowSpacing:   2
-    readonly property int  fontSizeRow:  16
-    readonly property int  fontSizeSmall: 13
-    readonly property int  iconSize:     24
-    readonly property string monoFont:  "JetBrainsMono Nerd Font"
+    readonly property int rowHeight: 44
+    readonly property int rowRadius: 8
+    readonly property int rowSpacing: 2
+    readonly property int fontSizeRow: 16
+    readonly property int fontSizeSmall: 13
+    readonly property int iconSize: 24
+    readonly property string monoFont: "Lexend"
 }

@@ -224,12 +224,12 @@ PanelWindow {
                     spacing: 8
                     Text {
                         text: Networking.wifiEnabled ? "󰤨" : "󰤭"
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: Networking.wifiEnabled ? PanelColors.pillForeground : PanelColors.textMain
                     }
                     Text {
                         text: Networking.wifiEnabled ? "WiFi On" : "WiFi Off"
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: Networking.wifiEnabled ? PanelColors.pillForeground : PanelColors.textMain
                     }
                 }
@@ -253,12 +253,12 @@ PanelWindow {
                     spacing: 8
                     Text {
                         text: root.activeNetwork ? root.signalIcon(root.activeNetwork.signalStrength * 100) : ""
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: PanelColors.pillForeground
                     }
                     Text {
                         text: root.activeNetwork ? root.activeNetwork.name : ""
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.pillForeground
                         elide: Text.ElideRight
                         width: parent.width - 23 - 8 - activeSigText.width - 8
@@ -266,7 +266,7 @@ PanelWindow {
                     Text {
                         id: activeSigText
                         text: root.activeNetwork ? Math.round(root.activeNetwork.signalStrength * 100) + "%" : ""
-                        font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 12; font.family: "Lexend"
                         color: PanelColors.pillForeground
                     }
                 }
@@ -310,12 +310,12 @@ PanelWindow {
                         spacing: 8
                         Text {
                             text: root.signalIcon(modelData.signalStrength * 100)
-                            font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 15; font.family: "Lexend"
                             color: PanelColors.textMain
                         }
                         Text {
                             text: modelData.name
-                            font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                             color: PanelColors.textMain
                             elide: Text.ElideRight
                             width: parent.width - 23 - 8 - knownKeyIcon.width - 8
@@ -323,7 +323,7 @@ PanelWindow {
                         Text {
                             id: knownKeyIcon
                             text: "󰌆"
-                            font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                            font.pixelSize: 12; font.family: "Lexend"
                             color: PanelColors.network
                         }
                     }
@@ -372,7 +372,7 @@ PanelWindow {
                     spacing: 8
                     Text {
                         text: "󰑐"
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: (root.wifiDevice && root.wifiDevice.scannerEnabled) ? PanelColors.pillForeground : PanelColors.textMain
                         SequentialAnimation on opacity {
                             running: root.wifiDevice && root.wifiDevice.scannerEnabled
@@ -383,7 +383,7 @@ PanelWindow {
                     }
                     Text {
                         text: (root.wifiDevice && root.wifiDevice.scannerEnabled) ? "Scanning..." : "Scan"
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: (root.wifiDevice && root.wifiDevice.scannerEnabled) ? PanelColors.pillForeground : PanelColors.textMain
                     }
                 }
@@ -405,7 +405,7 @@ PanelWindow {
                     spacing: 8
                     Text {
                         text: "󰤨"
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: PanelColors.network
                         SequentialAnimation on opacity {
                             running: root.activeNetwork !== null && root.activeNetwork.stateChanging
@@ -416,7 +416,7 @@ PanelWindow {
                     }
                     Text {
                         text: "Connecting..."
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.textMain
                     }
                 }
@@ -438,12 +438,12 @@ PanelWindow {
                     spacing: 8
                     Text {
                         text: "󰈀"
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: PanelColors.textDim
                     }
                     Text {
                         text: "Open nmtui..."
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.textDim
                     }
                 }
@@ -495,12 +495,12 @@ PanelWindow {
                                     spacing: 8
                                     Text {
                                         text: root.signalIcon(modelData.signalStrength * 100)
-                                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                                        font.pixelSize: 15; font.family: "Lexend"
                                         color: PanelColors.textMain
                                     }
                                     Text {
                                         text: modelData.name
-                                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                                         color: PanelColors.textMain
                                         elide: Text.ElideRight
                                         width: parent.width - 23 - 8 - lockIcon.width - 8
@@ -508,7 +508,7 @@ PanelWindow {
                                     Text {
                                         id: lockIcon
                                         text: root.isSecured(modelData) ? "󰌾" : ""
-                                        font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
+                                        font.pixelSize: 12; font.family: "Lexend"
                                         color: PanelColors.textDim
                                     }
                                 }
@@ -532,8 +532,8 @@ PanelWindow {
                     Row {
                         anchors.centerIn: parent
                         spacing: 6
-                        Text { text: "󰁞"; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim }
-                        Text { text: "scroll up"; font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim }
+                        Text { text: "󰁞"; font.pixelSize: 12; font.family: "Lexend"; color: PanelColors.textDim }
+                        Text { text: "scroll up"; font.pixelSize: 11; font.family: "Lexend"; color: PanelColors.textDim }
                     }
                 }
 
@@ -546,8 +546,8 @@ PanelWindow {
                     Row {
                         anchors.centerIn: parent
                         spacing: 6
-                        Text { text: "󰁆"; font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim }
-                        Text { text: "scroll for more"; font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim }
+                        Text { text: "󰁆"; font.pixelSize: 12; font.family: "Lexend"; color: PanelColors.textDim }
+                        Text { text: "scroll for more"; font.pixelSize: 11; font.family: "Lexend"; color: PanelColors.textDim }
                     }
                 }
             }
@@ -577,8 +577,8 @@ PanelWindow {
                 Row {
                     anchors { left: parent.left; leftMargin: 14; verticalCenter: parent.verticalCenter }
                     spacing: 8
-                    Text { text: "󰁍"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain }
-                    Text { text: "Back"; font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain }
+                    Text { text: "󰁍"; font.pixelSize: 15; font.family: "Lexend"; color: PanelColors.textMain }
+                    Text { text: "Back"; font.pixelSize: 13; font.bold: true; font.family: "Lexend"; color: PanelColors.textMain }
                 }
                 MouseArea {
                     id: forgetBackMouse
@@ -595,10 +595,10 @@ PanelWindow {
                 Row {
                     anchors { left: parent.left; leftMargin: 14; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
                     spacing: 8
-                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.network }
+                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "Lexend"; color: PanelColors.network }
                     Text {
                         text: root.forgetNetwork ? root.forgetNetwork.name : ""
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.textMain
                         elide: Text.ElideRight
                         width: parent.width - 31
@@ -613,7 +613,7 @@ PanelWindow {
                 Text {
                     anchors.centerIn: parent
                     text: "Remove saved credentials?"
-                    font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 11; font.family: "Lexend"
                     color: PanelColors.textDim
                 }
             }
@@ -633,7 +633,7 @@ PanelWindow {
                     Text {
                         anchors.centerIn: parent
                         text: "Cancel"
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.textMain
                     }
                     MouseArea {
@@ -654,7 +654,7 @@ PanelWindow {
                     Text {
                         anchors.centerIn: parent
                         text: "Forget"
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.pillForeground
                     }
                     MouseArea {
@@ -700,8 +700,8 @@ PanelWindow {
                 Row {
                     anchors { left: parent.left; leftMargin: 14; verticalCenter: parent.verticalCenter }
                     spacing: 8
-                    Text { text: "󰁍"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain }
-                    Text { text: "Back"; font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textMain }
+                    Text { text: "󰁍"; font.pixelSize: 15; font.family: "Lexend"; color: PanelColors.textMain }
+                    Text { text: "Back"; font.pixelSize: 13; font.bold: true; font.family: "Lexend"; color: PanelColors.textMain }
                 }
                 MouseArea {
                     id: backMouse
@@ -718,10 +718,10 @@ PanelWindow {
                 Row {
                     anchors { left: parent.left; leftMargin: 14; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
                     spacing: 8
-                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.pillForeground }
+                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "Lexend"; color: PanelColors.pillForeground }
                     Text {
                         text: root.targetNetwork ? root.targetNetwork.name : ""
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.pillForeground
                         elide: Text.ElideRight
                         width: parent.width - 31
@@ -738,11 +738,11 @@ PanelWindow {
                 Row {
                     anchors { left: parent.left; leftMargin: 14; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
                     spacing: 8
-                    Text { text: "󰌾"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: PanelColors.textDim }
+                    Text { text: "󰌾"; font.pixelSize: 15; font.family: "Lexend"; color: PanelColors.textDim }
                     TextInput {
                         id: pwInput
                         width: parent.width - 23 - 8 - toggleVis.width - 8
-                        font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 13; font.bold: true; font.family: "Lexend"
                         color: PanelColors.textMain
                         selectionColor: PanelColors.network
                         selectedTextColor: PanelColors.pillForeground
@@ -764,7 +764,7 @@ PanelWindow {
                     Text {
                         id: toggleVis
                         text: showPw.checked ? "󰈈" : "󰈉"
-                        font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"
+                        font.pixelSize: 15; font.family: "Lexend"
                         color: PanelColors.textDim
                         MouseArea {
                             anchors.fill: parent; hoverEnabled: true
@@ -778,7 +778,7 @@ PanelWindow {
                     visible: pwInput.text === "" && !pwInput.activeFocus
                     anchors { left: parent.left; leftMargin: 37; verticalCenter: parent.verticalCenter }
                     text: "Password"
-                    font.pixelSize: 13; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 13; font.family: "Lexend"
                     color: PanelColors.textDim
                 }
             }
@@ -793,7 +793,7 @@ PanelWindow {
                 Text {
                     anchors.centerIn: parent
                     text: root.connectError
-                    font.pixelSize: 11; font.bold: true; font.family: "JetBrainsMono Nerd Font"
+                    font.pixelSize: 11; font.bold: true; font.family: "Lexend"
                     color: PanelColors.error
                 }
             }
@@ -810,8 +810,8 @@ PanelWindow {
                 Row {
                     anchors.centerIn: parent
                     spacing: 8
-                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "JetBrainsMono Nerd Font"; color: root.passwordText.length > 0 ? PanelColors.pillForeground : PanelColors.textDim }
-                    Text { text: "Connect"; font.pixelSize: 13; font.bold: true; font.family: "JetBrainsMono Nerd Font"; color: root.passwordText.length > 0 ? PanelColors.pillForeground : PanelColors.textDim }
+                    Text { text: "󰤨"; font.pixelSize: 15; font.family: "Lexend"; color: root.passwordText.length > 0 ? PanelColors.pillForeground : PanelColors.textDim }
+                    Text { text: "Connect"; font.pixelSize: 13; font.bold: true; font.family: "Lexend"; color: root.passwordText.length > 0 ? PanelColors.pillForeground : PanelColors.textDim }
                 }
                 MouseArea {
                     id: connectMouse

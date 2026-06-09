@@ -8,15 +8,15 @@ import "../dock"
 Item {
     id: root
 
-    property string appId:   ""
+    property string appId: ""
     property string appName: ""
     property string appIcon: ""
-    property var    appData: null
+    property var appData: null
 
     // Derived from appId — never written to imperatively
     readonly property string steamId: {
-        var m = root.appId.match(/^steam_app_(\d+)$/)
-        return m ? m[1] : ""
+        var m = root.appId.match(/^steam_app_(\d+)$/);
+        return m ? m[1] : "";
     }
 
     // Filled by _parseDesktopEntry when Exec= contains a rungameid URL
@@ -25,25 +25,25 @@ Item {
     // Used everywhere in launch/menu logic
     readonly property string resolvedSteamId: steamId !== "" ? steamId : _parsedSteamId
 
-    property bool isMatch:       true
-    property int  filteredIndex: 0
+    property bool isMatch: true
+    property int filteredIndex: 0
 
-    property int  launcherItemsPerPage: 15
-    property int  launcherCurrentPage:  0
-    property int  launcherSelectedIdx:  -1
-    property int  delegateIndex:        0
-    property bool launcherIsGridView:   true
+    property int launcherItemsPerPage: 15
+    property int launcherCurrentPage: 0
+    property int launcherSelectedIdx: -1
+    property int delegateIndex: 0
+    property bool launcherIsGridView: true
 
-    property var launcherView:        null
+    property var launcherView: null
     property int launcherOpenMenuIdx: -1
 
     onLauncherOpenMenuIdxChanged: {
         if (launcherOpenMenuIdx !== -1 && launcherOpenMenuIdx !== delegateIndex && ctxMenu.isOpen)
-            ctxMenu.closeMenu()
+            ctxMenu.closeMenu();
     }
 
-    property int pageNumber:  filteredIndex < 0 ? -1 : Math.floor(filteredIndex / launcherItemsPerPage)
-    property int indexOnPage: filteredIndex < 0 ?  0 : filteredIndex % launcherItemsPerPage
+    property int pageNumber: filteredIndex < 0 ? -1 : Math.floor(filteredIndex / launcherItemsPerPage)
+    property int indexOnPage: filteredIndex < 0 ? 0 : filteredIndex % launcherItemsPerPage
 
     property int gridCol: launcherIsGridView ? indexOnPage % 5 : 0
     property int gridRow: launcherIsGridView ? Math.floor(indexOnPage / 5) : indexOnPage
@@ -56,41 +56,54 @@ Item {
     opacity: onCurrentPage ? 1.0 : 0.0
 
     onOnCurrentPageChanged: {
-        if (onCurrentPage) _fullyHidden = false
+        if (onCurrentPage)
+            _fullyHidden = false;
     }
 
     onLauncherIsGridViewChanged: {
-        _fullyHidden = false
+        _fullyHidden = false;
     }
 
     Behavior on opacity {
         SequentialAnimation {
-            NumberAnimation { duration: 150; easing.type: Easing.InOutSine }
+            NumberAnimation {
+                duration: 150
+                easing.type: Easing.InOutSine
+            }
             ScriptAction {
-                script: { if (!root.onCurrentPage) root._fullyHidden = true }
+                script: {
+                    if (!root.onCurrentPage)
+                        root._fullyHidden = true;
+                }
             }
         }
     }
 
     x: launcherIsGridView ? gridCol * 144 + 4 : 4
     y: launcherIsGridView ? gridRow * 136 + 4 : gridRow * 48 + 4
-    width:  launcherIsGridView ? 136 : parent.width - 8
+    width: launcherIsGridView ? 136 : parent.width - 8
     height: launcherIsGridView ? 132 : 44
 
-    Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-    Behavior on y { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+    Behavior on x {
+        NumberAnimation {
+            duration: 150
+            easing.type: Easing.OutCubic
+        }
+    }
+    Behavior on y {
+        NumberAnimation {
+            duration: 150
+            easing.type: Easing.OutCubic
+        }
+    }
 
-    property bool   appPrefersNonDefault: false
-    property bool   isTerminal:           false
-    property string execName:             ""
+    property bool appPrefersNonDefault: false
+    property bool isTerminal: false
+    property string execName: ""
 
     Process {
         id: desktopReader
-        command: ["bash", "-c",
-            "f=\"$HOME/.local/share/applications/$1.desktop\"; " +
-            "[ -f \"$f\" ] || f=\"/usr/share/applications/$1.desktop\"; " +
-            "[ -f \"$f\" ] && cat \"$f\" || true",
-            "--", root.appId]
+        command: ["bash", "-c", "f=\"$HOME/.local/share/applications/$1.desktop\"; " + "[ -f \"$f\" ] || f=\"/usr/share/applications/$1.desktop\"; " + "[ -f \"$f\" ] && cat \"$f\" || true", "--", root.appId]
         running: true
         stdout: StdioCollector {
             onStreamFinished: root._parseDesktopEntry(this.text)
@@ -98,147 +111,186 @@ Item {
     }
 
     function _parseDesktopEntry(text) {
-        if (text === "") return
-        var lines = text.split("\n")
-        var inMainSection = false
+        if (text === "")
+            return;
+        var lines = text.split("\n");
+        var inMainSection = false;
         for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim()
+            var line = lines[i].trim();
 
-            if (line === "[Desktop Entry]") { inMainSection = true; continue }
-            if (line.startsWith("[") && line !== "[Desktop Entry]") { inMainSection = false; continue }
-            if (!inMainSection) continue
-
-            var termMatch = line.match(/^Terminal\s*=\s*(.+)$/)
+            if (line === "[Desktop Entry]") {
+                inMainSection = true;
+                continue;
+            }
+            if (line.startsWith("[") && line !== "[Desktop Entry]") {
+                inMainSection = false;
+                continue;
+            }
+            if (!inMainSection)
+                continue;
+            var termMatch = line.match(/^Terminal\s*=\s*(.+)$/);
             if (termMatch) {
-                var v = termMatch[1].trim()
-                root.isTerminal = (v === "true" || v === "1")
-                continue
+                var v = termMatch[1].trim();
+                root.isTerminal = (v === "true" || v === "1");
+                continue;
             }
 
-            var prefMatch = line.match(/^PrefersNonDefaultGPU\s*=\s*(.+)$/)
+            var prefMatch = line.match(/^PrefersNonDefaultGPU\s*=\s*(.+)$/);
             if (prefMatch) {
                 if (prefMatch[1].trim() === "true" || prefMatch[1].trim() === "1")
-                    root.appPrefersNonDefault = true
-                continue
+                    root.appPrefersNonDefault = true;
+                continue;
             }
 
-            var execMatch = line.match(/^Exec\s*=\s*(.+)$/)
+            var execMatch = line.match(/^Exec\s*=\s*(.+)$/);
             if (execMatch) {
-                var execLine = execMatch[1].trim()
+                var execLine = execMatch[1].trim();
 
-                var steamMatch = execLine.match(/steam:\/\/rungameid\/(\d+)/)
+                var steamMatch = execLine.match(/steam:\/\/rungameid\/(\d+)/);
                 if (steamMatch) {
-                    root._parsedSteamId = steamMatch[1]
-                    continue
+                    root._parsedSteamId = steamMatch[1];
+                    continue;
                 }
 
                 if (execLine.includes("switcherooctl") || execLine.includes("prime-run")) {
-                    root.appPrefersNonDefault = true
+                    root.appPrefersNonDefault = true;
                     // Walk tokens to find the real binary, robustly handling all forms:
                     // switcherooctl launch -g 1 <bin>
                     // switcherooctl launch --gpu 1 <bin>
                     // switcherooctl launch --gpu=1 <bin>
                     // prime-run <bin>
-                    var parts = execLine.split(/\s+/)
-                    var realBin = ""
-                    var skipNext = false
+                    var parts = execLine.split(/\s+/);
+                    var realBin = "";
+                    var skipNext = false;
                     for (var j = 0; j < parts.length; j++) {
-                        var p = parts[j]
-                        if (p === "switcherooctl" || p === "prime-run" || p === "launch") continue
-                        if (p === "-g" || p === "--gpu") { skipNext = true; continue }
-                        if (skipNext) { skipNext = false; continue }
-                        if (p.startsWith("--gpu=")) continue
-                        if (p === "") continue
-                        realBin = p
-                        break
+                        var p = parts[j];
+                        if (p === "switcherooctl" || p === "prime-run" || p === "launch")
+                            continue;
+                        if (p === "-g" || p === "--gpu") {
+                            skipNext = true;
+                            continue;
+                        }
+                        if (skipNext) {
+                            skipNext = false;
+                            continue;
+                        }
+                        if (p.startsWith("--gpu="))
+                            continue;
+                        if (p === "")
+                            continue;
+                        realBin = p;
+                        break;
                     }
                     if (realBin !== "" && !realBin.endsWith("/switcherooctl") && realBin !== "switcherooctl" && !realBin.endsWith("/prime-run") && realBin !== "prime-run")
-                        root.execName = realBin.replace(/%[uUfFdDnNickvm]/g, "").trim()
-                    continue
+                        root.execName = realBin.replace(/%[uUfFdDnNickvm]/g, "").trim();
+                    continue;
                 }
 
-                var bin = execLine.split(/\s+/)[0].replace(/%[uUfFdDnNickvm]/g, "").trim()
+                var bin = execLine.split(/\s+/)[0].replace(/%[uUfFdDnNickvm]/g, "").trim();
                 if (bin !== "")
-                    root.execName = bin
+                    root.execName = bin;
             }
         }
     }
 
     function _buildMenuModel() {
-        var pinned  = PinnedApps.isPinned(root.appId)
-        var entries = [{ label: "Launch", action: "launch", gpuIndex: -1 }]
+        var pinned = PinnedApps.isPinned(root.appId);
+        var entries = [
+            {
+                label: "Launch",
+                action: "launch",
+                gpuIndex: -1
+            }
+        ];
 
         if (root.resolvedSteamId !== "") {
             entries.push({
-                label:    pinned ? "Unpin from dock" : "Pin to dock",
-                action:   pinned ? "unpin" : "pin",
+                label: pinned ? "Unpin from dock" : "Pin to dock",
+                action: pinned ? "unpin" : "pin",
                 gpuIndex: -1
-            })
-            entries.push({ label: "Hide", action: "hide", gpuIndex: -1 })
-            return entries
+            });
+            entries.push({
+                label: "Hide",
+                action: "hide",
+                gpuIndex: -1
+            });
+            return entries;
         }
 
         if (DockState.gpuInfoReady) {
             if (root.appPrefersNonDefault) {
                 if (DockState.defaultGpuName !== "")
-                    entries.push({ label: "Launch with " + DockState.defaultGpuName,
-                                   action: "gpu", gpuIndex: DockState.defaultGpuIndex })
+                    entries.push({
+                        label: "Launch with " + DockState.defaultGpuName,
+                        action: "gpu",
+                        gpuIndex: DockState.defaultGpuIndex
+                    });
             } else {
                 if (DockState.nonDefaultGpuName !== "")
-                    entries.push({ label: "Launch with " + DockState.nonDefaultGpuName,
-                                   action: "gpu", gpuIndex: DockState.nonDefaultGpuIndex })
+                    entries.push({
+                        label: "Launch with " + DockState.nonDefaultGpuName,
+                        action: "gpu",
+                        gpuIndex: DockState.nonDefaultGpuIndex
+                    });
             }
         }
 
         entries.push({
-            label:    pinned ? "Unpin from dock" : "Pin to dock",
-            action:   pinned ? "unpin" : "pin",
+            label: pinned ? "Unpin from dock" : "Pin to dock",
+            action: pinned ? "unpin" : "pin",
             gpuIndex: -1
-        })
-        entries.push({ label: "Hide", action: "hide", gpuIndex: -1 })
+        });
+        entries.push({
+            label: "Hide",
+            action: "hide",
+            gpuIndex: -1
+        });
 
-        return entries
+        return entries;
     }
 
     function _launchDefault() {
-        AppUsageTracker.recordLaunch(root.appId)
+        AppUsageTracker.recordLaunch(root.appId);
 
         if (root.isTerminal && root.resolvedSteamId === "") {
-            var exec = root.execName !== "" ? root.execName : root.appId
-            exec = exec.replace(/%[uUfFdDnNickvm]/g, "").trim()
-            Quickshell.execDetached(["kitty", "-e", "bash", "-c", exec])
-
+            var exec = root.execName !== "" ? root.execName : root.appId;
+            exec = exec.replace(/%[uUfFdDnNickvm]/g, "").trim();
+            Quickshell.execDetached(["kitty", "-e", "bash", "-c", exec]);
         } else if (root.resolvedSteamId !== "") {
-            Quickshell.execDetached(["xdg-open", "steam://rungameid/" + root.resolvedSteamId])
-
+            Quickshell.execDetached(["xdg-open", "steam://rungameid/" + root.resolvedSteamId]);
         } else {
             // Always prefer appData.execute() — it runs the .desktop Exec= line verbatim,
             // correctly handling switcherooctl, prime-run, and all other wrappers without
             // any manual reconstruction.
-            if (root.appData) root.appData.execute()
+            if (root.appData)
+                root.appData.execute();
             else {
-                var entry = DesktopEntries.byId(root.appId)
-                if (entry) entry.execute()
-                else Quickshell.execDetached([root.execName !== "" ? root.execName : root.appId])
+                var entry = DesktopEntries.byId(root.appId);
+                if (entry)
+                    entry.execute();
+                else
+                    Quickshell.execDetached([root.execName !== "" ? root.execName : root.appId]);
             }
         }
 
-        LauncherState.hide()
+        LauncherState.hide();
     }
 
     function _launchOnGpu(gpuIndex) {
-        AppUsageTracker.recordLaunch(root.appId)
-        var bin = root.execName !== "" ? root.execName : root.appId
-        Quickshell.execDetached(["/usr/bin/switcherooctl", "launch", "-g", String(gpuIndex), bin])
-        LauncherState.hide()
+        AppUsageTracker.recordLaunch(root.appId);
+        var bin = root.execName !== "" ? root.execName : root.appId;
+        Quickshell.execDetached(["/usr/bin/switcherooctl", "launch", "-g", String(gpuIndex), bin]);
+        LauncherState.hide();
     }
 
-    function executeApp() { _launchDefault() }
+    function executeApp() {
+        _launchDefault();
+    }
 
     Timer {
         id: dismissTimer
         interval: 3000
-        running:  ctxMenu.isOpen
+        running: ctxMenu.isOpen
         onTriggered: ctxMenu.closeMenu()
     }
 
@@ -246,8 +298,9 @@ Item {
         target: LauncherState
         function onVisibleChanged() {
             if (!LauncherState.visible) {
-                root._isHovered = false
-                if (ctxMenu.isOpen) ctxMenu.closeMenu()
+                root._isHovered = false;
+                if (ctxMenu.isOpen)
+                    ctxMenu.closeMenu();
             }
         }
     }
@@ -255,13 +308,15 @@ Item {
     property bool _isHovered: false
 
     Rectangle {
-        anchors.fill:    parent
+        anchors.fill: parent
         anchors.margins: root.launcherIsGridView ? 8 : 0
-        radius:          12
-        color: (root.launcherSelectedIdx === root.delegateIndex || root._isHovered || ctxMenu.isOpen)
-                   ? Qt.rgba(1, 1, 1, 0.08)
-                   : "transparent"
-        Behavior on color { ColorAnimation { duration: 150 } }
+        radius: 12
+        color: (root.launcherSelectedIdx === root.delegateIndex || root._isHovered || ctxMenu.isOpen) ? Qt.rgba(1, 1, 1, 0.08) : "transparent"
+        Behavior on color {
+            ColorAnimation {
+                duration: 150
+            }
+        }
     }
 
     // ── Visuals: Grid View ────────────────────────────────────────────────
@@ -278,29 +333,34 @@ Item {
             source: Quickshell.iconPath(root.appIcon)
 
             scale: (root.launcherSelectedIdx === root.delegateIndex || root._isHovered || ctxMenu.isOpen) ? 1.1 : 1.0
-            Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
+            Behavior on scale {
+                NumberAnimation {
+                    duration: 120
+                    easing.type: Easing.OutCubic
+                }
+            }
         }
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            text:                root.appName
-            font.pixelSize:      14
-            font.bold:           true
-            font.family:         "JetBrainsMono Nerd Font"
-            color:               PanelColors.textMain
-            width:               parent.width
+            text: root.appName
+            font.pixelSize: 14
+            font.bold: true
+            font.family: "Lexend"
+            color: PanelColors.textMain
+            width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            wrapMode:            Text.WrapAtWordBoundaryOrAnywhere
-            maximumLineCount:    2
-            elide:               Text.ElideRight
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            maximumLineCount: 2
+            elide: Text.ElideRight
         }
     }
 
     // ── Visuals: List View ────────────────────────────────────────────────
     Row {
         visible: !root.launcherIsGridView
-        anchors.fill:        parent
-        anchors.leftMargin:  12
+        anchors.fill: parent
+        anchors.leftMargin: 12
         anchors.rightMargin: 12
         spacing: 12
 
@@ -313,34 +373,36 @@ Item {
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
-            text:                root.appName
-            font.pixelSize:      16
-            font.bold:           true
-            font.family:         "JetBrainsMono Nerd Font"
-            color:               PanelColors.textMain
-            width:               parent.width - iconImgList.width - 12
+            text: root.appName
+            font.pixelSize: 16
+            font.bold: true
+            font.family: "Lexend"
+            color: PanelColors.textMain
+            width: parent.width - iconImgList.width - 12
             horizontalAlignment: Text.AlignLeft
-            elide:               Text.ElideRight
+            elide: Text.ElideRight
         }
     }
 
     // ── Mouse ─────────────────────────────────────────────────────────────
     MouseArea {
-        anchors.fill:    parent
-        z:               1
-        hoverEnabled:    true
-        cursorShape:     Qt.PointingHandCursor
+        anchors.fill: parent
+        z: 1
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         onEntered: root._isHovered = true
-        onExited:  root._isHovered = false
+        onExited: root._isHovered = false
 
-        onClicked: (mouse) => {
+        onClicked: mouse => {
             if (mouse.button === Qt.RightButton) {
-                if (ctxMenu.isOpen) ctxMenu.closeMenu()
-                else                ctxMenu.openMenu()
+                if (ctxMenu.isOpen)
+                    ctxMenu.closeMenu();
+                else
+                    ctxMenu.openMenu();
             } else {
-                root._launchDefault()
+                root._launchDefault();
             }
         }
     }
@@ -349,101 +411,142 @@ Item {
     PopupWindow {
         id: ctxMenu
 
-        anchor.item:           root.launcherIsGridView ? iconImgGrid : iconImgList
-        anchor.edges:          Edges.Top
-        anchor.gravity:        Edges.Top
+        anchor.item: root.launcherIsGridView ? iconImgGrid : iconImgList
+        anchor.edges: Edges.Top
+        anchor.gravity: Edges.Top
         anchor.margins.bottom: 8
 
-        color:          "transparent"
-        implicitWidth:  200
+        color: "transparent"
+        implicitWidth: 200
         implicitHeight: innerRect.implicitHeight
 
         visible: false
         property bool isOpen: false
 
         function openMenu() {
-            if (root.launcherView) root.launcherView.notifyMenuOpened(root.delegateIndex)
-            menuRepeater.model = root._buildMenuModel()
-            innerRect.y        = 14
-            innerRect.opacity  = 0.0
-            visible            = true
-            isOpen             = true
-            openAnim.restart()
-            dismissTimer.restart()
+            if (root.launcherView)
+                root.launcherView.notifyMenuOpened(root.delegateIndex);
+            menuRepeater.model = root._buildMenuModel();
+            innerRect.y = 14;
+            innerRect.opacity = 0.0;
+            visible = true;
+            isOpen = true;
+            openAnim.restart();
+            dismissTimer.restart();
         }
 
         function closeMenu() {
-            if (!isOpen) return
-            isOpen = false
-            openAnim.stop()
-            closeAnim.restart()
+            if (!isOpen)
+                return;
+            isOpen = false;
+            openAnim.stop();
+            closeAnim.restart();
         }
 
         SequentialAnimation {
             id: openAnim
             ParallelAnimation {
-                NumberAnimation { target: innerRect; property: "y";       to: 0;   duration: 220; easing.type: Easing.OutExpo  }
-                NumberAnimation { target: innerRect; property: "opacity"; to: 1.0; duration: 170; easing.type: Easing.OutCubic }
+                NumberAnimation {
+                    target: innerRect
+                    property: "y"
+                    to: 0
+                    duration: 220
+                    easing.type: Easing.OutExpo
+                }
+                NumberAnimation {
+                    target: innerRect
+                    property: "opacity"
+                    to: 1.0
+                    duration: 170
+                    easing.type: Easing.OutCubic
+                }
             }
         }
 
         SequentialAnimation {
             id: closeAnim
             ParallelAnimation {
-                NumberAnimation { target: innerRect; property: "y";       to: 14;  duration: 160; easing.type: Easing.InCubic }
-                NumberAnimation { target: innerRect; property: "opacity"; to: 0.0; duration: 130; easing.type: Easing.InCubic }
+                NumberAnimation {
+                    target: innerRect
+                    property: "y"
+                    to: 14
+                    duration: 160
+                    easing.type: Easing.InCubic
+                }
+                NumberAnimation {
+                    target: innerRect
+                    property: "opacity"
+                    to: 0.0
+                    duration: 130
+                    easing.type: Easing.InCubic
+                }
             }
-            ScriptAction { script: ctxMenu.visible = false }
+            ScriptAction {
+                script: ctxMenu.visible = false
+            }
         }
 
-        mask: Region { item: innerRect }
+        mask: Region {
+            item: innerRect
+        }
 
         Rectangle {
             id: innerRect
 
-            width:          parent.width
+            width: parent.width
             implicitHeight: menuCol.implicitHeight + padding * 2
-            height:         implicitHeight
-            radius:         10
-            color:          PanelColors.popupBackground
-            border.color:   PanelColors.border
-            border.width:   2
-            clip:           true
+            height: implicitHeight
+            radius: 10
+            color: PanelColors.popupBackground
+            border.color: PanelColors.border
+            border.width: 2
+            clip: true
 
             readonly property int padding: 12
 
-            Behavior on color        { ColorAnimation { duration: PanelColors.transitionDuration } }
-            Behavior on border.color { ColorAnimation { duration: PanelColors.transitionDuration } }
+            Behavior on color {
+                ColorAnimation {
+                    duration: PanelColors.transitionDuration
+                }
+            }
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: PanelColors.transitionDuration
+                }
+            }
 
             HoverHandler {
-                onHoveredChanged: { if (hovered) dismissTimer.restart() }
+                onHoveredChanged: {
+                    if (hovered)
+                        dismissTimer.restart();
+                }
             }
 
             Column {
                 id: menuCol
                 anchors {
-                    top:     parent.top
-                    left:    parent.left
-                    right:   parent.right
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
                     margins: innerRect.padding
                 }
                 spacing: 4
 
                 Text {
-                    width:          parent.width
-                    text:           root.appName
+                    width: parent.width
+                    text: root.appName
                     font.pixelSize: 12
-                    font.bold:      true
-                    font.family:    "JetBrainsMono Nerd Font"
-                    color:          PanelColors.textDim
-                    bottomPadding:  4
-                    elide:          Text.ElideRight
+                    font.bold: true
+                    font.family: "Lexend"
+                    color: PanelColors.textDim
+                    bottomPadding: 4
+                    elide: Text.ElideRight
                 }
 
                 Rectangle {
-                    width:  parent.width
+                    width: parent.width
                     height: 2
-                    color:  PanelColors.border
+                    color: PanelColors.border
                 }
 
                 Repeater {
@@ -452,22 +555,26 @@ Item {
 
                     delegate: Item {
                         required property var modelData
-                        width:  menuCol.width
+                        width: menuCol.width
                         height: 34
 
                         Rectangle {
                             anchors.fill: parent
-                            radius:       6
-                            color: rowMouse.containsMouse
-                                ? Qt.lighter(PanelColors.rowBackground, 1.15)
-                                : PanelColors.rowBackground
-                            Behavior on color { ColorAnimation { duration: 100 } }
+                            radius: 6
+                            color: rowMouse.containsMouse ? Qt.lighter(PanelColors.rowBackground, 1.15) : PanelColors.rowBackground
+                            Behavior on color {
+                                ColorAnimation {
+                                    duration: 100
+                                }
+                            }
 
                             Rectangle {
-                                width: 3; height: parent.height - 10; radius: 2
+                                width: 3
+                                height: parent.height - 10
+                                radius: 2
                                 anchors {
-                                    left:           parent.left
-                                    leftMargin:     4
+                                    left: parent.left
+                                    leftMargin: 4
                                     verticalCenter: parent.verticalCenter
                                 }
                                 color: PanelColors.textDim
@@ -475,18 +582,18 @@ Item {
 
                             Text {
                                 anchors {
-                                    left:           parent.left
-                                    leftMargin:     14
-                                    right:          parent.right
-                                    rightMargin:    10
+                                    left: parent.left
+                                    leftMargin: 14
+                                    right: parent.right
+                                    rightMargin: 10
                                     verticalCenter: parent.verticalCenter
                                 }
-                                text:           modelData.label
+                                text: modelData.label
                                 font.pixelSize: 13
-                                font.bold:      true
-                                font.family:    "JetBrainsMono Nerd Font"
-                                color:          PanelColors.textMain
-                                elide:          Text.ElideRight
+                                font.bold: true
+                                font.family: "Lexend"
+                                color: PanelColors.textMain
+                                elide: Text.ElideRight
                             }
 
                             MouseArea {
@@ -494,21 +601,22 @@ Item {
                                 anchors.fill: parent
                                 hoverEnabled: true
                                 onContainsMouseChanged: {
-                                    if (containsMouse) dismissTimer.restart()
+                                    if (containsMouse)
+                                        dismissTimer.restart();
                                 }
                                 onClicked: {
-                                    ctxMenu.closeMenu()
-                                    var action = modelData.action
+                                    ctxMenu.closeMenu();
+                                    var action = modelData.action;
                                     if (action === "launch") {
-                                        root._launchDefault()
+                                        root._launchDefault();
                                     } else if (action === "gpu") {
-                                        root._launchOnGpu(modelData.gpuIndex)
+                                        root._launchOnGpu(modelData.gpuIndex);
                                     } else if (action === "pin") {
-                                        PinnedApps.pinApp(root.appId, root.appName, root.appIcon, root.execName, root.resolvedSteamId)
+                                        PinnedApps.pinApp(root.appId, root.appName, root.appIcon, root.execName, root.resolvedSteamId);
                                     } else if (action === "unpin") {
-                                        PinnedApps.unpinApp(root.appId)
+                                        PinnedApps.unpinApp(root.appId);
                                     } else if (action === "hide") {
-                                        LauncherHiddenApps.hide(root.appId, root.appName, root.appIcon)
+                                        LauncherHiddenApps.hide(root.appId, root.appName, root.appIcon);
                                     }
                                 }
                             }

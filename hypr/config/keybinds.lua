@@ -92,14 +92,22 @@ hl.bind(mainMod .. " + SHIFT + G", function()
     hl.config({
       general = {
         gaps_in = 0,
-        gaps_out = 0
+        gaps_out = 0,
+        border_size = 0,
+      },
+      decoration = {
+        rounding = 0
       }
     })
   else
     hl.config({
       general = {
         gaps_in = 5,
-        gaps_out = 10
+        gaps_out = 10,
+        border_size = 3
+      },
+      decoration = {
+        rounding = 7
       }
     })
   end

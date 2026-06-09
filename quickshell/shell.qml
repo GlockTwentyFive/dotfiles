@@ -22,7 +22,7 @@ ShellRoot {
 
         onIsIdleChanged: {
             if (isIdle) {
-                idleOverlayProcess.running = true
+                idleOverlayProcess.running = true;
             }
         }
     }
@@ -35,7 +35,7 @@ ShellRoot {
 
         onIsIdleChanged: {
             if (isIdle) {
-                Quickshell.execDetached(["systemctl", "suspend"])
+                Quickshell.execDetached(["systemctl", "suspend"]);
             }
         }
     }
@@ -46,7 +46,7 @@ ShellRoot {
         running: false
 
         onExited: (exitCode, exitStatus) => {
-            running = false
+            running = false;
         }
     }
 
@@ -56,43 +56,72 @@ ShellRoot {
             id: panelWin
             required property var modelData
             screen: modelData
-            anchors { top: true; left: true; right: true }
-            implicitHeight: 50
-            color: "transparent"
+            anchors {
+                top: true
+                left: true
+                right: true
+            }
+            implicitHeight: 40
+            color: PanelColors.barBackground
             exclusiveZone: implicitHeight
-            Bar { id: bar; anchors.fill: parent }
+            Bar {
+                id: bar
+                anchors.fill: parent
+            }
 
             // Returns the X anchor for a right-bar popup centred under its trigger widget.
             // Pass the trigger widget and the popup's own implicitWidth.
             function popupX(widget, pWidth) {
-                return Math.min(
-                    bar.rightContainer.x + bar.rightBar.x + widget.x + widget.width / 2 - pWidth / 2,
-                    bar.rightContainer.x + bar.rightContainer.width - pWidth
-                )
+                return Math.min(bar.rightContainer.x + bar.rightBar.x + widget.x + widget.width / 2 - pWidth / 2, bar.rightContainer.x + bar.rightContainer.width - pWidth);
             }
 
             function centerPopupX(pWidth) {
-                return Math.round(panelWin.screen.width / 2 - pWidth / 2)
+                return Math.round(panelWin.screen.width / 2 - pWidth / 2);
             }
 
             Repeater {
                 model: [
-                    { "source": "osd/AudioPopup.qml", "widget": bar.rightBar.audioWidget },
-                    { "source": "osd/BrightnessPopup.qml", "widget": bar.rightBar.brightnessWidget },
-                    { "source": "osd/PowerProfilePopup.qml", "widget": bar.rightBar.batteryWidget },
-                    { "source": "osd/BluetoothPopup.qml", "widget": bar.rightBar.bluetoothWidget },
-                    { "source": "osd/SessionPopup.qml", "widget": bar.rightBar.sessionWidget },
-                    { "source": "osd/TrayPopup.qml", "widget": bar.rightBar.trayBar },
-                    { "source": "osd/CalendarPopup.qml", "widget": bar.rightBar.dateWidget }
+                    {
+                        "source": "osd/AudioPopup.qml",
+                        "widget": bar.rightBar.audioWidget
+                    },
+                    {
+                        "source": "osd/BrightnessPopup.qml",
+                        "widget": bar.rightBar.brightnessWidget
+                    },
+                    {
+                        "source": "osd/PowerProfilePopup.qml",
+                        "widget": bar.rightBar.batteryWidget
+                    },
+                    {
+                        "source": "osd/BluetoothPopup.qml",
+                        "widget": bar.rightBar.bluetoothWidget
+                    },
+                    {
+                        "source": "osd/SessionPopup.qml",
+                        "widget": bar.rightBar.sessionWidget
+                    },
+                    {
+                        "source": "osd/TrayPopup.qml",
+                        "widget": bar.rightBar.trayBar
+                    },
+                    {
+                        "source": "osd/CalendarPopup.qml",
+                        "widget": bar.rightBar.dateWidget
+                    }
                 ]
                 delegate: Loader {
                     required property var modelData
                     source: modelData.source
                     asynchronous: true
                     onLoaded: {
-                        item.anchor.window = panelWin
-                        item.anchor.rect.y = Qt.binding(function() { return panelWin.height + 6 })
-                        item.anchor.rect.x = Qt.binding(function() { return panelWin.popupX(modelData.widget, item.implicitWidth) })
+                        item.anchor.window = panelWin;
+                        item.anchor.rect.y = Qt.binding(function () {
+                            return panelWin.height + 6;
+                        });
+                        item.anchor.rect.x = Qt.binding(function () {
+                            return panelWin.popupX(modelData.widget, item.implicitWidth);
+                        });
                     }
                 }
             }

@@ -41,7 +41,10 @@ Item {
     property real animValue: targetValue
     Behavior on animValue {
         enabled: !root.dragging
-        NumberAnimation { duration: 80; easing.type: Easing.OutCubic }
+        NumberAnimation {
+            duration: 80
+            easing.type: Easing.OutCubic
+        }
     }
 
     // ── Background (only when clickable) ─────────
@@ -54,11 +57,10 @@ Item {
 
     // ── Internal Helpers ──────────────────────────
     function _updateFromMouse(mouseX) {
-        var localX = mouseX - track.x
-        var newVal = Math.round(Math.max(root.from, Math.min(root.to,
-            root.from + (localX / track.width) * (root.to - root.from))))
-        root.internalValue = newVal
-        root.moved(newVal)
+        var localX = mouseX - track.x;
+        var newVal = Math.round(Math.max(root.from, Math.min(root.to, root.from + (localX / track.width) * (root.to - root.from))));
+        root.internalValue = newVal;
+        root.moved(newVal);
     }
 
     // ── Track ─────────────────────────────────────
@@ -71,17 +73,21 @@ Item {
             leftMargin: root.clickable ? 10 : 0
             rightMargin: root.clickable ? 8 : 0
         }
-        height: 6; radius: 3
+        height: 6
+        radius: 3
 
-        color: root.hovered
-            ? Qt.rgba(PanelColors.trackBackground.r, PanelColors.trackBackground.g, PanelColors.trackBackground.b, 0.4)
-            : Qt.lighter(PanelColors.trackBackground, 1.1)
-        Behavior on color { ColorAnimation { duration: 150 } }
+        color: root.hovered ? Qt.rgba(PanelColors.trackBackground.r, PanelColors.trackBackground.g, PanelColors.trackBackground.b, 0.4) : Qt.lighter(PanelColors.trackBackground, 1.1)
+        Behavior on color {
+            ColorAnimation {
+                duration: 150
+            }
+        }
 
         Rectangle {
             id: activeTrack
             width: (root.animValue - root.from) / (root.to - root.from) * track.width
-            height: parent.height; radius: parent.radius
+            height: parent.height
+            radius: parent.radius
             color: root.hovered ? Qt.lighter(root.accentColor, 1.15) : root.accentColor
 
             property real pulse: 1.0
@@ -89,11 +95,23 @@ Item {
             SequentialAnimation on pulse {
                 loops: Animation.Infinite
                 running: root.activeInteraction
-                NumberAnimation { to: 0.7; duration: 1000; easing.type: Easing.InOutSine }
-                NumberAnimation { to: 1.0; duration: 1000; easing.type: Easing.InOutSine }
+                NumberAnimation {
+                    to: 0.7
+                    duration: 1000
+                    easing.type: Easing.InOutSine
+                }
+                NumberAnimation {
+                    to: 1.0
+                    duration: 1000
+                    easing.type: Easing.InOutSine
+                }
             }
 
-            Behavior on color { ColorAnimation { duration: 150 } }
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
         }
     }
 
@@ -109,7 +127,7 @@ Item {
         text: root.label
         width: 32
         font.pixelSize: 12
-        font.family: "JetBrainsMono Nerd Font"
+        font.family: "Lexend"
         color: PanelColors.textMain
         horizontalAlignment: Text.AlignRight
     }
@@ -117,7 +135,8 @@ Item {
     // ── Handle ────────────────────────────────────
     Item {
         id: handleContainer
-        width: 0; height: 0
+        width: 0
+        height: 0
         anchors.verticalCenter: track.verticalCenter
         x: track.x + (root.animValue - root.from) / (root.to - root.from) * track.width
 
@@ -131,9 +150,23 @@ Item {
 
             color: root.hovered ? Qt.lighter(root.accentColor, 1.15) : root.accentColor
 
-            Behavior on width  { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
-            Behavior on height { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
-            Behavior on color  { ColorAnimation { duration: 150 } }
+            Behavior on width {
+                NumberAnimation {
+                    duration: 300
+                    easing.type: Easing.OutBack
+                }
+            }
+            Behavior on height {
+                NumberAnimation {
+                    duration: 300
+                    easing.type: Easing.OutBack
+                }
+            }
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
         }
     }
 
@@ -143,23 +176,26 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
 
-        onPressed: (mouse) => {
-            root.internalValue = root.animValue
-            root._updateFromMouse(mouse.x)
+        onPressed: mouse => {
+            root.internalValue = root.animValue;
+            root._updateFromMouse(mouse.x);
         }
-        onPositionChanged: (mouse) => { if (pressed) root._updateFromMouse(mouse.x) }
-        onClicked: (mouse) => root._updateFromMouse(mouse.x)
+        onPositionChanged: mouse => {
+            if (pressed)
+                root._updateFromMouse(mouse.x);
+        }
+        onClicked: mouse => root._updateFromMouse(mouse.x)
 
-        onWheel: (wheel) => {
-            var notches = wheel.angleDelta.y / 120
-            var delta = notches * root.wheelStep
+        onWheel: wheel => {
+            var notches = wheel.angleDelta.y / 120;
+            var delta = notches * root.wheelStep;
 
-            var base = (dragging || wheelTimer.running) ? root.internalValue : root.value
-            var newVal = Math.round(Math.max(root.from, Math.min(root.to, base + delta)))
+            var base = (dragging || wheelTimer.running) ? root.internalValue : root.value;
+            var newVal = Math.round(Math.max(root.from, Math.min(root.to, base + delta)));
 
-            root.internalValue = newVal
-            wheelTimer.restart()
-            root.moved(newVal)
+            root.internalValue = newVal;
+            wheelTimer.restart();
+            root.moved(newVal);
         }
     }
 }

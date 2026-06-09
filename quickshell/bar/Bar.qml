@@ -15,13 +15,17 @@ Item {
     Rectangle {
         id: leftContainer
         anchors.left: parent.left
-        anchors.leftMargin: 12
+        anchors.leftMargin: 0
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 0
         height: 40
         color: PanelColors.barBackground
-        Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
-        radius: 8
+        Behavior on color {
+            ColorAnimation {
+                duration: PanelColors.transitionDuration
+            }
+        }
+        radius: 0
         width: leftBar.implicitWidth + 12
 
         LeftBar {
@@ -34,11 +38,15 @@ Item {
         id: centerContainer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 0
         height: 40
         color: PanelColors.barBackground
-        Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
-        radius: 8
+        Behavior on color {
+            ColorAnimation {
+                duration: PanelColors.transitionDuration
+            }
+        }
+        radius: 0
         width: centerBar.implicitWidth + 12
 
         CenterBar {
@@ -50,13 +58,17 @@ Item {
     Rectangle {
         id: rightContainer
         anchors.right: parent.right
-        anchors.rightMargin: 12
+        anchors.rightMargin: 0
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 0
         height: 40
         color: PanelColors.barBackground
-        Behavior on color { ColorAnimation { duration: 250 } }
-        radius: 8
+        Behavior on color {
+            ColorAnimation {
+                duration: 250
+            }
+        }
+        radius: 0
         width: rightBar.implicitWidth + 12
 
         RightBar {
