@@ -131,7 +131,7 @@ PopupBase {
             }
             text:               root._shortName(devRow.modelData.description)
             font.pixelSize:     13
-            font.bold:          true
+            font.bold:          Fonts.boldFont
             font.family:        Fonts.selectedFont
             color:              devRow.isActive ? PanelColors.pillForeground : PanelColors.textMain
             elide:              Text.ElideRight
@@ -168,7 +168,7 @@ PopupBase {
             bottomPadding: 2
 
             Text { text: "󰕾"; font.pixelSize: 16; font.family: Fonts.selectedFont; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
-            Text { text: "Output"; font.pixelSize: 14; font.bold: true; font.family: Fonts.selectedFont; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "Output"; font.pixelSize: 14; font.bold: Fonts.boldFont; font.family: Fonts.selectedFont; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
         }
 
         Repeater {
@@ -189,7 +189,7 @@ PopupBase {
             bottomPadding: 2
 
             Text { text: "󰍬"; font.pixelSize: 16; font.family: Fonts.selectedFont; color: PanelColors.audio; anchors.verticalCenter: parent.verticalCenter }
-            Text { text: "Input"; font.pixelSize: 14; font.bold: true; font.family: Fonts.selectedFont; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
+            Text { text: "Input"; font.pixelSize: 14; font.bold: Fonts.boldFont; font.family: Fonts.selectedFont; color: PanelColors.textMain; anchors.verticalCenter: parent.verticalCenter }
         }
 
         Repeater {

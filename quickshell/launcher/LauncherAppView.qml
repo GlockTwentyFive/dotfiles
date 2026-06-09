@@ -155,7 +155,7 @@ Item {
 
                 Text {
                     width: parent.width; text: "Hidden Apps"
-                    font.pixelSize: 13; font.bold: true
+                    font.pixelSize: 13; font.bold: Fonts.boldFont
                     font.family: Fonts.selectedFont
                     color: PanelColors.textDim; bottomPadding: 4
                 }
@@ -184,7 +184,7 @@ Item {
                             }
                             Text {
                                 anchors { left: parent.left; leftMargin: 14; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
-                                text: modelData.name; font.pixelSize: 13; font.bold: true
+                                text: modelData.name; font.pixelSize: 13; font.bold: Fonts.boldFont
                                 font.family: Fonts.selectedFont
                                 color: PanelColors.textMain; elide: Text.ElideRight
                             }
@@ -250,7 +250,7 @@ Item {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Run: " + root.searchText
-                    font.pixelSize: 14; font.bold: true
+                    font.pixelSize: 14; font.bold: Fonts.boldFont
                     font.family: Fonts.selectedFont
                     color: PanelColors.textMain; width: 120
                     horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight
@@ -325,8 +325,8 @@ Item {
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text:  listDelegate.entry ? listDelegate.entry.name : ""
-                        font.pixelSize: 17
-                        font.bold: true
+                        font.pixelSize: Fonts.launcherFontSize
+                        font.bold: Fonts.boldFont
                         font.family:    Fonts.selectedFont
                         color: listDelegate.isSelected ? PanelColors.pillForeground : PanelColors.textMain
                         Behavior on color { ColorAnimation { duration: 120 } }
@@ -459,7 +459,7 @@ Item {
                             width:          parent.width
                             text:           listDelegate.entry ? listDelegate.entry.name : ""
                             font.pixelSize: 12
-                            font.bold: true
+                            font.bold: Fonts.boldFont
                             font.family:    Fonts.selectedFont
                             color:          PanelColors.textDim
                             bottomPadding:  4
@@ -498,7 +498,7 @@ Item {
                                             verticalCenter: parent.verticalCenter
                                         }
                                         text:           modelData.label
-                                        font.pixelSize: 13; font.bold: true
+                                        font.pixelSize: 13; font.bold: Fonts.boldFont
                                         font.family:    Fonts.selectedFont
                                         color:          PanelColors.textMain
                                         elide:          Text.ElideRight
@@ -557,7 +557,7 @@ Item {
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
                         text: "Run: " + root.searchText
-                        font.pixelSize: 16; font.bold: true
+                        font.pixelSize: 16; font.bold: Fonts.boldFont
                         font.family: Fonts.selectedFont
                         color: PanelColors.textMain
                         width: appListView.width - 14 - 22 - 12 - 12 - 8

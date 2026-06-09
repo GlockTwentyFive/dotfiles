@@ -10,15 +10,13 @@ Item {
     // ── Shared constants ──────────────────────────────────────────────────────
     readonly property string monoFont: Fonts.selectedMonoFont
 
-    readonly property real totalHeight:
-    NotificationState.history.count === 0
-    ? emptyRow.implicitHeight
-    : Math.max(0, notifList.contentHeight - notifList.spacing)
+    readonly property real totalHeight: NotificationState.history.count === 0 ? emptyRow.implicitHeight : Math.max(0, notifList.contentHeight - notifList.spacing)
 
     // ── Accent color logic ────────────────────────────────────────────────────
     function accentForEntry(entry) {
-        if (entry.urgency === Notification.Critical) return PanelColors.error
-        return PanelColors.hashColor(entry.appName)
+        if (entry.urgency === Notification.Critical)
+            return PanelColors.error;
+        return PanelColors.hashColor(entry.appName);
     }
 
     // ── Empty state — single centered row ────────────────────────────────────
@@ -57,24 +55,54 @@ Item {
 
         add: Transition {
             SequentialAnimation {
-                PropertyAction  { property: "opacity"; value: 0.0 }
-                PropertyAction  { property: "x";       value: -16 }
+                PropertyAction {
+                    property: "opacity"
+                    value: 0.0
+                }
+                PropertyAction {
+                    property: "x"
+                    value: -16
+                }
                 ParallelAnimation {
-                    NumberAnimation { property: "opacity"; to: 1.0; duration: 220; easing.type: Easing.OutCubic }
-                    NumberAnimation { property: "x";       to: 0;   duration: 220; easing.type: Easing.OutExpo  }
+                    NumberAnimation {
+                        property: "opacity"
+                        to: 1.0
+                        duration: 220
+                        easing.type: Easing.OutCubic
+                    }
+                    NumberAnimation {
+                        property: "x"
+                        to: 0
+                        duration: 220
+                        easing.type: Easing.OutExpo
+                    }
                 }
             }
         }
 
         remove: Transition {
             ParallelAnimation {
-                NumberAnimation { property: "x";       to: -200; duration: 220; easing.type: Easing.InExpo  }
-                NumberAnimation { property: "opacity"; to: 0;    duration: 180; easing.type: Easing.InCubic }
+                NumberAnimation {
+                    property: "x"
+                    to: -200
+                    duration: 220
+                    easing.type: Easing.InExpo
+                }
+                NumberAnimation {
+                    property: "opacity"
+                    to: 0
+                    duration: 180
+                    easing.type: Easing.InCubic
+                }
             }
         }
 
         displaced: Transition {
-            NumberAnimation { properties: "y"; duration: 220; easing.type: Easing.OutExpo }
+            NumberAnimation {
+                properties: "y"
+                duration: 220
+                easing.type: Easing.OutExpo
+            }
         }
 
         delegate: Rectangle {
@@ -94,7 +122,10 @@ Item {
             clip: true
 
             Behavior on height {
-                NumberAnimation { duration: 220; easing.type: Easing.OutExpo }
+                NumberAnimation {
+                    duration: 220
+                    easing.type: Easing.OutExpo
+                }
             }
 
             Rectangle {
@@ -113,9 +144,12 @@ Item {
             Column {
                 id: cardCol
                 anchors {
-                    top:        parent.top;   topMargin:   10
-                    left:       parent.left;  leftMargin:  18
-                    right:      parent.right; rightMargin: 28
+                    top: parent.top
+                    topMargin: 10
+                    left: parent.left
+                    leftMargin: 18
+                    right: parent.right
+                    rightMargin: 28
                 }
                 spacing: 4
 
@@ -125,7 +159,7 @@ Item {
                     Text {
                         text: modelData.appName
                         font.pixelSize: 11
-                        font.bold: true
+                        font.bold: Fonts.boldFont
                         font.family: root.monoFont
                         color: card.accent
                         width: parent.width - timeText.implicitWidth
@@ -155,7 +189,7 @@ Item {
                     width: parent.width
                     text: modelData.summary
                     font.pixelSize: 13
-                    font.bold: true
+                    font.bold: Fonts.boldFont
                     font.family: root.monoFont
                     color: PanelColors.textAccent
                     wrapMode: Text.WordWrap
@@ -198,7 +232,7 @@ Item {
                         Text {
                             text: card.expanded ? "Collapse" : "Read more"
                             font.pixelSize: 10
-                            font.bold: true
+                            font.bold: Fonts.boldFont
                             font.family: root.monoFont
                             color: expandMouse.containsMouse ? PanelColors.textAccent : PanelColors.textDim
                         }
@@ -220,8 +254,10 @@ Item {
                 font.family: root.monoFont
                 color: dismissMouse.containsMouse ? PanelColors.error : PanelColors.textDim
                 anchors {
-                    top:   parent.top;   topMargin:   8
-                    right: parent.right; rightMargin: 8
+                    top: parent.top
+                    topMargin: 8
+                    right: parent.right
+                    rightMargin: 8
                 }
 
                 MouseArea {
@@ -238,29 +274,63 @@ Item {
     // ── Scroll hints ──────────────────────────────────────────────────────────
     Rectangle {
         visible: NotificationState.history.count > 0 && !notifList.atYBeginning
-        anchors { top: parent.top; topMargin: 4; horizontalCenter: parent.horizontalCenter }
-        width: 160; height: 24; radius: 6
+        anchors {
+            top: parent.top
+            topMargin: 4
+            horizontalCenter: parent.horizontalCenter
+        }
+        width: 160
+        height: 24
+        radius: 6
         color: PanelColors.rowBackground
         z: 20
 
         Row {
-            anchors.centerIn: parent; spacing: 6
-            Text { text: "󰁞"; font.pixelSize: 11; font.family: root.monoFont; color: PanelColors.textDim }
-            Text { text: "scroll for more"; font.pixelSize: 11; font.family: root.monoFont; color: PanelColors.textDim }
+            anchors.centerIn: parent
+            spacing: 6
+            Text {
+                text: "󰁞"
+                font.pixelSize: 11
+                font.family: root.monoFont
+                color: PanelColors.textDim
+            }
+            Text {
+                text: "scroll for more"
+                font.pixelSize: 11
+                font.family: root.monoFont
+                color: PanelColors.textDim
+            }
         }
     }
 
     Rectangle {
         visible: NotificationState.history.count > 0 && !notifList.atYEnd
-        anchors { bottom: parent.bottom; bottomMargin: 4; horizontalCenter: parent.horizontalCenter }
-        width: 160; height: 24; radius: 6
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 4
+            horizontalCenter: parent.horizontalCenter
+        }
+        width: 160
+        height: 24
+        radius: 6
         color: PanelColors.rowBackground
         z: 20
 
         Row {
-            anchors.centerIn: parent; spacing: 6
-            Text { text: "󰁆"; font.pixelSize: 11; font.family: root.monoFont; color: PanelColors.textDim }
-            Text { text: "scroll for more"; font.pixelSize: 11; font.family: root.monoFont; color: PanelColors.textDim }
+            anchors.centerIn: parent
+            spacing: 6
+            Text {
+                text: "󰁆"
+                font.pixelSize: 11
+                font.family: root.monoFont
+                color: PanelColors.textDim
+            }
+            Text {
+                text: "scroll for more"
+                font.pixelSize: 11
+                font.family: root.monoFont
+                color: PanelColors.textDim
+            }
         }
     }
 }

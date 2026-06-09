@@ -21,7 +21,8 @@ Rectangle {
         running: !root.forceReveal && root._delayedForceReveal
         onTriggered: root._delayedForceReveal = false
     }
-    onForceRevealChanged: if (forceReveal) root._delayedForceReveal = true
+    onForceRevealChanged: if (forceReveal)
+        root._delayedForceReveal = true
 
     property bool isHovered: mouseArea.containsMouse
     property bool _delayedHover: isHovered
@@ -31,31 +32,37 @@ Rectangle {
         running: !root.isHovered && root._delayedHover
         onTriggered: root._delayedHover = false
     }
-    onIsHoveredChanged: if (isHovered) root._delayedHover = true
+    onIsHoveredChanged: if (isHovered)
+        root._delayedHover = true
 
     readonly property bool isRevealed: !hoverReveal || forceReveal || _delayedForceReveal || isHovered || _delayedHover
 
     property string labelIcon: {
-        if (label === "") return ""
-        let idx = label.indexOf(" ")
-        return idx !== -1 ? label.substring(0, idx) : label
+        if (label === "")
+            return "";
+        let idx = label.indexOf(" ");
+        return idx !== -1 ? label.substring(0, idx) : label;
     }
 
     property string labelInfo: {
-        if (label === "") return ""
-        let idx = label.indexOf(" ")
-        return idx !== -1 ? label.substring(idx + 1) : ""
+        if (label === "")
+            return "";
+        let idx = label.indexOf(" ");
+        return idx !== -1 ? label.substring(idx + 1) : "";
     }
 
     TextMetrics {
         id: widestMetric
-        font.pixelSize: 16; font.bold: true; font.family: Fonts.selectedFont
+        font.pixelSize: 16
+        font.bold: Fonts.boldFont
+        font.family: Fonts.selectedFont
         text: root.widestLabel
     }
 
     property int effectiveMinWidth: {
-        if (hoverReveal && !isRevealed) return minWidth;
-        return Math.max(minWidth, widestLabel !== "" ? widestMetric.width + 16 : 0)
+        if (hoverReveal && !isRevealed)
+            return minWidth;
+        return Math.max(minWidth, widestLabel !== "" ? widestMetric.width + 16 : 0);
     }
 
     implicitHeight: 28
@@ -75,8 +82,17 @@ Rectangle {
     scale: mouseArea.containsMouse ? 1.03 : 1.0
     clip: true
 
-    Behavior on color { ColorAnimation { duration: 200 } }
-    Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
+    Behavior on color {
+        ColorAnimation {
+            duration: 200
+        }
+    }
+    Behavior on scale {
+        NumberAnimation {
+            duration: 200
+            easing.type: Easing.OutCubic
+        }
+    }
 
     MouseArea {
         id: mouseArea
@@ -89,30 +105,46 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 4
 
-        Behavior on spacing { NumberAnimation { duration: 150 } }
+        Behavior on spacing {
+            NumberAnimation {
+                duration: 150
+            }
+        }
 
         Text {
             id: iconLabel
             visible: root.labelIcon !== ""
             text: root.labelIcon
-            font.pixelSize: 16
-            font.bold: true
+            font.pixelSize: Fonts.panelIconSize
+            font.bold: Fonts.boldFont
             font.family: Fonts.selectedFont
             color: root.textColor
-            Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
+            Behavior on color {
+                ColorAnimation {
+                    duration: PanelColors.transitionDuration
+                }
+            }
         }
 
         Text {
             id: infoLabel
             visible: root.labelInfo !== "" && (!root.hoverReveal || root.isRevealed)
             text: root.labelInfo
-            font.pixelSize: 16
-            font.bold: true
+            font.pixelSize: Fonts.panelFontSize
+            font.bold: Fonts.boldFont
             font.family: Fonts.selectedFont
             color: root.textColor
             opacity: (!root.hoverReveal || root.isRevealed) ? 1 : 0
-            Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
-            Behavior on opacity { NumberAnimation { duration: 150 } }
+            Behavior on color {
+                ColorAnimation {
+                    duration: PanelColors.transitionDuration
+                }
+            }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 150
+                }
+            }
         }
     }
 }

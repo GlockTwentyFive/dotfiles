@@ -8,90 +8,101 @@ Item {
     required property Notification notification
 
     // ─── Public constants ────────────────────────────────────────────────────
-    readonly property int cardWidth:          400
-    readonly property int dismissMs:          4000
+    readonly property int cardWidth: 400
+    readonly property int dismissMs: 4000
     readonly property int collapsedBodyLines: 3
 
-    readonly property int enterDuration:    460
-    readonly property int exitDuration:     340
-    readonly property int expandDuration:   220
+    readonly property int enterDuration: 460
+    readonly property int exitDuration: 340
+    readonly property int expandDuration: 220
     readonly property int textFadeDuration: 300
 
     // ─── State ──────────────────────────────────────────────────────────────
-    property bool expanded:      false
-    property bool isExiting:     false
-    property bool dismissing:    false
-    property var  pendingAction: null
+    property bool expanded: false
+    property bool isExiting: false
+    property bool dismissing: false
+    property var pendingAction: null
 
     // ─── Sizing ─────────────────────────────────────────────────────────────
-    width:          cardWidth
+    width: cardWidth
     implicitHeight: cardRect.height
-    visible:        notification !== null
+    visible: notification !== null
 
     // ─── Accent colour ──────────────────────────────────────────────────────
     readonly property color accentColor: {
-        if (!notification)                                   return Colors.blueGrey300
-        if (notification.urgency === Notification.Critical)  return PanelColors.error
-        if (notification.hints["x-hint-color"])              return notification.hints["x-hint-color"]
-        return PanelColors.hashColor(notification.appName)
+        if (!notification)
+            return Colors.blueGrey300;
+        if (notification.urgency === Notification.Critical)
+            return PanelColors.error;
+        if (notification.hints["x-hint-color"])
+            return notification.hints["x-hint-color"];
+        return PanelColors.hashColor(notification.appName);
     }
 
     readonly property bool bodyIsLong: {
-        if (!notification) return false
-        var body = notification.body ?? ""
-        if (body === "") return false
-        return body.length > 120 || body.split("\n").length > 3
+        if (!notification)
+            return false;
+        var body = notification.body ?? "";
+        if (body === "")
+            return false;
+        return body.length > 120 || body.split("\n").length > 3;
     }
 
     // ─── Dismiss / expire helpers ────────────────────────────────────────────
     function pauseDismiss() {
-        dismissTimer.stop()
-        ringTimer.stop()
-        hoverPauseAnim.start()
+        dismissTimer.stop();
+        ringTimer.stop();
+        hoverPauseAnim.start();
     }
 
     function resumeDismiss() {
-        hoverPauseAnim.stop()
-        ringFadeInAnim.start()
-        timerItem.startTime   = Date.now() - (1.0 - timerRing.progress) * root.dismissMs
-        dismissTimer.interval = Math.max(50, timerRing.progress * root.dismissMs)
-        dismissTimer.restart()
-        ringTimer.start()
+        hoverPauseAnim.stop();
+        ringFadeInAnim.start();
+        timerItem.startTime = Date.now() - (1.0 - timerRing.progress) * root.dismissMs;
+        dismissTimer.interval = Math.max(50, timerRing.progress * root.dismissMs);
+        dismissTimer.restart();
+        ringTimer.start();
     }
 
     function _doExit() {
-        if (root.dismissing) return
-        root.dismissing = true
-        dismissTimer.stop()
-        ringTimer.running = false
-        exitAnim.start()
+        if (root.dismissing)
+            return;
+        root.dismissing = true;
+        dismissTimer.stop();
+        ringTimer.running = false;
+        exitAnim.start();
     }
 
-    function dismiss() { _doExit() }
+    function dismiss() {
+        _doExit();
+    }
 
-    function expire() { _doExit() }
+    function expire() {
+        _doExit();
+    }
 
     function invokeAction(action) {
-        if (root.dismissing) return
-        root.pendingAction = action
-        _doExit()
+        if (root.dismissing)
+            return;
+        root.pendingAction = action;
+        _doExit();
     }
 
     // ─── Lifecycle ───────────────────────────────────────────────────────────
     Component.onCompleted: {
-        cardRect.x       = cardWidth + 40
-        cardRect.opacity = 0
-        enterAnim.start()
-        dismissTimer.start()
-        timerItem.startTime = Date.now()
-        ringTimer.start()
+        cardRect.x = cardWidth + 40;
+        cardRect.opacity = 0;
+        enterAnim.start();
+        dismissTimer.start();
+        timerItem.startTime = Date.now();
+        ringTimer.start();
     }
 
     // ═══════════════════════════════════════════════════════════════════════
     // CARD VISUAL
     // ═══════════════════════════════════════════════════════════════════════
     Rectangle {
-        id:    cardRect
+        id: cardRect
         width: root.cardWidth
 
         // ── Height ────────────────────────────────────────────────────────
@@ -101,32 +112,49 @@ Item {
         height: cardContent.implicitHeight + 28 + (expandButton.visible ? 36 : 0)
 
         Behavior on height {
-            NumberAnimation { duration: root.expandDuration; easing.type: Easing.OutQuart }
+            NumberAnimation {
+                duration: root.expandDuration
+                easing.type: Easing.OutQuart
+            }
         }
 
-        x:             0
-        opacity:       1
-        radius:        10
-        color:         PanelColors.popupBackground
-        Behavior on color { ColorAnimation { duration: PanelColors.transitionDuration } }
-        border.color:  root.accentColor
-        Behavior on border.color { ColorAnimation { duration: PanelColors.transitionDuration } }
-        border.width:  2
-        clip:          true
+        x: 0
+        opacity: 1
+        radius: 10
+        color: PanelColors.popupBackground
+        Behavior on color {
+            ColorAnimation {
+                duration: PanelColors.transitionDuration
+            }
+        }
+        border.color: root.accentColor
+        Behavior on border.color {
+            ColorAnimation {
+                duration: PanelColors.transitionDuration
+            }
+        }
+        border.width: 2
+        clip: true
         layer.enabled: true
 
         // ─── Enter ────────────────────────────────────────────────────────
         ParallelAnimation {
             id: enterAnim
             NumberAnimation {
-                target: cardRect; property: "opacity"
-                from: 0; to: 1
-                duration: root.enterDuration * 0.85; easing.type: Easing.OutCubic
+                target: cardRect
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: root.enterDuration * 0.85
+                easing.type: Easing.OutCubic
             }
             NumberAnimation {
-                target: cardRect; property: "x"
-                from: root.cardWidth + 40; to: 0
-                duration: root.enterDuration; easing.type: Easing.OutExpo
+                target: cardRect
+                property: "x"
+                from: root.cardWidth + 40
+                to: 0
+                duration: root.enterDuration
+                easing.type: Easing.OutExpo
             }
         }
 
@@ -135,24 +163,35 @@ Item {
             id: exitAnim
             ParallelAnimation {
                 NumberAnimation {
-                    target: cardRect; property: "x"
+                    target: cardRect
+                    property: "x"
                     to: root.cardWidth + 24
-                    duration: root.exitDuration; easing.type: Easing.InExpo
+                    duration: root.exitDuration
+                    easing.type: Easing.InExpo
                 }
                 NumberAnimation {
-                    target: cardRect; property: "opacity"; to: 0
-                    duration: root.exitDuration * 0.75; easing.type: Easing.InCubic
+                    target: cardRect
+                    property: "opacity"
+                    to: 0
+                    duration: root.exitDuration * 0.75
+                    easing.type: Easing.InCubic
                 }
             }
-            ScriptAction   { script: { root.isExiting = true } }
-            PauseAnimation { duration: 60 }
-            ScriptAction   {
+            ScriptAction {
+                script: {
+                    root.isExiting = true;
+                }
+            }
+            PauseAnimation {
+                duration: 60
+            }
+            ScriptAction {
                 script: {
                     if (root.pendingAction) {
-                        root.pendingAction.invoke()
-                        root.pendingAction = null
+                        root.pendingAction.invoke();
+                        root.pendingAction = null;
                     } else {
-                        notification.dismiss()
+                        notification.dismiss();
                     }
                 }
             }
@@ -160,11 +199,15 @@ Item {
 
         // ─── Left accent strip ────────────────────────────────────────────
         Rectangle {
-            width:  4
+            width: 4
             height: parent.height - 24
             radius: 2
-            anchors { left: parent.left; leftMargin: 7; verticalCenter: parent.verticalCenter }
-            color:   root.accentColor
+            anchors {
+                left: parent.left
+                leftMargin: 7
+                verticalCenter: parent.verticalCenter
+            }
+            color: root.accentColor
             opacity: 0.9
         }
 
@@ -174,96 +217,98 @@ Item {
         // card so pauseDismiss / resumeDismiss work everywhere including over
         // body text. All child MouseAreas receive clicks unobstructed.
         MouseArea {
-            id:              hoverOverlay
-            anchors.fill:    parent
-            hoverEnabled:    true
+            id: hoverOverlay
+            anchors.fill: parent
+            hoverEnabled: true
             acceptedButtons: Qt.NoButton
-            onEntered:       root.pauseDismiss()
-            onExited:        root.resumeDismiss()
+            onEntered: root.pauseDismiss()
+            onExited: root.resumeDismiss()
         }
 
         // ─── Card content ─────────────────────────────────────────────────
         Column {
             id: cardContent
             anchors {
-                top: parent.top; topMargin: 14
-                left: parent.left; leftMargin: 24
-                right: parent.right; rightMargin: 16
+                top: parent.top
+                topMargin: 14
+                left: parent.left
+                leftMargin: 24
+                right: parent.right
+                rightMargin: 16
             }
             spacing: 0
 
             // ── Header (clicking here dismisses) ──────────────────────────
             Item {
-                width:  parent.width
+                width: parent.width
                 height: 22
 
                 MouseArea {
                     anchors.fill: parent
-                    cursorShape:  Qt.PointingHandCursor
-                    enabled:      !root.dismissing
-                    onClicked:    root.dismiss()
+                    cursorShape: Qt.PointingHandCursor
+                    enabled: !root.dismissing
+                    onClicked: root.dismiss()
                 }
 
                 Row {
                     anchors.fill: parent
-                    spacing:      8
+                    spacing: 8
 
                     Image {
-                        id:      appIconImg
+                        id: appIconImg
                         visible: (notification?.appIcon ?? "") !== "" && status === Image.Ready
-                        source:  visible ? "image://icon/" + notification.appIcon : ""
-                        width:   18; height: 18
+                        source: visible ? "image://icon/" + notification.appIcon : ""
+                        width: 18
+                        height: 18
                         anchors.verticalCenter: parent.verticalCenter
                         fillMode: Image.PreserveAspectFit
-                        smooth:   true
+                        smooth: true
                     }
 
                     Text {
-                        text:           notification?.appName ?? ""
+                        text: notification?.appName ?? ""
                         font.pixelSize: 13
-                        font.bold:      true
-                        font.family:    Fonts.selectedFont
-                        color:          root.accentColor
-                        elide:          Text.ElideRight
+                        font.bold: Fonts.boldFont
+                        font.family: Fonts.selectedFont
+                        color: root.accentColor
+                        elide: Text.ElideRight
                         anchors.verticalCenter: parent.verticalCenter
-                        width: parent.width
-                              - timerItem.width
-                              - (appIconImg.visible ? appIconImg.width + parent.spacing : 0)
-                              - parent.spacing
+                        width: parent.width - timerItem.width - (appIconImg.visible ? appIconImg.width + parent.spacing : 0) - parent.spacing
                     }
 
                     Item {
-                        id:     timerItem
-                        width:  32; height: 22
+                        id: timerItem
+                        width: 32
+                        height: 22
                         anchors.verticalCenter: parent.verticalCenter
                         property real startTime: Date.now()
 
                         Canvas {
-                            id:            timerRing
-                            width:         22; height: 22
+                            id: timerRing
+                            width: 22
+                            height: 22
                             anchors.right: parent.right
                             property real progress: 1.0
                             onPaint: {
-                                var ctx = getContext("2d")
-                                ctx.reset()
-                                ctx.strokeStyle = root.accentColor
-                                ctx.lineWidth   = 2
-                                ctx.lineCap     = "round"
-                                ctx.beginPath()
-                                ctx.arc(11, 11, 8,
-                                    -Math.PI / 2,
-                                    -Math.PI / 2 + 2 * Math.PI * progress, false)
-                                ctx.stroke()
+                                var ctx = getContext("2d");
+                                ctx.reset();
+                                ctx.strokeStyle = root.accentColor;
+                                ctx.lineWidth = 2;
+                                ctx.lineCap = "round";
+                                ctx.beginPath();
+                                ctx.arc(11, 11, 8, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * progress, false);
+                                ctx.stroke();
                             }
                             onProgressChanged: requestPaint()
                         }
 
                         Timer {
-                            id: ringTimer; interval: 50; running: false; repeat: true
+                            id: ringTimer
+                            interval: 50
+                            running: false
+                            repeat: true
                             onTriggered: {
-                                timerRing.progress = Math.max(0,
-                                    (root.dismissMs - (Date.now() - timerItem.startTime))
-                                    / root.dismissMs)
+                                timerRing.progress = Math.max(0, (root.dismissMs - (Date.now() - timerItem.startTime)) / root.dismissMs);
                             }
                         }
                     }
@@ -272,124 +317,137 @@ Item {
 
             // ── Divider ───────────────────────────────────────────────────
             Rectangle {
-                width: parent.width; height: 1
-                color: PanelColors.rowBackground; opacity: 0.6
+                width: parent.width
+                height: 1
+                color: PanelColors.rowBackground
+                opacity: 0.6
             }
 
-            Item { width: 1; height: 8 }
+            Item {
+                width: 1
+                height: 8
+            }
 
             // ── Body row ─────────────────────────────────────────────────
             Row {
-                width: parent.width; spacing: 10
+                width: parent.width
+                spacing: 10
 
                 Column {
-                    width:   notifImageFrame.visible
-                             ? parent.width - notifImageFrame.width - parent.spacing
-                             : parent.width
+                    width: notifImageFrame.visible ? parent.width - notifImageFrame.width - parent.spacing : parent.width
                     spacing: 4
 
                     // Summary — clicking dismisses
                     Text {
-                        visible:          (notification?.summary ?? "") !== ""
-                        text:             notification?.summary ?? ""
-                        font.pixelSize:   18
-                        font.bold:        true
-                        font.family:      Fonts.selectedFont
-                        color:            PanelColors.textAccent
-                        width:            parent.width
-                        wrapMode:         Text.WordWrap
+                        visible: (notification?.summary ?? "") !== ""
+                        text: notification?.summary ?? ""
+                        font.pixelSize: 18
+                        font.bold: Fonts.boldFont
+                        font.family: Fonts.selectedFont
+                        color: PanelColors.textAccent
+                        width: parent.width
+                        wrapMode: Text.WordWrap
                         maximumLineCount: 2
-                        elide:            Text.ElideRight
+                        elide: Text.ElideRight
 
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape:  Qt.PointingHandCursor
-                            enabled:      !root.dismissing
-                            onClicked:    root.dismiss()
+                            cursorShape: Qt.PointingHandCursor
+                            enabled: !root.dismissing
+                            onClicked: root.dismiss()
                         }
                     }
 
                     // ── Body text container ───────────────────────────────
                     Item {
-                        id:      bodyTextContainer
+                        id: bodyTextContainer
                         visible: (notification?.body ?? "") !== ""
-                        width:   parent.width
-                        clip:    true
+                        width: parent.width
+                        clip: true
 
                         readonly property real collapsedH: collapsedText.implicitHeight
-                        readonly property real expandedH:  expandedText.implicitHeight
+                        readonly property real expandedH: expandedText.implicitHeight
 
                         height: root.expanded ? expandedH : collapsedH
 
                         // Same duration + easing as cardRect so they move together
                         Behavior on height {
-                            NumberAnimation { duration: root.expandDuration; easing.type: Easing.OutQuart }
+                            NumberAnimation {
+                                duration: root.expandDuration
+                                easing.type: Easing.OutQuart
+                            }
                         }
 
                         // Collapsed (capped lines)
                         Text {
-                            id:               collapsedText
-                            text:             notification?.body ?? ""
-                            font.pixelSize:   14
-                            font.family:      Fonts.selectedFont
-                            color:            PanelColors.textMain
-                            width:            parent.width
-                            wrapMode:         Text.WordWrap
+                            id: collapsedText
+                            text: notification?.body ?? ""
+                            font.pixelSize: 14
+                            font.family: Fonts.selectedFont
+                            color: PanelColors.textMain
+                            width: parent.width
+                            wrapMode: Text.WordWrap
                             maximumLineCount: root.collapsedBodyLines
-                            elide:            Text.ElideRight
-                            textFormat:       Text.PlainText
-                            opacity:          root.expanded ? 0 : 1
+                            elide: Text.ElideRight
+                            textFormat: Text.PlainText
+                            opacity: root.expanded ? 0 : 1
                             Behavior on opacity {
-                                NumberAnimation { duration: root.textFadeDuration; easing.type: Easing.InOutCubic }
+                                NumberAnimation {
+                                    duration: root.textFadeDuration
+                                    easing.type: Easing.InOutCubic
+                                }
                             }
                         }
 
                         // Expanded (full, overlaid)
                         Text {
-                            id:             expandedText
-                            text:           notification?.body ?? ""
+                            id: expandedText
+                            text: notification?.body ?? ""
                             font.pixelSize: 14
-                            font.family:    Fonts.selectedFont
-                            color:          PanelColors.textMain
-                            width:          parent.width
-                            wrapMode:       Text.WordWrap
-                            textFormat:     Text.PlainText
-                            opacity:        root.expanded ? 1 : 0
+                            font.family: Fonts.selectedFont
+                            color: PanelColors.textMain
+                            width: parent.width
+                            wrapMode: Text.WordWrap
+                            textFormat: Text.PlainText
+                            opacity: root.expanded ? 1 : 0
                             Behavior on opacity {
-                                NumberAnimation { duration: root.textFadeDuration; easing.type: Easing.InOutCubic }
+                                NumberAnimation {
+                                    duration: root.textFadeDuration
+                                    easing.type: Easing.InOutCubic
+                                }
                             }
                         }
 
                         // Clicking body text dismisses
                         MouseArea {
                             anchors.fill: parent
-                            cursorShape:  Qt.PointingHandCursor
-                            enabled:      !root.dismissing
-                            onClicked:    root.dismiss()
+                            cursorShape: Qt.PointingHandCursor
+                            enabled: !root.dismissing
+                            onClicked: root.dismiss()
                         }
                     }
                 }
 
                 // Thumbnail
                 Item {
-                    id:      notifImageFrame
+                    id: notifImageFrame
                     visible: (notification?.image ?? "") !== "" && notifImageInner.status === Image.Ready
-                    width:   visible ? 60 : 0
-                    height:  60
+                    width: visible ? 60 : 0
+                    height: 60
 
                     Image {
-                        id:           notifImageInner
+                        id: notifImageInner
                         anchors.fill: parent
                         anchors.margins: 2
-                        fillMode:     Image.PreserveAspectCrop
-                        source:       notification?.image ?? ""
-                        smooth:       true
+                        fillMode: Image.PreserveAspectCrop
+                        source: notification?.image ?? ""
+                        smooth: true
                     }
 
                     Rectangle {
                         anchors.fill: parent
-                        color:        "transparent"
-                        radius:       8
+                        color: "transparent"
+                        radius: 8
                         border.color: root.accentColor
                         border.width: 2
                     }
@@ -397,28 +455,32 @@ Item {
             }
 
             Item {
-                width:  1
+                width: 1
                 height: actionArea.visible ? 10 : 0
             }
 
             // ── Action buttons ────────────────────────────────────────────
             Item {
-                id:      actionArea
+                id: actionArea
                 visible: (notification?.actions?.length ?? 0) > 0
-                width:   parent.width
-                height:  visible ? actionsRow.implicitHeight + 12 : 0
+                width: parent.width
+                height: visible ? actionsRow.implicitHeight + 12 : 0
 
                 Rectangle {
-                    width: parent.width; height: 1
-                    color: root.accentColor; opacity: 0.25
+                    width: parent.width
+                    height: 1
+                    color: root.accentColor
+                    opacity: 0.25
                     anchors.top: parent.top
                 }
 
                 Row {
                     id: actionsRow
                     anchors {
-                        top: parent.top; topMargin: 12
-                        left: parent.left; right: parent.right
+                        top: parent.top
+                        topMargin: 12
+                        left: parent.left
+                        right: parent.right
                     }
                     spacing: 8
 
@@ -428,101 +490,136 @@ Item {
                         Rectangle {
                             required property var modelData
                             height: 30
-                            width:  actionLabel.implicitWidth + 24
+                            width: actionLabel.implicitWidth + 24
                             radius: 6
-                            color:  Qt.lighter(root.accentColor, actionMouse.containsMouse ? 1.15 : 1.0)
-                            scale:  actionMouse.containsMouse ? 1.03 : 1.0
-                            Behavior on color { ColorAnimation  { duration: 150 } }
-                            Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutSine } }
+                            color: Qt.lighter(root.accentColor, actionMouse.containsMouse ? 1.15 : 1.0)
+                            scale: actionMouse.containsMouse ? 1.03 : 1.0
+                            Behavior on color {
+                                ColorAnimation {
+                                    duration: 150
+                                }
+                            }
+                            Behavior on scale {
+                                NumberAnimation {
+                                    duration: 150
+                                    easing.type: Easing.OutSine
+                                }
+                            }
 
                             Text {
-                                id:               actionLabel
-                                text:             modelData.text
-                                font.pixelSize:   13
-                                font.bold:        true
-                                font.family:      Fonts.selectedFont
-                                color:            PanelColors.popupBackground
+                                id: actionLabel
+                                text: modelData.text
+                                font.pixelSize: 13
+                                font.bold: Fonts.boldFont
+                                font.family: Fonts.selectedFont
+                                color: PanelColors.popupBackground
                                 anchors.centerIn: parent
                             }
 
                             MouseArea {
-                                id:           actionMouse
+                                id: actionMouse
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                cursorShape:  Qt.PointingHandCursor
-                                onClicked:    root.invokeAction(modelData)
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: root.invokeAction(modelData)
                             }
                         }
                     }
                 }
             }
-
         } // Column cardContent
 
         // ── Expand / collapse button — pinned to bottom, outside Column ───
         Item {
-            id:      expandButton
+            id: expandButton
             visible: root.bodyIsLong
-            width:   parent.width
-            height:  36
+            width: parent.width
+            height: 36
             anchors.bottom: parent.bottom
 
             Rectangle {
-                width: parent.width; height: 1
-                color: PanelColors.rowBackground; opacity: 0.6
+                width: parent.width
+                height: 1
+                color: PanelColors.rowBackground
+                opacity: 0.6
                 anchors.top: parent.top
             }
 
             Row {
                 anchors.centerIn: parent
-                spacing:          6
+                spacing: 6
 
                 Text {
-                    text:           root.expanded ? "" : ""
+                    text: root.expanded ? "" : ""
                     font.pixelSize: 17
-                    font.family:    Fonts.selectedFont
-                    color:          root.accentColor
-                    opacity:        expandButtonMouse.containsMouse ? 1.0 : 0.65
+                    font.family: Fonts.selectedFont
+                    color: root.accentColor
+                    opacity: expandButtonMouse.containsMouse ? 1.0 : 0.65
                     anchors.verticalCenter: parent.verticalCenter
-                    Behavior on opacity { NumberAnimation { duration: 120 } }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 120
+                        }
+                    }
                 }
 
                 Text {
-                    text:           root.expanded ? "Collapse" : "Show more"
+                    text: root.expanded ? "Collapse" : "Show more"
                     font.pixelSize: 15
-                    font.bold:      true
-                    font.family:    Fonts.selectedFont
-                    color:          root.accentColor
-                    opacity:        expandButtonMouse.containsMouse ? 1.0 : 0.65
+                    font.bold: Fonts.boldFont
+                    font.family: Fonts.selectedFont
+                    color: root.accentColor
+                    opacity: expandButtonMouse.containsMouse ? 1.0 : 0.65
                     anchors.verticalCenter: parent.verticalCenter
-                    Behavior on opacity { NumberAnimation { duration: 120 } }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 120
+                        }
+                    }
                 }
             }
 
             MouseArea {
-                id:           expandButtonMouse
+                id: expandButtonMouse
                 anchors.fill: parent
                 hoverEnabled: true
-                cursorShape:  Qt.PointingHandCursor
-                onClicked:    root.expanded = !root.expanded
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.expanded = !root.expanded
             }
         }
-
     } // Rectangle cardRect
 
     // ─── Animations ───────────────────────────────────────────────────────────
     SequentialAnimation {
         id: hoverPauseAnim
-        NumberAnimation { target: timerRing; property: "progress"; to: 1.0; duration: 200 }
-        PauseAnimation  { duration: 100 }
-        NumberAnimation { target: timerRing; property: "opacity"; to: 0.0; duration: 200 }
+        NumberAnimation {
+            target: timerRing
+            property: "progress"
+            to: 1.0
+            duration: 200
+        }
+        PauseAnimation {
+            duration: 100
+        }
+        NumberAnimation {
+            target: timerRing
+            property: "opacity"
+            to: 0.0
+            duration: 200
+        }
     }
 
     NumberAnimation {
-        id: ringFadeInAnim; target: timerRing; property: "opacity"; to: 1.0; duration: 150
+        id: ringFadeInAnim
+        target: timerRing
+        property: "opacity"
+        to: 1.0
+        duration: 150
     }
 
     Timer {
-        id: dismissTimer; interval: root.dismissMs; onTriggered: root.expire()
+        id: dismissTimer
+        interval: root.dismissMs
+        onTriggered: root.expire()
     }
 }

@@ -6,15 +6,14 @@ Item {
     id: root
     implicitHeight: grid.implicitHeight
 
-
     component QuickToggle: Rectangle {
         id: toggle
         property string icon: ""
         property string label: ""
         property bool active: false
         property color accentColor: PanelColors.launcher
-        signal clicked()
-        signal rightClicked()
+        signal clicked
+        signal rightClicked
 
         Layout.fillWidth: true
         Layout.preferredHeight: 42
@@ -23,7 +22,11 @@ Item {
         border.color: active ? Qt.lighter(accentColor, 1.2) : "transparent"
         border.width: 1
 
-        Behavior on color { ColorAnimation { duration: 150 } }
+        Behavior on color {
+            ColorAnimation {
+                duration: 150
+            }
+        }
 
         RowLayout {
             anchors.fill: parent
@@ -37,19 +40,27 @@ Item {
                 font.family: Fonts.selectedFont
                 color: toggle.active ? PanelColors.pillForeground : toggle.accentColor
                 Layout.alignment: Qt.AlignVCenter
-                Behavior on color { ColorAnimation { duration: 150 } }
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
             }
 
             Text {
                 text: toggle.label
                 font.pixelSize: 12
-                font.bold: true
+                font.bold: Fonts.boldFont
                 font.family: Fonts.selectedFont
                 color: toggle.active ? PanelColors.pillForeground : PanelColors.textMain
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 wrapMode: Text.WordWrap
-                Behavior on color { ColorAnimation { duration: 150 } }
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
             }
         }
 
@@ -59,11 +70,11 @@ Item {
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.RightButton
-            onClicked: (mouse) => {
+            onClicked: mouse => {
                 if (mouse.button === Qt.RightButton)
-                    toggle.rightClicked()
+                    toggle.rightClicked();
                 else
-                    toggle.clicked()
+                    toggle.clicked();
             }
         }
 
@@ -72,7 +83,11 @@ Item {
             radius: parent.radius
             color: "white"
             opacity: ma.containsMouse ? 0.05 : 0
-            Behavior on opacity { NumberAnimation { duration: 150 } }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 150
+                }
+            }
         }
     }
 
@@ -94,9 +109,7 @@ Item {
 
         QuickToggle {
             icon: "󰅶"
-            label: SystemTogglesState.caffeineOn
-                ? "Caffeine  " + SystemTogglesState.caffeineCountdown
-                : "Caffeine"
+            label: SystemTogglesState.caffeineOn ? "Caffeine  " + SystemTogglesState.caffeineCountdown : "Caffeine"
             active: SystemTogglesState.caffeineOn
             accentColor: Colors.orange200
             onClicked: SystemTogglesState.cycleCaffeine()

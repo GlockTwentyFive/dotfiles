@@ -22,15 +22,18 @@ SectionBase {
     }
 
     readonly property string greeting: {
-        if (currentHour >= 5 && currentHour < 12) return "the wind is rising,"
-        if (currentHour >= 12 && currentHour < 18) return "the rose is watered,"
-        if (currentHour >= 18 && currentHour < 23) return "one more sunset,"
-        return "you tamed the stars,"
+        if (currentHour >= 5 && currentHour < 12)
+            return "the wind is rising,";
+        if (currentHour >= 12 && currentHour < 18)
+            return "the rose is watered,";
+        if (currentHour >= 18 && currentHour < 23)
+            return "one more sunset,";
+        return "you tamed the stars,";
     }
 
     Component.onCompleted: {
-        root.username = Quickshell.env("USER") || "User"
-        checkLocalAvatar.running = true
+        root.username = Quickshell.env("USER") || "User";
+        checkLocalAvatar.running = true;
     }
 
     FileView {
@@ -41,7 +44,7 @@ SectionBase {
     Process {
         id: checkLocalAvatar
         command: ["test", "-f", root.localAvatar]
-        onExited: (exitCode) => {
+        onExited: exitCode => {
             if (exitCode === 0) {
                 root.avatarPath = "file://" + root.localAvatar;
             } else {
@@ -144,8 +147,17 @@ SectionBase {
                 border.color: profileMouseArea.containsMouse ? PanelColors.textAccent : PanelColors.profile
                 radius: 5
                 scale: profileMouseArea.containsMouse ? 1.05 : 1.0
-                Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
-                Behavior on border.color { ColorAnimation { duration: 200 } }
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 200
+                        easing.type: Easing.OutCubic
+                    }
+                }
+                Behavior on border.color {
+                    ColorAnimation {
+                        duration: 200
+                    }
+                }
 
                 MouseArea {
                     id: profileMouseArea
@@ -192,7 +204,7 @@ SectionBase {
             Text {
                 text: root.username
                 font.pixelSize: 24
-                font.bold: true
+                font.bold: Fonts.boldFont
                 font.family: Fonts.selectedFont
                 color: PanelColors.textAccent
             }

@@ -21,32 +21,34 @@ PanelWindow {
     WlrLayershell.layer: WlrLayershell.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
-    PolkitAgent { id: agent }
+    PolkitAgent {
+        id: agent
+    }
 
     // Extract binary name from message, e.g. `/usr/bin/true` → `true`
     readonly property string appName: {
-        var msg = agent.flow?.message ?? ""
-        var match = msg.match(/`([^`]+)`/)
+        var msg = agent.flow?.message ?? "";
+        var match = msg.match(/`([^`]+)`/);
         if (match) {
-            var parts = match[1].split("/")
-            return parts[parts.length - 1]
+            var parts = match[1].split("/");
+            return parts[parts.length - 1];
         }
         // fallback: last segment of actionId
-        var idParts = (agent.flow?.actionId ?? "").split(".")
-        return idParts[idParts.length - 1]
+        var idParts = (agent.flow?.actionId ?? "").split(".");
+        return idParts[idParts.length - 1];
     }
 
     Connections {
         target: agent
         function onAuthenticationRequestStarted() {
-            root.visible = true
-            passField.text = ""
-            passField.forceActiveFocus()
+            root.visible = true;
+            passField.text = "";
+            passField.forceActiveFocus();
         }
         function onFlowChanged() {
             if (!agent.flow) {
-                root.visible = false
-                passField.text = ""
+                root.visible = false;
+                passField.text = "";
             }
         }
     }
@@ -54,13 +56,13 @@ PanelWindow {
     Connections {
         target: agent.flow
         function onAuthenticationFailed() {
-            shakeAnim.start()
-            passField.text = ""
-            passField.forceActiveFocus()
+            shakeAnim.start();
+            passField.text = "";
+            passField.forceActiveFocus();
         }
         function onIsResponseRequiredChanged() {
             if (agent.flow?.isResponseRequired)
-                passField.forceActiveFocus()
+                passField.forceActiveFocus();
         }
     }
 
@@ -77,18 +79,48 @@ PanelWindow {
         radius: 8
         color: PanelColors.popupBackground
         border.width: 4
-        border.color: passField.activeFocus && !shakeAnim.running
-            ? PanelColors.audio
-            : PanelColors.border
+        border.color: passField.activeFocus && !shakeAnim.running ? PanelColors.audio : PanelColors.border
 
-        Behavior on border.color { ColorAnimation { duration: 150 } }
+        Behavior on border.color {
+            ColorAnimation {
+                duration: 150
+            }
+        }
 
         SequentialAnimation {
             id: shakeAnim
-            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 0;   to: 10;  duration: 50; easing.type: Easing.OutQuad }
-            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 10;  to: -10; duration: 50; easing.type: Easing.OutQuad }
-            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: -10; to: 10;  duration: 50; easing.type: Easing.OutQuad }
-            NumberAnimation { target: card; property: "anchors.horizontalCenterOffset"; from: 10;  to: 0;   duration: 50; easing.type: Easing.OutQuad }
+            NumberAnimation {
+                target: card
+                property: "anchors.horizontalCenterOffset"
+                from: 0
+                to: 10
+                duration: 50
+                easing.type: Easing.OutQuad
+            }
+            NumberAnimation {
+                target: card
+                property: "anchors.horizontalCenterOffset"
+                from: 10
+                to: -10
+                duration: 50
+                easing.type: Easing.OutQuad
+            }
+            NumberAnimation {
+                target: card
+                property: "anchors.horizontalCenterOffset"
+                from: -10
+                to: 10
+                duration: 50
+                easing.type: Easing.OutQuad
+            }
+            NumberAnimation {
+                target: card
+                property: "anchors.horizontalCenterOffset"
+                from: 10
+                to: 0
+                duration: 50
+                easing.type: Easing.OutQuad
+            }
         }
 
         Column {
@@ -103,7 +135,9 @@ PanelWindow {
                 spacing: 12
 
                 Rectangle {
-                    width: 40; height: 40; radius: 8
+                    width: 40
+                    height: 40
+                    radius: 8
                     anchors.top: parent.top
                     color: PanelColors.rowBackground
                     Text {
@@ -126,7 +160,7 @@ PanelWindow {
                         text: "Password required"
                         color: PanelColors.textMain
                         font.pixelSize: 16
-                        font.bold: true
+                        font.bold: Fonts.boldFont
                         font.family: Fonts.selectedFont
                     }
 
@@ -142,7 +176,10 @@ PanelWindow {
                 }
             }
 
-            Item { width: parent.width; height: 14 }
+            Item {
+                width: parent.width
+                height: 14
+            }
 
             // ── Divider ─────────────────────────────────────────
             Rectangle {
@@ -153,15 +190,17 @@ PanelWindow {
                 opacity: 0.6
             }
 
-            Item { width: parent.width; height: 14 }
+            Item {
+                width: parent.width
+                height: 14
+            }
 
             // ── Supplementary message ───────────────────────────
             Text {
                 visible: (agent.flow?.supplementaryMessage ?? "") !== ""
                 width: parent.width
                 text: agent.flow?.supplementaryMessage ?? ""
-                color: (agent.flow?.supplementaryIsError ?? false)
-                    ? PanelColors.error : PanelColors.textDim
+                color: (agent.flow?.supplementaryIsError ?? false) ? PanelColors.error : PanelColors.textDim
                 font.pixelSize: 12
                 font.family: Fonts.selectedFont
                 wrapMode: Text.WordWrap
@@ -177,21 +216,26 @@ PanelWindow {
                 border.width: passField.activeFocus && !shakeAnim.running ? 2 : 0
                 border.color: PanelColors.audio
 
-                Behavior on border.color { ColorAnimation { duration: 150 } }
+                Behavior on border.color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
 
                 TextInput {
                     id: passField
                     anchors {
-                        left: parent.left; leftMargin: 14
-                        right: parent.right; rightMargin: 14
+                        left: parent.left
+                        leftMargin: 14
+                        right: parent.right
+                        rightMargin: 14
                         verticalCenter: parent.verticalCenter
                     }
                     verticalAlignment: TextInput.AlignVCenter
-                    echoMode: (agent.flow?.responseVisible ?? false)
-                        ? TextInput.Normal : TextInput.Password
+                    echoMode: (agent.flow?.responseVisible ?? false) ? TextInput.Normal : TextInput.Password
                     color: PanelColors.textMain
                     font.pixelSize: 13
-                    font.bold: true
+                    font.bold: Fonts.boldFont
                     font.family: Fonts.selectedFont
                     focus: true
 
@@ -205,8 +249,8 @@ PanelWindow {
 
                     onAccepted: {
                         if (agent.flow?.isResponseRequired) {
-                            agent.flow.submit(passField.text)
-                            passField.text = ""
+                            agent.flow.submit(passField.text);
+                            passField.text = "";
                         }
                     }
 
@@ -220,7 +264,10 @@ PanelWindow {
                 }
             }
 
-            Item { width: parent.width; height: 14 }
+            Item {
+                width: parent.width
+                height: 14
+            }
 
             // ── Buttons ─────────────────────────────────────────
             Row {
@@ -232,9 +279,7 @@ PanelWindow {
                     width: (parent.width / 2) - 6
                     height: 38
                     radius: 8
-                    color: cancelMa.containsMouse
-                        ? Qt.lighter(PanelColors.rowBackground, 1.15)
-                        : PanelColors.rowBackground
+                    color: cancelMa.containsMouse ? Qt.lighter(PanelColors.rowBackground, 1.15) : PanelColors.rowBackground
                     border.width: 1
                     border.color: PanelColors.border
 
@@ -265,7 +310,11 @@ PanelWindow {
                         onClicked: agent.flow?.cancelAuthenticationRequest()
                     }
 
-                    Behavior on color { ColorAnimation { duration: 150 } }
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 150
+                        }
+                    }
                 }
 
                 Rectangle {
@@ -273,9 +322,7 @@ PanelWindow {
                     width: (parent.width / 2) - 6
                     height: 38
                     radius: 8
-                    color: authMa.containsMouse
-                        ? Qt.lighter(PanelColors.audio, 1.15)
-                        : PanelColors.audio
+                    color: authMa.containsMouse ? Qt.lighter(PanelColors.audio, 1.15) : PanelColors.audio
 
                     Row {
                         anchors.centerIn: parent
@@ -290,7 +337,7 @@ PanelWindow {
                         Text {
                             text: "Authenticate"
                             font.family: Fonts.selectedFont
-                            font.bold: true
+                            font.bold: Fonts.boldFont
                             font.pixelSize: 13
                             color: PanelColors.popupBackground
                             anchors.verticalCenter: parent.verticalCenter
@@ -304,13 +351,17 @@ PanelWindow {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
                             if (agent.flow?.isResponseRequired) {
-                                agent.flow.submit(passField.text)
-                                passField.text = ""
+                                agent.flow.submit(passField.text);
+                                passField.text = "";
                             }
                         }
                     }
 
-                    Behavior on color { ColorAnimation { duration: 150 } }
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: 150
+                        }
+                    }
                 }
             }
         }

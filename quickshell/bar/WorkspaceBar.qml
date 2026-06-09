@@ -27,28 +27,35 @@ Row {
         target: Hyprland
         enabled: root.isHyprland
 
-        function onWorkspacesChanged()       { root._syncHyprland() }
-        function onFocusedWorkspaceChanged() { root._syncHyprland() }
+        function onWorkspacesChanged() {
+            root._syncHyprland();
+        }
+        function onFocusedWorkspaceChanged() {
+            root._syncHyprland();
+        }
     }
 
     function _syncHyprland() {
-        var f       = [false, false, false, false, false, false, false, false, false]
-        var c       = [0,     0,     0,     0,     0,     0,     0,     0,     0    ]
-        var focused = 1
+        var f = [false, false, false, false, false, false, false, false, false];
+        var c = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var focused = 1;
 
-        var wsList = Hyprland.workspaces.values
+        var wsList = Hyprland.workspaces.values;
         for (var i = 0; i < wsList.length; i++) {
-            var ws = wsList[i]
-            if (ws.id < 1 || ws.id > 9) continue   // skip named/special workspaces
-            var idx = ws.id - 1
-            f[idx] = ws.focused || ws.active
-            c[idx] = ws.toplevels.values.length     // live count, always accurate
-            if (ws.focused) focused = ws.id
+            var ws = wsList[i];
+            if (ws.id < 1 || ws.id > 9)
+                // skip named/special workspaces
+                continue;
+            var idx = ws.id - 1;
+            f[idx] = ws.focused || ws.active;
+            c[idx] = ws.toplevels.values.length;     // live count, always accurate
+            if (ws.focused)
+                focused = ws.id;
         }
 
-        root.tagFocused = f
-        root.tagClients = c
-        root.focusedTag = focused
+        root.tagFocused = f;
+        root.tagClients = c;
+        root.focusedTag = focused;
     }
 
     // Also react to toplevel changes on individual workspaces.
@@ -60,39 +67,47 @@ Row {
     Connections {
         target: Hyprland.toplevels
         enabled: root.isHyprland
-        function onObjectInsertedPost() { root._syncHyprland() }
-        function onObjectRemovedPost()  { root._syncHyprland() }
+        function onObjectInsertedPost() {
+            root._syncHyprland();
+        }
+        function onObjectRemovedPost() {
+            root._syncHyprland();
+        }
     }
 
     // ── MangoWM: process-based backend (original, unchanged) ──────────────────
     function parseLine(line) {
-        var trimmed = line.trim()
-        if (trimmed.length === 0) return
+        var trimmed = line.trim();
+        if (trimmed.length === 0)
+            return;
         try {
-            var json     = JSON.parse(trimmed)
-            var monitors = json["all_tags"]
-            if (!monitors || monitors.length === 0) return
-            var tags = monitors[0]["tags"]
-            if (!tags) return
-
-            var f       = [false, false, false, false, false, false, false, false, false]
-            var c       = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-            var focused = 1
+            var json = JSON.parse(trimmed);
+            var monitors = json["all_tags"];
+            if (!monitors || monitors.length === 0)
+                return;
+            var tags = monitors[0]["tags"];
+            if (!tags)
+                return;
+            var f = [false, false, false, false, false, false, false, false, false];
+            var c = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var focused = 1;
 
             for (var i = 0; i < tags.length; i++) {
-                var tag = tags[i]
-                var idx = tag["index"] - 1
-                if (idx < 0 || idx >= 9) continue
-                f[idx] = tag["is_active"] === true
-                c[idx] = tag["client_count"] || 0
-                if (f[idx]) focused = tag["index"]
+                var tag = tags[i];
+                var idx = tag["index"] - 1;
+                if (idx < 0 || idx >= 9)
+                    continue;
+                f[idx] = tag["is_active"] === true;
+                c[idx] = tag["client_count"] || 0;
+                if (f[idx])
+                    focused = tag["index"];
             }
 
-            root.tagFocused = f
-            root.tagClients = c
-            root.focusedTag = focused
+            root.tagFocused = f;
+            root.tagClients = c;
+            root.focusedTag = focused;
         } catch (e) {
-            console.warn("WorkspaceBar parse error:", e, trimmed)
+            console.warn("WorkspaceBar parse error:", e, trimmed);
         }
     }
 
@@ -100,21 +115,27 @@ Row {
         id: initProc
         command: ["mmsg", "get", "all-tags"]
         running: !root.isHyprland
-        stdout: SplitParser { onRead: (line) => root.parseLine(line) }
+        stdout: SplitParser {
+            onRead: line => root.parseLine(line)
+        }
     }
 
     Process {
         id: watchProc
         command: ["mmsg", "watch", "all-tags"]
         running: !root.isHyprland
-        onRunningChanged: if (!running && !root.isHyprland) watchRestartTimer.start()
-        stdout: SplitParser { onRead: (line) => root.parseLine(line) }
+        onRunningChanged: if (!running && !root.isHyprland)
+            watchRestartTimer.start()
+        stdout: SplitParser {
+            onRead: line => root.parseLine(line)
+        }
     }
 
     Timer {
         id: watchRestartTimer
         interval: 1000
-        onTriggered: if (!root.isHyprland) watchProc.running = true
+        onTriggered: if (!root.isHyprland)
+            watchProc.running = true
     }
 
     // ── Scroll throttle (shared) ──────────────────────────────────────────────
@@ -132,8 +153,8 @@ Row {
 
             required property int modelData
 
-            readonly property int  tagNum:     modelData + 1
-            readonly property bool isFocused:  root.tagFocused[modelData]
+            readonly property int tagNum: modelData + 1
+            readonly property bool isFocused: root.tagFocused[modelData]
             readonly property bool hasClients: root.tagClients[modelData] > 0
             readonly property bool shouldShow: isFocused || hasClients
             property bool hovered: false
@@ -141,84 +162,93 @@ Row {
             visible: width > 0
             width: shouldShow ? 28 : 0
             Behavior on width {
-                SmoothedAnimation { velocity: 120; easing.type: Easing.OutExpo }
+                SmoothedAnimation {
+                    velocity: 120
+                    easing.type: Easing.OutExpo
+                }
             }
 
             height: 28
             radius: 5
 
             color: {
-                if (isFocused) return hovered
-                    ? Qt.lighter(PanelColors.workspaceActive, 1.15)
-                    : PanelColors.workspaceActive
-                return hovered
-                    ? Qt.lighter(PanelColors.workspaceInactive, 1.4)
-                    : PanelColors.workspaceInactive
+                if (isFocused)
+                    return hovered ? Qt.lighter(PanelColors.workspaceActive, 1.15) : PanelColors.workspaceActive;
+                return hovered ? Qt.lighter(PanelColors.workspaceInactive, 1.4) : PanelColors.workspaceInactive;
             }
-            Behavior on color { ColorAnimation { duration: 150 } }
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
+            }
 
             clip: true
 
             Text {
                 anchors.centerIn: parent
-                text:           pill.tagNum
-                color:          pill.isFocused ? PanelColors.pillForeground : PanelColors.textDim
-                font.pixelSize: 16
-                font.bold:      true
-                font.family:    Fonts.selectedFont
-                Behavior on color { ColorAnimation { duration: 150 } }
+                text: pill.tagNum
+                color: pill.isFocused ? PanelColors.pillForeground : PanelColors.textDim
+                font.pixelSize: Fonts.panelFontSize
+                font.bold: Fonts.boldFont
+                font.family: Fonts.selectedFont
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 150
+                    }
+                }
             }
 
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onEntered: pill.hovered = true
-                onExited:  pill.hovered = false
+                onExited: pill.hovered = false
 
                 onClicked: {
                     if (root.isHyprland) {
-                        var ws = Hyprland.workspaces.values.find(w => w.id === pill.tagNum)
-                        if (ws) ws.activate()
-                        else Hyprland.dispatch("workspace " + pill.tagNum)
+                        var ws = Hyprland.workspaces.values.find(w => w.id === pill.tagNum);
+                        if (ws)
+                            ws.activate();
+                        else
+                            Hyprland.dispatch("workspace " + pill.tagNum);
                     } else {
-                        Quickshell.execDetached(["mmsg", "dispatch", "view," + pill.tagNum])
+                        Quickshell.execDetached(["mmsg", "dispatch", "view," + pill.tagNum]);
                     }
                 }
 
-                onWheel: (event) => {
-                    if (!root.canScroll) return
-
+                onWheel: event => {
+                    if (!root.canScroll)
+                        return;
                     if (root.isHyprland) {
                         // Build sorted list of populated workspace ids (1–9 only)
-                        var ids = []
-                        var wsList = Hyprland.workspaces.values
+                        var ids = [];
+                        var wsList = Hyprland.workspaces.values;
                         for (var i = 0; i < wsList.length; i++) {
-                            var ws = wsList[i]
-                            if (ws.id >= 1 && ws.id <= 9) ids.push(ws.id)
+                            var ws = wsList[i];
+                            if (ws.id >= 1 && ws.id <= 9)
+                                ids.push(ws.id);
                         }
                         // ObjectModel is already sorted by id per the docs
-                        var idx = ids.indexOf(root.focusedTag)
-                        if (idx === -1) idx = 0
-                        idx = event.angleDelta.y < 0
-                            ? Math.min(idx + 1, ids.length - 1)
-                            : Math.max(idx - 1, 0)
-                        Hyprland.dispatch("workspace " + ids[idx])
+                        var idx = ids.indexOf(root.focusedTag);
+                        if (idx === -1)
+                            idx = 0;
+                        idx = event.angleDelta.y < 0 ? Math.min(idx + 1, ids.length - 1) : Math.max(idx - 1, 0);
+                        Hyprland.dispatch("workspace " + ids[idx]);
                     } else {
-                        var visible = []
+                        var visible = [];
                         for (var i = 0; i < 9; i++) {
                             if (root.tagFocused[i] || root.tagClients[i] > 0)
-                                visible.push(i + 1)
+                                visible.push(i + 1);
                         }
-                        if (visible.length === 0) return
-                        var idx = visible.indexOf(root.focusedTag)
-                        idx = event.angleDelta.y < 0
-                            ? Math.min(idx + 1, visible.length - 1)
-                            : Math.max(idx - 1, 0)
-                        Quickshell.execDetached(["mmsg", "dispatch", "view," + visible[idx]])
+                        if (visible.length === 0)
+                            return;
+                        var idx = visible.indexOf(root.focusedTag);
+                        idx = event.angleDelta.y < 0 ? Math.min(idx + 1, visible.length - 1) : Math.max(idx - 1, 0);
+                        Quickshell.execDetached(["mmsg", "dispatch", "view," + visible[idx]]);
                     }
 
-                    root.canScroll = false
-                    scrollThrottle.start()
+                    root.canScroll = false;
+                    scrollThrottle.start();
                 }
             }
         }
