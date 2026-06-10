@@ -130,5 +130,4 @@ ShellRoot {
     }
     PolkitDialog {}
     AppLauncher {}
-    ScreenshotUI {}
 }
