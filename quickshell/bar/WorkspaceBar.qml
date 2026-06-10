@@ -1,254 +1,217 @@
+// WorkspaceBar.qml
+// Hyprland-only workspace pill row — Quickshell ≥ 0.2.1
+// Requires Hyprland ≥ 0.55 (Lua config). hyprlang is not supported.
+//
+// workspace.activate() is intentionally avoided — it is documented as
+// equivalent to the old hyprlang dispatch string ("workspace <name>") and
+// fails silently under Lua config. All dispatch calls use the Lua
+// dispatcher API directly via Hyprland.dispatch().
+//
+// Trailing workspace logic:
+//   displayCount = maxOccupiedWorkspace + 1
+//   "Occupied" means the workspace has ≥1 open window. A focused-but-empty
+//   workspace does NOT advance maxOccupiedWorkspace and therefore does NOT
+//   create a new trailing slot. Exactly one trailing empty pill exists at all
+//   times. A new trailing slot only appears when a window is opened on the
+//   previously trailing workspace, promoting it to occupied and extending the
+//   bar by one.
+
 import QtQuick
-import Quickshell
 import Quickshell.Hyprland
-import Quickshell.Io
 import "../theme"
 
 Row {
     id: root
+
     spacing: 4
 
-    // ── Backend detection ─────────────────────────────────────────────────────
-    // Hyprland.requestSocketPath is an empty string when not running under
-    // Hyprland. This is synchronous, deterministic, and has no race condition.
-    readonly property bool isHyprland: Hyprland.requestSocketPath !== ""
+    // ── Dispatch helper ───────────────────────────────────────────────────────
+    // Generates the Lua dispatcher string for focusing a workspace by number.
+    // hl.dsp.focus is the Hyprland ≥ 0.55 equivalent of the old hyprlang
+    // "workspace N" dispatcher.
+    function workspaceDispatch(wsNum) {
+        return 'hl.dsp.focus({ workspace = "' + wsNum + '" })'
+    }
 
-    // ── Shared visual state ───────────────────────────────────────────────────
-    property var tagFocused: [false, false, false, false, false, false, false, false, false]
-    property var tagClients: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    property int focusedTag: 1
-    property bool canScroll: true
+    // ── Workspace map — O(1) per-pill lookup ──────────────────────────────────
+    // Rebuilt whenever Hyprland.workspaces changes. Maps workspace id → object.
+    // Pills resolve their HyprlandWorkspace in O(1) instead of scanning the
+    // full array. Named/special workspaces have negative ids and are harmlessly
+    // included; pills only query ids 1–9.
+    readonly property var workspaceMap: {
+        var map = {}
+        var list = Hyprland.workspaces.values
+        for (var i = 0; i < list.length; i++)
+            map[list[i].id] = list[i]
+        return map
+    }
 
-    // ── Hyprland: reactive state ──────────────────────────────────────────────
-    // Both workspace-list changes (open/close window) and focusedWorkspace
-    // changes (switch workspace) are caught here.
-    // toplevels.values.length is a live ObjectModel count — no lastIpcObject.
+    // ── Dynamic pill count ────────────────────────────────────────────────────
+    // Updated imperatively so the dependency surface is explicit:
+    //   - Hyprland.workspaces: workspace objects created or destroyed
+    //   - Hyprland.toplevels:  any window opened or closed anywhere
+    //
+    // maxOccupiedWorkspace is the highest id in [1,9] where
+    // toplevels.values.length > 0. Focused-but-empty workspaces are
+    // deliberately excluded — focusing the trailing slot must not push a
+    // new empty slot ahead of it.
+    //
+    // Floor of 1: guarantees at least workspace 1 + trailing slot are shown
+    // before Hyprland has populated any workspace state. Capped at 9.
+    property int displayCount: 2
+
+    function _updateDisplayCount() {
+        var max  = 1
+        var list = Hyprland.workspaces.values
+        for (var i = 0; i < list.length; i++) {
+            var ws = list[i]
+            if (ws.id >= 1 && ws.id <= 9 &&
+                    ws.toplevels.values.length > 0 && ws.id > max)
+                max = ws.id
+        }
+        displayCount = Math.min(max + 1, 9)
+    }
+
+    // Seed the correct value as soon as the component is live. At this point
+    // Hyprland.workspaces.values is already populated (assuming Quickshell
+    // connects to Hyprland before QML creation completes), so the result is
+    // meaningful rather than the default of 2.
+    Component.onCompleted: _updateDisplayCount()
+
+    // React to workspace objects being created or destroyed (e.g. Hyprland
+    // removes an empty workspace when the user navigates away from it).
     Connections {
-        target: Hyprland
-        enabled: root.isHyprland
-
-        function onWorkspacesChanged() {
-            root._syncHyprland();
-        }
-        function onFocusedWorkspaceChanged() {
-            root._syncHyprland();
-        }
+        target: Hyprland.workspaces
+        function onObjectInsertedPost() { root._updateDisplayCount() }
+        function onObjectRemovedPost()  { root._updateDisplayCount() }
     }
 
-    function _syncHyprland() {
-        var f = [false, false, false, false, false, false, false, false, false];
-        var c = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var focused = 1;
-
-        var wsList = Hyprland.workspaces.values;
-        for (var i = 0; i < wsList.length; i++) {
-            var ws = wsList[i];
-            if (ws.id < 1 || ws.id > 9)
-                // skip named/special workspaces
-                continue;
-            var idx = ws.id - 1;
-            f[idx] = ws.focused || ws.active;
-            c[idx] = ws.toplevels.values.length;     // live count, always accurate
-            if (ws.focused)
-                focused = ws.id;
-        }
-
-        root.tagFocused = f;
-        root.tagClients = c;
-        root.focusedTag = focused;
-    }
-
-    // Also react to toplevel changes on individual workspaces.
-    // We do this by watching the global Hyprland.toplevels ObjectModel —
-    // it fires when any window is added or removed anywhere, which is exactly
-    // when we need to re-run _syncHyprland. This avoids the broken pattern of
-    // Connections { target: Hyprland.focusedWorkspace } which does NOT rebind
-    // when focusedWorkspace itself changes.
+    // React to any window opening or closing. A window opening on the trailing
+    // workspace is the sole event that promotes it to occupied and extends the
+    // bar. A window closing on the highest occupied workspace may shrink the bar.
     Connections {
         target: Hyprland.toplevels
-        enabled: root.isHyprland
-        function onObjectInsertedPost() {
-            root._syncHyprland();
-        }
-        function onObjectRemovedPost() {
-            root._syncHyprland();
-        }
+        function onObjectInsertedPost() { root._updateDisplayCount() }
+        function onObjectRemovedPost()  { root._updateDisplayCount() }
     }
 
-    // ── MangoWM: process-based backend (original, unchanged) ──────────────────
-    function parseLine(line) {
-        var trimmed = line.trim();
-        if (trimmed.length === 0)
-            return;
-        try {
-            var json = JSON.parse(trimmed);
-            var monitors = json["all_tags"];
-            if (!monitors || monitors.length === 0)
-                return;
-            var tags = monitors[0]["tags"];
-            if (!tags)
-                return;
-            var f = [false, false, false, false, false, false, false, false, false];
-            var c = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-            var focused = 1;
+    // ── Hover colours — computed once, shared by all pills ────────────────────
+    // Qt.lighter() is called once per theme change here at root, not on every
+    // per-pill colour-binding evaluation.
+    readonly property color hoverActive:   Qt.lighter(PanelColors.workspaceActive,   1.15)
+    readonly property color hoverInactive: Qt.lighter(PanelColors.workspaceInactive, 1.40)
 
-            for (var i = 0; i < tags.length; i++) {
-                var tag = tags[i];
-                var idx = tag["index"] - 1;
-                if (idx < 0 || idx >= 9)
-                    continue;
-                f[idx] = tag["is_active"] === true;
-                c[idx] = tag["client_count"] || 0;
-                if (f[idx])
-                    focused = tag["index"];
-            }
-
-            root.tagFocused = f;
-            root.tagClients = c;
-            root.focusedTag = focused;
-        } catch (e) {
-            console.warn("WorkspaceBar parse error:", e, trimmed);
-        }
-    }
-
-    Process {
-        id: initProc
-        command: ["mmsg", "get", "all-tags"]
-        running: !root.isHyprland
-        stdout: SplitParser {
-            onRead: line => root.parseLine(line)
-        }
-    }
-
-    Process {
-        id: watchProc
-        command: ["mmsg", "watch", "all-tags"]
-        running: !root.isHyprland
-        onRunningChanged: if (!running && !root.isHyprland)
-            watchRestartTimer.start()
-        stdout: SplitParser {
-            onRead: line => root.parseLine(line)
-        }
-    }
-
-    Timer {
-        id: watchRestartTimer
-        interval: 1000
-        onTriggered: if (!root.isHyprland)
-            watchProc.running = true
-    }
-
-    // ── Scroll throttle (shared) ──────────────────────────────────────────────
-    Timer {
-        id: scrollThrottle
-        interval: 30
-        onTriggered: root.canScroll = true
-    }
-
-    // ── Delegates ─────────────────────────────────────────────────────────────
+    // ── Workspace pills ───────────────────────────────────────────────────────
     Repeater {
-        model: 9
+        model: root.displayCount
+
         delegate: Rectangle {
             id: pill
 
             required property int modelData
 
-            readonly property int tagNum: modelData + 1
-            readonly property bool isFocused: root.tagFocused[modelData]
-            readonly property bool hasClients: root.tagClients[modelData] > 0
-            readonly property bool shouldShow: isFocused || hasClients
-            property bool hovered: false
+            // Workspace number (1–N where N = displayCount)
+            readonly property int wsNum: modelData + 1
 
-            visible: width > 0
-            width: shouldShow ? 28 : 0
-            Behavior on width {
-                SmoothedAnimation {
-                    velocity: 120
-                    easing.type: Easing.OutExpo
-                }
-            }
+            // O(1) lookup from root-level map. Returns null for the trailing
+            // empty slot and any other workspace not yet in the compositor.
+            // ?? converts undefined (missing map key) to null; workspace is
+            // therefore always either null or a valid HyprlandWorkspace.
+            readonly property var workspace: root.workspaceMap[wsNum] ?? null
 
+            // True when this workspace is on the currently focused monitor.
+            // Binds directly to the reactive Hyprland singleton property.
+            // Null guard covers startup before focusedWorkspace is populated.
+            readonly property bool isFocused:
+                Hyprland.focusedWorkspace !== null &&
+                Hyprland.focusedWorkspace.id === wsNum
+
+            // True when ≥1 toplevel lives on this workspace.
+            // In the original, workspaceInactive was only ever painted on
+            // occupied workspaces — empty non-focused pills were hidden via
+            // shouldShow. Since the trailing slot is always visible here,
+            // hasClients drives opacity to give empty pills a visually
+            // distinct, subdued appearance without adding a third theme colour.
+            readonly property bool hasClients:
+                workspace !== null &&
+                workspace.toplevels.values.length > 0
+
+            width:  28
             height: 28
             radius: 5
 
+            // Full opacity when focused or occupied; dimmed when empty
+            // (trailing slot). Mirrors the original's hide behaviour — empty
+            // non-focused workspaces were invisible; here they are present but
+            // clearly subordinate. Text and background dim together via
+            // inheritance, which is the desired effect.
+            opacity: (isFocused || hasClients) ? 1.0 : 0.4
+
+            Behavior on opacity {
+                NumberAnimation { duration: 150 }
+            }
+
+            // containsMouse is reactive on MouseArea when hoverEnabled is set.
+            // No auxiliary hovered property or entered/exited handlers needed.
             color: {
                 if (isFocused)
-                    return hovered ? Qt.lighter(PanelColors.workspaceActive, 1.15) : PanelColors.workspaceActive;
-                return hovered ? Qt.lighter(PanelColors.workspaceInactive, 1.4) : PanelColors.workspaceInactive;
+                    return pillArea.containsMouse
+                           ? root.hoverActive
+                           : PanelColors.workspaceActive
+                return pillArea.containsMouse
+                       ? root.hoverInactive
+                       : PanelColors.workspaceInactive
             }
+
             Behavior on color {
-                ColorAnimation {
-                    duration: 150
-                }
+                ColorAnimation { duration: 150 }
             }
 
-            clip: true
-
+            // ── Number label ──────────────────────────────────────────────────
             Text {
                 anchors.centerIn: parent
-                text: pill.tagNum
-                color: pill.isFocused ? PanelColors.pillForeground : PanelColors.textDim
+                text:           pill.wsNum
+                color:          pill.isFocused ? PanelColors.pillForeground : PanelColors.textDim
                 font.pixelSize: Fonts.panelFontSize
-                font.bold: Fonts.boldFont
-                font.family: Fonts.selectedFont
+                font.bold:      Fonts.boldFont
+                font.family:    Fonts.selectedFont
+
                 Behavior on color {
-                    ColorAnimation {
-                        duration: 150
-                    }
+                    ColorAnimation { duration: 150 }
                 }
             }
 
+            // ── Input ─────────────────────────────────────────────────────────
             MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onEntered: pill.hovered = true
-                onExited: pill.hovered = false
+                id:              pillArea
+                anchors.fill:    parent
+                hoverEnabled:    true
+                acceptedButtons: Qt.LeftButton
 
-                onClicked: {
-                    if (root.isHyprland) {
-                        var ws = Hyprland.workspaces.values.find(w => w.id === pill.tagNum);
-                        if (ws)
-                            ws.activate();
-                        else
-                            Hyprland.dispatch("workspace " + pill.tagNum);
-                    } else {
-                        Quickshell.execDetached(["mmsg", "dispatch", "view," + pill.tagNum]);
-                    }
-                }
+                onClicked: Hyprland.dispatch(root.workspaceDispatch(pill.wsNum))
 
                 onWheel: event => {
-                    if (!root.canScroll)
-                        return;
-                    if (root.isHyprland) {
-                        // Build sorted list of populated workspace ids (1–9 only)
-                        var ids = [];
-                        var wsList = Hyprland.workspaces.values;
-                        for (var i = 0; i < wsList.length; i++) {
-                            var ws = wsList[i];
-                            if (ws.id >= 1 && ws.id <= 9)
-                                ids.push(ws.id);
-                        }
-                        // ObjectModel is already sorted by id per the docs
-                        var idx = ids.indexOf(root.focusedTag);
-                        if (idx === -1)
-                            idx = 0;
-                        idx = event.angleDelta.y < 0 ? Math.min(idx + 1, ids.length - 1) : Math.max(idx - 1, 0);
-                        Hyprland.dispatch("workspace " + ids[idx]);
-                    } else {
-                        var visible = [];
-                        for (var i = 0; i < 9; i++) {
-                            if (root.tagFocused[i] || root.tagClients[i] > 0)
-                                visible.push(i + 1);
-                        }
-                        if (visible.length === 0)
-                            return;
-                        var idx = visible.indexOf(root.focusedTag);
-                        idx = event.angleDelta.y < 0 ? Math.min(idx + 1, visible.length - 1) : Math.max(idx - 1, 0);
-                        Quickshell.execDetached(["mmsg", "dispatch", "view," + visible[idx]]);
-                    }
+                    // Explicitly consume the event to prevent propagation to
+                    // any parent scrollable container.
+                    event.accepted = true
 
-                    root.canScroll = false;
-                    scrollThrottle.start();
+                    var focused = Hyprland.focusedWorkspace
+                    if (focused === null)
+                        return
+
+                    // Wrap-around scroll using modular arithmetic.
+                    // dir: +1 = forward (scroll down), -1 = backward (scroll up).
+                    // Adding count before % prevents negative remainder for the
+                    // backward-from-first case (JS % is remainder, not modulo).
+                    //
+                    // Examples with displayCount = 5:
+                    //   focused=5, forward  → ((5-1+1+5) % 5)+1 = 0+1 = 1  ✓
+                    //   focused=1, backward → ((1-1-1+5) % 5)+1 = 4+1 = 5  ✓
+                    var dir   = event.angleDelta.y < 0 ? 1 : -1
+                    var count = root.displayCount
+                    var next  = ((focused.id - 1 + dir + count) % count) + 1
+
+                    Hyprland.dispatch(root.workspaceDispatch(next))
                 }
             }
         }

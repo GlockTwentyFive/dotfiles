@@ -11,7 +11,12 @@ ShellRoot {
         id: win
         // Target the screen where the mouse currently is
         screen: Quickshell.screens[0]
-        anchors { top: true; bottom: true; left: true; right: true }
+        anchors {
+            top: true
+            bottom: true
+            left: true
+            right: true
+        }
 
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
@@ -84,12 +89,12 @@ ShellRoot {
             Rectangle {
                 visible: parent.isDragging && parent.selW > 5
                 x: {
-                    let px = parent.curX + 16
-                    return Math.min(px, parent.width - width - 8)
+                    let px = parent.curX + 16;
+                    return Math.min(px, parent.width - width - 8);
                 }
                 y: {
-                    let py = parent.curY + 16
-                    return Math.min(py, parent.height - height - 8)
+                    let py = parent.curY + 16;
+                    return Math.min(py, parent.height - height - 8);
                 }
                 width: pillText.width + 20
                 height: 32
@@ -123,34 +128,35 @@ ShellRoot {
                         return;
                     }
 
-                    parent.startX = mouse.x
-                    parent.startY = mouse.y
-                    parent.curX = mouse.x
-                    parent.curY = mouse.y
-                    parent.isDragging = true
+                    parent.startX = mouse.x;
+                    parent.startY = mouse.y;
+                    parent.curX = mouse.x;
+                    parent.curY = mouse.y;
+                    parent.isDragging = true;
                 }
 
                 onPositionChanged: mouse => {
                     if (parent.isDragging) {
-                        parent.curX = mouse.x
-                        parent.curY = mouse.y
+                        parent.curX = mouse.x;
+                        parent.curY = mouse.y;
                     }
                 }
 
                 onReleased: mouse => {
                     // 3. Prevent accidental processing if right button was released
-                    if (mouse.button === Qt.RightButton) return;
+                    if (mouse.button === Qt.RightButton)
+                        return;
 
-                    parent.isDragging = false
+                    parent.isDragging = false;
                     if (parent.selW > 5 && parent.selH > 5) {
-                        let globalX = win.screen.x + parent.selX
-                        let globalY = win.screen.y + parent.selY
+                        let globalX = win.screen.x + parent.selX;
+                        let globalY = win.screen.y + parent.selY;
 
-                        cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`
-                        win.visible = false
-                        cropProc.running = true
+                        cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`;
+                        win.visible = false;
+                        cropProc.running = true;
                     } else {
-                        Qt.quit()
+                        Qt.quit();
                     }
                 }
             }
@@ -163,8 +169,6 @@ ShellRoot {
         property string geometry: ""
         command: ["sh", "-c", `
             FILE="$HOME/Pictures/Screenshots/Screenshot From $(date +'%Y-%m-%d %H-%M-%S').png"
-
-            # Crop the master frame we took at the start
             magick /tmp/qs-master.png -crop ${geometry} "$FILE" && \
             wl-copy < "$FILE" && \
             notify-send "Screenshot Captured" "Saved to Pictures/Screenshots" && \

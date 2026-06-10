@@ -7,13 +7,13 @@ Pill {
     pillColor: PanelColors.dashboard
     textColor: PanelColors.textMain
 
-    label: "󰖔"
+    label: ""
 
     mouseArea.onClicked: {
         if (SessionState.dashboardVisible) {
-            SessionState.dashboardVisible = false
+            SessionState.dashboardVisible = false;
         } else {
-            SessionState.dashboardVisible = true
+            SessionState.dashboardVisible = true;
         }
     }
 }

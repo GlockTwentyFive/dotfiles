@@ -20,3 +20,6 @@ PrintScreen => Saves a shot of the whole screen
 SUPER + SHIFT + G => Toggle Gaps
 SUPER + Tab => Change Layout
 SUPER + SHIFT + L => Color Picker
+
+Trackpad Gestures ---
+3 finger horizontal swipe => scroll (works only in scrolling layout)

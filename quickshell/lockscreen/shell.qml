@@ -18,7 +18,7 @@ ShellRoot {
     readonly property color clrUrgent: "#ef9a9a"   // red200
     readonly property color clrClock: "#ffffffdd" // PanelColors.clock (dark)
     readonly property color clrPillFg: "#212121"   // PanelColors.pillForeground (dark)
-    readonly property string fontMain: Fonts.selectedFont
+    readonly property string fontMain: "JetBrainsMono Nerd Font"
     readonly property int radiusLarge: 12
     readonly property int radiusMed: 8
 
@@ -198,7 +198,7 @@ ShellRoot {
 
                                     Text {
                                         id: clockText
-                                        text: Qt.formatTime(clockCanvas.timeDate, "HH:mm")
+                                        text: Qt.formatTime(clockCanvas.timeDate, " hh:mm AP ")
                                         font.pixelSize: 16
                                         font.bold: Fonts.boldFont
                                         font.family: fontMain

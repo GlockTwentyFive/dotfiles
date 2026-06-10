@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import "../theme"
 
 ShellRoot {
     Variants {
@@ -12,7 +11,12 @@ ShellRoot {
             required property var modelData
             screen: modelData
 
-            anchors { top: true; bottom: true; left: true; right: true }
+            anchors {
+                top: true
+                bottom: true
+                left: true
+                right: true
+            }
             exclusionMode: ExclusionMode.Ignore
 
             WlrLayershell.layer: WlrLayer.Overlay
@@ -38,12 +42,14 @@ ShellRoot {
             property bool inputReady: false
 
             function fadeAndQuit() {
-                if (!inputReady) return
-                if (isQuitting) return
-                isQuitting = true
-                dimLayer.opacity = 0.0
-                catText.opacity = 0.0
-                quitTimer.start()
+                if (!inputReady)
+                    return;
+                if (isQuitting)
+                    return;
+                isQuitting = true;
+                dimLayer.opacity = 0.0;
+                catText.opacity = 0.0;
+                quitTimer.start();
             }
 
             Timer {
@@ -74,20 +80,11 @@ ShellRoot {
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -20
 
-                property string cat1: "      |\\      _,,,---,,_\n" +
-                                    "      /,`.-'`'    -.  ;-;;,_\n" +
-                                    "     |,4-  ) )-,_. ,\\ (  `'-'\n" +
-                                    "    '---''(_/--'  `-'\\_)  melo."
+                property string cat1: "      |\\      _,,,---,,_\n" + "      /,`.-'`'    -.  ;-;;,_\n" + "     |,4-  ) )-,_. ,\\ (  `'-'\n" + "    '---''(_/--'  `-'\\_)  melo."
 
-                property string cat2: "      |\\      _,,,---,,_\n" +
-                                    "   z  /,`.-'`'    -.  ;-;;,_\n" +
-                                    "     |,4-  ) )-,_. ,\\ (  `'-'\n" +
-                                    "    '---''(_/--'  `-'\\_)  melo."
+                property string cat2: "      |\\      _,,,---,,_\n" + "   z  /,`.-'`'    -.  ;-;;,_\n" + "     |,4-  ) )-,_. ,\\ (  `'-'\n" + "    '---''(_/--'  `-'\\_)  melo."
 
-                property string cat3: "  Z   |\\      _,,,---,,_\n" +
-                                    "   z  /,`.-'`'    -.  ;-;;,_\n" +
-                                    "     |,4-  ) )-,_. ,\\ (  `'-'\n" +
-                                    "    '---''(_/--'  `-'\\_)  melo."
+                property string cat3: "  Z   |\\      _,,,---,,_\n" + "   z  /,`.-'`'    -.  ;-;;,_\n" + "     |,4-  ) )-,_. ,\\ (  `'-'\n" + "    '---''(_/--'  `-'\\_)  melo."
 
                 property int catFrame: 0
                 text: catFrame === 0 ? cat1 : catFrame === 1 ? cat2 : cat3
@@ -102,7 +99,7 @@ ShellRoot {
 
                 color: win.catColor
                 opacity: 0.0
-                font.family: Fonts.selectedFont
+                font.family: "JetBrainsMono Nerd Font"
                 font.pixelSize: win.catFontSize
                 lineHeight: win.catLineHeight
                 horizontalAlignment: Text.AlignLeft
@@ -150,12 +147,12 @@ ShellRoot {
                     // Use onPositionChanged instead of the individual axis signals
                     // to avoid firing on Hyprland's initial pointer-warp event.
                     property point lastPos: Qt.point(-1, -1)
-                    onPositionChanged: (mouse) => {
+                    onPositionChanged: mouse => {
                         if (lastPos.x < 0) {
-                            lastPos = Qt.point(mouse.x, mouse.y)
-                            return
+                            lastPos = Qt.point(mouse.x, mouse.y);
+                            return;
                         }
-                        win.fadeAndQuit()
+                        win.fadeAndQuit();
                     }
                 }
             }
@@ -173,10 +170,10 @@ ShellRoot {
 
             // ─── Trigger fade in ───
             Component.onCompleted: {
-                dimLayer.opacity = win.dimOpacity
-                catText.opacity = win.catOpacity
-                breatheTimer.start()
-                inputReadyTimer.start()
+                dimLayer.opacity = win.dimOpacity;
+                catText.opacity = win.catOpacity;
+                breatheTimer.start();
+                inputReadyTimer.start();
             }
 
             Timer {
@@ -184,8 +181,8 @@ ShellRoot {
                 interval: win.fadeInDuration
                 repeat: false
                 onTriggered: {
-                    breathe.running = true
-                    frameTimer.running = true
+                    breathe.running = true;
+                    frameTimer.running = true;
                 }
             }
         }

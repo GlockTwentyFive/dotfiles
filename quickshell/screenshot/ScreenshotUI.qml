@@ -8,31 +8,37 @@ PanelWindow {
     id: win
     visible: false // Stay hidden until called
     screen: Quickshell.screens[0]
-    anchors { top: true; bottom: true; left: true; right: true }
+    anchors {
+        top: true
+        bottom: true
+        left: true
+        right: true
+    }
 
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
     WlrLayershell.namespace: "qs-screenshot"
     exclusionMode: ExclusionMode.Ignore
 
-
     // ─── IPC Handler ───
     Io.IpcHandler {
         target: "screenshot"
         function capture(): void {
             // Append a timestamp to bypass Qt's image cache so the fresh image loads
-            masterImg.source = "file:///tmp/qs-master.png?t=" + Date.now()
-            win.visible = true
-            mainItem.forceActiveFocus()
+            masterImg.source = "file:///tmp/qs-master.png?t=" + Date.now();
+            win.visible = true;
+            mainItem.forceActiveFocus();
         }
     }
 
     // ─── Helper to Reset State ───
     function closeOverlay() {
-        win.visible = false
-        mainItem.isDragging = false
-        mainItem.startX = 0; mainItem.curX = 0
-        mainItem.startY = 0; mainItem.curY = 0
+        win.visible = false;
+        mainItem.isDragging = false;
+        mainItem.startX = 0;
+        mainItem.curX = 0;
+        mainItem.startY = 0;
+        mainItem.curY = 0;
     }
 
     Item {
@@ -124,36 +130,36 @@ PanelWindow {
 
             onPressed: mouse => {
                 if (mouse.button === Qt.RightButton) {
-                    win.closeOverlay()
-                    return
+                    win.closeOverlay();
+                    return;
                 }
-                parent.startX = mouse.x
-                parent.startY = mouse.y
-                parent.curX = mouse.x
-                parent.curY = mouse.y
-                parent.isDragging = true
+                parent.startX = mouse.x;
+                parent.startY = mouse.y;
+                parent.curX = mouse.x;
+                parent.curY = mouse.y;
+                parent.isDragging = true;
             }
 
             onPositionChanged: mouse => {
                 if (parent.isDragging) {
-                    parent.curX = mouse.x
-                    parent.curY = mouse.y
+                    parent.curX = mouse.x;
+                    parent.curY = mouse.y;
                 }
             }
 
             onReleased: mouse => {
-                if (mouse.button === Qt.RightButton) return
-
-                parent.isDragging = false
+                if (mouse.button === Qt.RightButton)
+                    return;
+                parent.isDragging = false;
                 if (parent.selW > 5 && parent.selH > 5) {
-                    let globalX = win.screen.x + parent.selX
-                    let globalY = win.screen.y + parent.selY
+                    let globalX = win.screen.x + parent.selX;
+                    let globalY = win.screen.y + parent.selY;
 
-                    cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`
-                    win.visible = false
-                    cropProc.running = true
+                    cropProc.geometry = `${parent.selW}x${parent.selH}+${globalX}+${globalY}`;
+                    win.visible = false;
+                    cropProc.running = true;
                 } else {
-                    win.closeOverlay()
+                    win.closeOverlay();
                 }
             }
         }
@@ -164,7 +170,7 @@ PanelWindow {
         id: cropProc
         property string geometry: ""
         command: ["sh", "-c", `
-            FILE="$HOME/Pictures/Screenshots/Screenshot From $(date +'%Y-%m-%d %H-%M-%S').png"
+            FILE="~/Pictures/Screenshots/Screenshot From $(date +'%Y-%m-%d %H-%M-%S').png"
             magick /tmp/qs-master.png -crop ${geometry} "$FILE" && \
             wl-copy < "$FILE" && \
             notify-send "Screenshot Captured" "Saved to Pictures/Screenshots" && \

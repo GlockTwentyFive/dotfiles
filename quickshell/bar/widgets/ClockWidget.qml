@@ -113,7 +113,7 @@ Pill {
     }
 
     Text {
-        text: Qt.formatTime(clock.date, "HH:mm")
+        text: Qt.formatTime(clock.date, "hh:mm AP")
         font.pixelSize: Fonts.panelFontSize
         font.bold: Fonts.boldFont
         font.family: Fonts.selectedFont

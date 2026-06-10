@@ -120,7 +120,7 @@ Item {
         id: scanProc
         command: ["bash", "-c",
             // Images (awww-supported formats)
-            "find \"$HOME/Pictures/Wallpapers\" -type f \\( " + "-iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' " + "-o -iname '*.gif' -o -iname '*.jxl' -o -iname '*.bmp' -o -iname '*.tiff' " + "-o -iname '*.tga' -o -iname '*.avif' -o -iname '*.pnm' -o -iname '*.svg' \\) " + "2>/dev/null | sort | sed 's/$/ IMAGE/'; " +
+            "find \"$HOME/Pictures/Wallpapers/PC\" -type f \\( " + "-iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' " + "-o -iname '*.gif' -o -iname '*.jxl' -o -iname '*.bmp' -o -iname '*.tiff' " + "-o -iname '*.tga' -o -iname '*.avif' -o -iname '*.pnm' -o -iname '*.svg' \\) " + "2>/dev/null | sort | sed 's/$/ IMAGE/'; " +
             // Videos (mpvpaper/mpv-supported formats)
             "find \"$HOME/Videos/Wallpapers\" -type f \\( " + "-iname '*.mp4' -o -iname '*.mkv' -o -iname '*.webm' -o -iname '*.mov' " + "-o -iname '*.avi' -o -iname '*.flv' -o -iname '*.wmv' " + "-o -iname '*.ts' -o -iname '*.m4v' -o -iname '*.ogv' \\) " + "2>/dev/null | sort | sed 's/$/ VIDEO/'"]
         running: false

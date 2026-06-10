@@ -115,9 +115,9 @@ end)
 
 -- Cycle Layouts
 hl.bind(mainMod .. " + tab", function()
-  local layouts     = { "scrolling", "dwindle", "master", "monocle" }
+  local layouts     = { "scrolling", "master", "monocle" }
   local workspace   = hl.get_active_workspace()
-  local next_layout = "dwindle"
+  local next_layout = "master"
 
   if not workspace then
     return
