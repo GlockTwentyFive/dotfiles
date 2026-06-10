@@ -37,7 +37,7 @@ Pill {
         if (!connected)
             return iconText + " Dis";
 
-        var shortSSID = ssid.length > 8 ? ssid.substring(0, 8) + ".." : ssid;
+        var shortSSID = ssid.length > 12 ? ssid.substring(0, 12) + ".." : ssid;
         return iconText + " " + shortSSID;
     }
 

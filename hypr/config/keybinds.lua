@@ -77,7 +77,10 @@ hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.swap({ direction = "u" }))
 
 -- Lockscreen
 hl.bind(mainMod .. " + L",
-  hl.dsp.exec_cmd("uwsm-app -- quickshell -c " .. os.getenv("HOME") .. "/.config/quickshell/lockscreen"))
+  hl.dsp.exec_cmd("uwsm-app -- quickshell -p ~/.config/quickshell/lockscreen"))
+
+hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("uwsm-app -- quickshell -p ~/.config/quickshell/lockscreen"),
+  { locked = true })
 
 -- Screenshot
 hl.bind("SUPER + Print",
