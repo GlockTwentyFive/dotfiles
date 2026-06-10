@@ -130,11 +130,11 @@ PopupBase {
                                 root.menuState = modelData.action;
                             } else if (modelData.action === "suspend") {
                                 SessionState.hide();
-                                Quickshell.execDetached(["sh", "-c", "quickshell -c ~/.config/quickshell/lockscreen"]);
+                                Quickshell.execDetached(["sh", "-c", "uwsm-app -- quickshell -c ~/.config/quickshell/lockscreen"]);
                                 Quickshell.execDetached(["systemctl", "suspend"]);
                             } else if (modelData.action === "lock") {
                                 SessionState.hide();
-                                Quickshell.execDetached(["sh", "-c", "quickshell -c ~/.config/quickshell/lockscreen"]);
+                                Quickshell.execDetached(["sh", "-c", "uwsm-app -- quickshell -c ~/.config/quickshell/lockscreen"]);
                             }
                         }
                     }
@@ -232,7 +232,7 @@ PopupBase {
                             else if (root.menuState === "confirm_logout") {
                                 const desktop = Quickshell.env("XDG_CURRENT_DESKTOP") ?? "";
                                 if (desktop.toLowerCase() === "hyprland")
-                                    Quickshell.execDetached(["sh", "-c", "command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"]);
+                                    Quickshell.execDetached(["uwsm", "stop"]);
                                 else
                                     Quickshell.execDetached(["mmsg", "dispatch", "quit"]);
                             }
