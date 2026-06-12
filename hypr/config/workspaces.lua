@@ -17,9 +17,9 @@ hl.layer_rule({
 
 -- ─── WINDOW RULES ────────────────────────────────────────────────────────────
 hl.window_rule({
-  match = { title = "nmtui" },
+  match = { class = "org.gnome.Nautilus" },
   float = true,
-  size = { 700, 500 },
+  size = { 900, 500 },
 })
 
 

@@ -8,9 +8,7 @@ import "bar"
 import "notifications"
 import "osd"
 import "dashboard"
-import "dock"
 import "launcher"
-import "screenshot"
 import "theme"
 
 ShellRoot {
@@ -121,13 +119,7 @@ ShellRoot {
             screen: modelData
         }
     }
-    Variants {
-        model: Quickshell.screens
-        DockWidget {
-            required property var modelData
-            screen: modelData
-        }
-    }
+
     PolkitDialog {}
     AppLauncher {}
 }

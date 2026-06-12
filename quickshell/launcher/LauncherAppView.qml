@@ -4,7 +4,6 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Wayland
 import "../theme"
-import "../dock"
 
 Item {
     id: root

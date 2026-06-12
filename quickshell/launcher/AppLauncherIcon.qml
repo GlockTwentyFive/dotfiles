@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
 import "../theme"
-import "../dock"
 
 Item {
     id: root
@@ -191,62 +190,6 @@ Item {
                     root.execName = bin;
             }
         }
-    }
-
-    function _buildMenuModel() {
-        var pinned = PinnedApps.isPinned(root.appId);
-        var entries = [
-            {
-                label: "Launch",
-                action: "launch",
-                gpuIndex: -1
-            }
-        ];
-
-        if (root.resolvedSteamId !== "") {
-            entries.push({
-                label: pinned ? "Unpin from dock" : "Pin to dock",
-                action: pinned ? "unpin" : "pin",
-                gpuIndex: -1
-            });
-            entries.push({
-                label: "Hide",
-                action: "hide",
-                gpuIndex: -1
-            });
-            return entries;
-        }
-
-        if (DockState.gpuInfoReady) {
-            if (root.appPrefersNonDefault) {
-                if (DockState.defaultGpuName !== "")
-                    entries.push({
-                        label: "Launch with " + DockState.defaultGpuName,
-                        action: "gpu",
-                        gpuIndex: DockState.defaultGpuIndex
-                    });
-            } else {
-                if (DockState.nonDefaultGpuName !== "")
-                    entries.push({
-                        label: "Launch with " + DockState.nonDefaultGpuName,
-                        action: "gpu",
-                        gpuIndex: DockState.nonDefaultGpuIndex
-                    });
-            }
-        }
-
-        entries.push({
-            label: pinned ? "Unpin from dock" : "Pin to dock",
-            action: pinned ? "unpin" : "pin",
-            gpuIndex: -1
-        });
-        entries.push({
-            label: "Hide",
-            action: "hide",
-            gpuIndex: -1
-        });
-
-        return entries;
     }
 
     function _launchDefault() {
