@@ -4,9 +4,8 @@ import "."
 import "widgets"
 import "../theme"
 
-Rectangle {
+Item {
     id: root
-    color: PanelColors.panelBackground
 
     property alias rightContainer: rightContainer
     property alias rightBar: rightBar
@@ -16,9 +15,9 @@ Rectangle {
     Rectangle {
         id: leftContainer
         anchors.left: parent.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 12
         anchors.top: parent.top
-        anchors.topMargin: 3
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {
@@ -39,7 +38,7 @@ Rectangle {
         id: centerContainer
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: 3
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {
@@ -59,9 +58,9 @@ Rectangle {
     Rectangle {
         id: rightContainer
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 12
         anchors.top: parent.top
-        anchors.topMargin: 3
+        anchors.topMargin: 10
         height: 40
         color: PanelColors.barBackground
         Behavior on color {

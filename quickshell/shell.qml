@@ -23,7 +23,7 @@ ShellRoot {
                 left: true
                 right: true
             }
-            implicitHeight: 46
+            implicitHeight: 50
             color: "transparent"
             exclusiveZone: implicitHeight
             Bar {
